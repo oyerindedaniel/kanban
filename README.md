@@ -40,3 +40,7 @@ yarn dev
 ## Environmental Variables 🌳
 
 Look at the `.env.example` file to see the environmental variables, contact an admin for their values and copy it to a `.env` file.
+
+## Frontend Figma Designs
+
+[Figma Design](https://www.figma.com/file/ifFZUhI1Yn0LjwGPNkdwJS/kanban-task-management-web-app?type=design&node-id=0-1&mode=design&t=8ocX1vlERfYAGEuc-0)
