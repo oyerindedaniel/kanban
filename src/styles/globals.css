@@ -4,6 +4,18 @@
  
 @layer base {
   :root {
+    --brand-iris: 242, 48%, 58%;
+    --brand-biloba-flower: 243, 100%, 82%;
+    --brand-jaguar: 237, 100%, 4%;
+    --brand-dark: 235, 16%, 15%;
+    --brand-ebony-clay: 235, 12%, 19%;
+    --brand-bright-grey: 236, 11%, 27%;
+    --brand-regent-grey: 216, 15%, 57%;
+    --brand-lavender-mist: 221, 69%, 94%;
+    --brand-zircon: 220, 69%, 97%
+    --brand-valentine-red: 0, 78%, 63%;
+    --brand-light-salmon-pink: 0, 100%, 80%;
+
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
 
@@ -36,6 +48,19 @@
   }
  
   .dark {
+    --brand-iris: 242, 48%, 58%;
+    --brand-biloba-flower: 243, 100%, 82%;
+    --brand-jaguar: 237, 100%, 4%;
+    --brand-dark: 235, 16%, 15%;
+    --brand-ebony-clay: 235, 12%, 19%;
+    --brand-bright-grey: 236, 11%, 27%;
+    --brand-regent-grey: 216, 15%, 57%;
+    --brand-lavender-mist: 221, 69%, 94%;
+    --brand-zircon: 220, 69%, 97%
+    --brand-valentine-red: 0, 78%, 63%;
+    --brand-light-salmon-pink: 0, 100%, 80%;
+
+
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
  
