@@ -10,11 +10,43 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Post {
-    id        Int      @id @default(autoincrement())
+
+model Board {
+    id        String      @id @default(uuid())
     name      String
+    columns String
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+    tasks Task[]
+    subTasks SubTask[]
 
-    @@index([name])
+    @@index([id])
+}
+
+model Task {
+    id        String     @id @default(uuid())
+    name      String
+    description String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    board       Board     @relation(fields: [boardId], references: [id], onDelete: Cascade)
+    boardId     String
+    subTasks SubTask[]
+
+    @@index([id])
+}
+
+model SubTask {
+    id        String      @id @default(uuid())
+    name      String
+    isCompleted Boolean @default(false)
+    currentStatus String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    task       Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+    taskId     String
+    board       Board     @relation(fields: [boardId], references: [id], onDelete: Cascade)
+    boardId     String
+
+    @@index([id]) // searching and querying based on the "id" field will be more efficient
 }
