@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import { api } from "@/trpc/server";
-import { CreatePost } from "./_components/create-post";
+import { CreatePost } from "./create-post";
 
 export default function Home() {
   return <p>You have no posts yet.</p>;
