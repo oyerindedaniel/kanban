@@ -4,7 +4,7 @@ import { api } from "@/trpc/server";
 import { CreatePost } from "./_components/create-post";
 
 export default async function Home() {
-  <div>sss</div>;
+  return <div>sss</div>;
 }
 
 // async function CrudShowcase() {
