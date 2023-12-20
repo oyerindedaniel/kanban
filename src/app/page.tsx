@@ -3,11 +3,11 @@ import Link from "next/link";
 import { api } from "@/trpc/server";
 import { CreatePost } from "./_components/create-post";
 
-export default async function Home() {
-  <div>sss</div>;
+export default function Home() {
+  return <p>You have no posts yet.</p>;
 }
 
-// async function CrudShowcase() {
+// export default async function CrudShowcase() {
 //   const latestPost = await api.post.getLatest.query();
 
 //   return (
