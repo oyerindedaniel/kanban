@@ -4,20 +4,25 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { BiBookAlt } from 'react-icons/bi';
 import { LINKS, LINK_ICON_STYLE } from './constants';
 import { cn } from '@/lib/utils';
 import KanbanLogo from 'src/assets/KanbanLogo.svg';
 import Image from 'next/image';
+import { Switch } from '@/components/ui/switch';
+import { HideIcon, MoonIcon, SunIcon } from '@/assets';
 
 interface SidebarProps {
   isSidebarOpen?: boolean;
+  isSidebarHidden: boolean;
+  toggleSidebar: () => void;
 }
 
-const Sidebar: FC<SidebarProps> = ({ isSidebarOpen = true }) => {
+const Sidebar: FC<SidebarProps> = ({ isSidebarOpen = true, isSidebarHidden, toggleSidebar }) => {
   const pathname = usePathname();
   const DASHBOARD_ROUTE = '/';
+  const [isSideBarHidden, setIsSideBarHidden] = useState(true);
 
   const checkIfLinkIsActive = (link: string) => {
     // @ts-ignore
@@ -29,7 +34,8 @@ const Sidebar: FC<SidebarProps> = ({ isSidebarOpen = true }) => {
     <div
       className={cn(
         'flex h-full w-full -translate-x-full flex-col overflow-hidden bg-white p-0 text-sm transition-all duration-100 ease-in-out',
-        isSidebarOpen && 'translate-x-0'
+        isSidebarOpen && 'translate-x-0',
+        isSidebarHidden && 'hidden'
       )}
     >
       <div className="mt-8 pl-8">
@@ -57,9 +63,23 @@ const Sidebar: FC<SidebarProps> = ({ isSidebarOpen = true }) => {
             );
           })}
         </div>
-        <div />
-        <div className="mb-7 flex items-center justify-center">
-          <Link href="/dashboard"></Link>
+
+        <div className="flex flex-col justify-around mb-12">
+          <div className=" mx-6 mb-7 py-3 flex items-center justify-center bg-brand-zircon">
+            <span>
+              <Image src={SunIcon} alt="img"></Image>
+            </span>
+            <Switch className="mx-6" />
+            <span>
+              <Image src={MoonIcon} alt="img"></Image>
+            </span>
+          </div>
+          <div className=" ml-6  flex items-center ">
+            <span className="mr-2" onClick={toggleSidebar} style={{ cursor: 'pointer' }}>
+              <Image src={HideIcon} alt="img"></Image>
+            </span>
+            <p>Hide Sidebar</p>
+          </div>
         </div>
       </div>
     </div>
