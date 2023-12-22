@@ -5,6 +5,7 @@ import TopBar from './Topbar';
 import Sidebar from './Sidebar';
 import { KanbanLogo, ViewIcon } from '@/assets';
 import Image from 'next/image';
+import { cn } from '@/lib/utils';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -21,7 +22,7 @@ const DashboardLayout = ({ children }: LayoutProps) => {
     <div>
       {!isSidebarHidden ? (
         <div
-          className={`fixed left-0 top-0 z-10 h-full w-[300px] border-[1px] border-gray-200 ${
+          className={`fixed h-[calc(100vh-96px)] left-0 bottom-0 z-30  w-[300px] border-[1px] border-gray-200 ${
             isSidebarHidden ? 'hidden' : ''
           }`}
         >
@@ -33,29 +34,16 @@ const DashboardLayout = ({ children }: LayoutProps) => {
         </div>
       )}
 
+      <div className={`fixed right-0 top-0 z-30 w-full max-w-full`}>
+        <TopBar />
+      </div>
+
       <div
-        className={`relative right-0 z-10 ${
+        className={cn(
+          'relative right-0 z-10 transition-all duration-500 mt-24 h-full min-h-[calc(100vh-96px)] p-6',
           isSidebarHidden ? 'ml-0' : 'ml-[300px]'
-        }  mt-[45px] h-full min-h-[calc(100vh-45px)] p-6`}
+        )}
       >
-        <div className="fixed right-0 top-0 z-30 w-full max-w-full">
-          <nav
-            className={`${
-              isSidebarHidden ? 'ml-0' : 'ml-[300px]'
-            } flex h-24 items-center justify-between border-[1px] border-gray-200 bg-white shadow-sm md:p-1.5`}
-          >
-            <div className="flex items-center justify-between text-sm">
-              <div className="flex items-center gap-2">
-                {isSidebarHidden && (
-                  <div className="ml-6 pr-8 border-r border-[#E4EBFA] h-24 mr-16 justify-center flex">
-                    <Image src={KanbanLogo} alt="logo" />
-                  </div>
-                )}
-                <p>Aqib</p>
-              </div>
-            </div>
-          </nav>
-        </div>
         {children}
       </div>
     </div>

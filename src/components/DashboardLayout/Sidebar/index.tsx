@@ -38,9 +38,9 @@ const Sidebar: FC<SidebarProps> = ({ isSidebarOpen = true, isSidebarHidden, togg
         isSidebarHidden && 'hidden'
       )}
     >
-      <div className="mt-8 pl-8">
+      {/* <div className="mt-8 pl-8">
         <Image src={KanbanLogo} alt="img" />
-      </div>
+      </div> */}
 
       <div className="mt-[30px] flex h-full flex-col justify-between overflow-y-auto pr-4">
         <div>

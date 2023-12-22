@@ -1,6 +1,6 @@
 const PlatformLunch = () => {
   return (
-    <div className="mt-9">
+    <div>
       <p> Platform Lunchsssssssssssssssssssssssssssss</p>
     </div>
   );
