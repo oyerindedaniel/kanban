@@ -1,19 +1,19 @@
 export const appStructure = {
   allBoards: [
     {
-      id: "",
-      boardName: "",
-      boardColumns: [{ id: "", name: "" }], // Can be prefilled with the default or can be null
+      id: '',
+      boardName: '',
+      boardColumns: [{ id: '', name: '' }], // Can be prefilled with the default or can be null
       task: [
         {
-          taskName: "",
-          taskDescription: "",
-          subtasks: [{ id: "", name: "", isCompleted: false }], // Can be prefilled with the default or can be null
-          currentStatus: "",
-        },
-      ], // by default this can be an empty object {} or null
-    },
-  ],
+          taskName: '',
+          taskDescription: '',
+          currentStatus: '',
+          subtasks: [{ id: '', name: '', isCompleted: false }] // Can be prefilled with the default or can be null
+        }
+      ] // by default this can be an empty object {} or null
+    }
+  ]
 };
 
 // boards = [];
