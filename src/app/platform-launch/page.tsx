@@ -1,4 +1,4 @@
-const PlatformLunch = () => {
+const PlatformLaunch = () => {
   return (
     <div>
       <p> Platform Lunchsssssssssssssssssssssssssssss</p>
@@ -6,4 +6,4 @@ const PlatformLunch = () => {
   );
 };
 
-export default PlatformLunch;
+export default PlatformLaunch;

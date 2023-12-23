@@ -15,8 +15,8 @@ export type SideBarLinks = SideBarLink[];
 
 export const LINKS: SideBarLinks = [
   {
-    name: 'Platform Lunch',
-    url: '/platform-lunch',
+    name: 'Platform Launch',
+    url: '/platform-launch',
     icon: SideBarIcon
   }
   // {

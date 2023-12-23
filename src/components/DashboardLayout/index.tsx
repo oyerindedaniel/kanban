@@ -22,7 +22,7 @@ const DashboardLayout = ({ children }: LayoutProps) => {
     <div>
       {!isSidebarHidden ? (
         <div
-          className={`fixed h-[calc(100vh-96px)] left-0 bottom-0 z-30  w-[300px] border-[1px] border-gray-200 ${
+          className={`fixed h-[calc(100vh-96px)] left-0 bottom-0 z-30  w-[300px] border-[1px] border-gray-200 border-t-0 ${
             isSidebarHidden ? 'hidden' : ''
           }`}
         >
