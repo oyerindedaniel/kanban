@@ -5,10 +5,13 @@ import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { KanbanLogo } from '@/assets';
 import { MoreOptionsIcon } from '@/assets';
+import { useDisclosure } from 'hooks';
+import AddNewTaskModal from '@/components/AddNewTask/Modal';
 import Image from 'next/image';
 
 const TopBar = () => {
   const pathname = usePathname();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handlePath = pathname.slice(1).split('-');
 

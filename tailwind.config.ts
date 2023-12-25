@@ -28,7 +28,10 @@ module.exports = {
           'lavender-mist': 'hsl(var(--brand-lavender-mist))',
           zircon: 'hsl(var(--brand-zircon))',
           'valentine-red': 'hsl(var(--brand-valentine-red))',
-          'light-salmon-pink': 'hsl(var(--brand-light-salmon-pink))'
+          'light-salmon-pink': 'hsl(var(--brand-light-salmon-pink))',
+          todo: 'hsl(var(--brand-todo))',
+          doing: 'hsl(var(--brand-doing))',
+          done: 'hsl(var(--brand-done))'
         },
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',

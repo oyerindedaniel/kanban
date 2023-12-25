@@ -18,6 +18,7 @@
     "test-all": "yarn check-format && yarn check-lint && yarn check-types && yarn build"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.1.1",
     "@prisma/client": "^5.6.0",
     "@radix-ui/react-slot": "^1.0.2",

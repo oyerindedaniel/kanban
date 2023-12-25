@@ -21,8 +21,6 @@ interface SidebarProps {
 
 const Sidebar: FC<SidebarProps> = ({ isSidebarOpen = true, isSidebarHidden, toggleSidebar }) => {
   const pathname = usePathname();
-  const DASHBOARD_ROUTE = '/';
-  const [isSideBarHidden, setIsSideBarHidden] = useState(true);
 
   const checkIfLinkIsActive = (link: string) => {
     // @ts-ignore
@@ -61,7 +59,7 @@ const Sidebar: FC<SidebarProps> = ({ isSidebarOpen = true, isSidebarHidden, togg
         </div>
 
         <div className="flex flex-col justify-around mb-12">
-          <div className=" mx-6 mb-7 py-3 flex items-center justify-center bg-brand-zircon">
+          <div className=" mx-6 mb-7 py-3 flex items-center justify-center bg-brand-zircon rounded-md">
             <span>
               <Image src={SunIcon} alt="img"></Image>
             </span>
