@@ -29,7 +29,7 @@ const DashboardLayout = ({ children }: LayoutProps) => {
           <Sidebar isSidebarHidden={isSidebarHidden} toggleSidebar={toggleSidebar} />
         </div>
       ) : (
-        <div className="text-white bg-brand-iris h-12 w-14 p-5 z-30 absolute bottom-8 rounded-r-[100px] rounded-br-[100px]">
+        <div className="text-white bg-brand-iris h-12 w-14 p-5 z-30 absolute bottom-8 rounded-r-[100px] rounded-br-[100px] hover:bg-brand-biloba-flower">
           <Image src={ViewIcon} alt="img" onClick={toggleSidebar} style={{ cursor: 'pointer' }} />
         </div>
       )}

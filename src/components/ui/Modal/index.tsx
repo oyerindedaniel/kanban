@@ -9,7 +9,7 @@ import {
 
 export const ModalTitle: FC<ModalTitleType> = ({ children }) => {
   return (
-    <Dialog.Title as="h3" className="text-xl font-bold leading-6 text-gray-900">
+    <Dialog.Title as="h3" className="text-sm font-bold leading-6 text-gray-900">
       {children}
     </Dialog.Title>
   );

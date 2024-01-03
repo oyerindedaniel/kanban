@@ -1,17 +1,31 @@
 'use client';
 
 import Link from 'next/link';
+import { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { KanbanLogo } from '@/assets';
 import { MoreOptionsIcon } from '@/assets';
 import { useDisclosure } from 'hooks';
-import AddNewTaskModal from '@/components/AddNewTask/Modal';
+import AddNewTaskModal from '@/components/Kanban/Modals/AddNewTask';
 import Image from 'next/image';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu';
 
 const TopBar = () => {
   const pathname = usePathname();
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const handleAddNewTask = () => {
+    onOpen();
+  };
 
   const handlePath = pathname.slice(1).split('-');
 
@@ -35,14 +49,30 @@ const TopBar = () => {
           <p>{path}</p>
         </div>
         <div className="flex">
-          <Button className="bg-brand-iris text white  rounded-[100px] mr-6" size="lg">
+          <Button
+            className="bg-brand-iris text white  rounded-[100px] mr-6 hover:bg-brand-biloba-flower"
+            onClick={handleAddNewTask}
+          >
             +Add New Task
           </Button>
-          <Image src={MoreOptionsIcon} alt="img"></Image>
+          <AddNewTaskModal isOpen={isOpen} onClose={onClose} />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Image className="cursor-pointer" src={MoreOptionsIcon} alt="More options" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-48 mr-6">
+              <DropdownMenuSeparator />
+              <DropdownMenuItem className="cursor-pointer">
+                <span>Edit Board</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer">
+                <span className="text-brand-valentine-red">Delete Board</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
     </nav>
   );
 };
-
 export default TopBar;

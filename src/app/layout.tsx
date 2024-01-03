@@ -20,7 +20,7 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={`font-sans ${inter.variable} bg-brand-zircon`}>
+      <body className={`font-sans ${inter.variable} bg-brand-zircon/100`}>
         <TRPCReactProvider cookies={cookies().toString()}>
           <DashboardLayout> {children}</DashboardLayout>
         </TRPCReactProvider>
