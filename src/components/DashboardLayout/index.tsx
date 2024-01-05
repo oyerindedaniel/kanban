@@ -22,14 +22,14 @@ const DashboardLayout = ({ children }: LayoutProps) => {
     <div>
       {!isSidebarHidden ? (
         <div
-          className={`fixed h-[calc(100vh-96px)] left-0 bottom-0 z-30 w-[260px] ${
+          className={`fixed h-[calc(100vh-96px)] left-0 bottom-0 z-30  w-[300px] border-[1px] border-gray-200 border-t-0 ${
             isSidebarHidden ? 'hidden' : ''
           }`}
         >
           <Sidebar isSidebarHidden={isSidebarHidden} toggleSidebar={toggleSidebar} />
         </div>
       ) : (
-        <div className="text-white bg-brand-iris flex items-center justify-center h-12 w-14 p-5 z-30 absolute bottom-8 rounded-r-[100px] rounded-br-[100px]">
+        <div className="text-white bg-brand-iris h-12 w-14 p-5 z-30 absolute bottom-8 rounded-r-[100px] rounded-br-[100px] hover:bg-brand-biloba-flower">
           <Image src={ViewIcon} alt="img" onClick={toggleSidebar} style={{ cursor: 'pointer' }} />
         </div>
       )}

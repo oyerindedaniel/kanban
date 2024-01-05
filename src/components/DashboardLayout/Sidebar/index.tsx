@@ -8,11 +8,13 @@ import { type FC, useState } from 'react';
 import { BiBookAlt } from 'react-icons/bi';
 import { LINKS, LINK_ICON_STYLE } from './constants';
 import { cn } from '@/lib/utils';
-import KanbanLogo from 'src/assets/KanbanLogo.svg';
 import Image from 'next/image';
-import { HideIcon, MoonIcon, SunIcon } from '@/assets';
-import { Button } from '@/components/ui/button';
 import ModeToggler from './ModeToggler';
+import { Switch } from '@/components/ui/switch';
+import { ActiveSidebarIcon, HideIcon, MoonIcon, SideBarSvg, SunIcon } from '@/assets';
+import { Button } from '@/components/ui/button';
+import { useDisclosure } from 'hooks';
+import SideBarModal from '@/components/Kanban/Modals/SideBarModal';
 
 interface SidebarProps {
   isSidebarOpen?: boolean;
@@ -22,8 +24,11 @@ interface SidebarProps {
 
 const Sidebar: FC<SidebarProps> = ({ isSidebarOpen = true, isSidebarHidden, toggleSidebar }) => {
   const pathname = usePathname();
-  const DASHBOARD_ROUTE = '/';
-  const [isSideBarHidden, setIsSideBarHidden] = useState(true);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const handleAddNewBoard = () => {
+    onOpen();
+  };
 
   const checkIfLinkIsActive = (link: string) => {
     return pathname === link;
@@ -44,22 +49,39 @@ const Sidebar: FC<SidebarProps> = ({ isSidebarOpen = true, isSidebarHidden, togg
       <div className="mt-[30px] flex h-full flex-col justify-between overflow-y-auto">
         <div>
           {LINKS.map((link, Idx) => {
-            const SideBarIcon = link?.icon;
+            const [hovered, setHovered] = useState(false);
             return (
-              <Link href={link.url} key={link.name}>
+              <Link href={link.url} key={link.name} className="hover:fill-brand-iris">
                 <div
                   className={cn(
                     'duration-150 mb-0 flex cursor-pointer items-center justify-start gap-2 px-4 py-3 transition-all ease-in-out hover:bg-gray-200 hover:text-black md:justify-center xl:justify-start  rounded-r-[100px] text-[15px] font-bold text-brand-regent-grey rounded-b-[100px]xl:px-4 xl:py-2',
                     checkIfLinkIsActive(link.url) && 'bg-brand-iris text-white',
                     Idx !== LINKS.length - 1 && 'mb-3'
                   )}
+                  onMouseEnter={() => setHovered(true)}
+                  onMouseLeave={() => setHovered(false)}
                 >
-                  <Image src={SideBarIcon} alt="img" />
+                  {/* <Image src={SideBarIcon} alt="img"></Image> */}
+
+                  <SideBarSvg className={hovered ? '' : 'white'} />
+
                   <span className="block font-medium capitalize py-4">{link.name}</span>
                 </div>
               </Link>
             );
           })}
+
+          <Button
+            className="duration-350 mb-0 mt-3 flex cursor-pointer items-center justify-start gap-2 px-4 py-3 transition-all ease-in-outmd:justify-center xl:justify-start xl:px-4 xl:py-2 text-brand-iris"
+            variant={null}
+            onClick={handleAddNewBoard}
+          >
+            <span>
+              <Image src={ActiveSidebarIcon} alt="img"></Image>
+            </span>
+            + Create New Board
+          </Button>
+          <SideBarModal isOpen={isOpen} onClose={onClose} />
         </div>
 
         <div className="flex flex-col justify-around mb-12 px-4">
