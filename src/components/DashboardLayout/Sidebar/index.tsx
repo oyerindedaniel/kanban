@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { type FC, useState } from 'react';
 import { BiBookAlt } from 'react-icons/bi';
-import { LINKS, LINK_ICON_STYLE } from './constants';
+import { LINKS } from './constants';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import ModeToggler from './ModeToggler';
