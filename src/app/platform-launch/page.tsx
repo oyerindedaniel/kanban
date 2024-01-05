@@ -12,28 +12,43 @@ const PlatformLaunch = () => {
     onOpen();
   };
 
+  const ITEMS = 0;
+
   return (
-    <div>
-      <div className="grid grid-cols-12 gap-14 ">
-        <div className="grid grid-cols-2">
-          <Button className="rounded-full bg-brand-todo " size={'icon'} />
-          <p className="text-brand-regent-grey text-xs mb-6 ml-2"> TODO </p>
+    <>
+      <AddNewColumnModal isOpen={isOpen} onClose={onClose} />
+      {ITEMS > 0 ? (
+        <div className="grid grid-cols-4 gap-8 w-[1250px]">
+          <Platform />
+          <Platform />
+          <Platform />
+          {/* <Platform /> */}
+          <div className="h-[360px] w-72 bg-gradient-to-b from-brand-sky-blue/100 to-brand-light-blue/50 justify-center flex rounded-md cursor-pointer ">
+            <p
+              className="my-auto font-medium text-brand-regent-grey hover:text-brand-iris"
+              onClick={handleAddNewColumn}
+            >
+              + New Column
+            </p>
+          </div>
         </div>
-      </div>
-      <div className="grid grid-cols-4 gap-72 ">
-        <Platform />
-        <div className="h-[360px] w-72 bg-gradient-to-b from-brand-sky-blue/100 to-brand-light-blue/50 justify-center flex rounded-md cursor-pointer ">
-          <p
-            className="my-auto font-medium text-brand-regent-grey hover:text-brand-iris"
+      ) : (
+        <div className="py-auto flex flex-col items-center justify-center h-[75vh]">
+          <p className="text-brand-regent-grey font-medium">
+            This board is empty. Create a new column to get started.
+          </p>
+          <Button
+            className="mt-8 bg-brand-iris rounded-[100px] hover:bg-brand-biloba-flower hover:text-white"
             onClick={handleAddNewColumn}
           >
-            + New Column
-          </p>
+            + Add New Column
+          </Button>
+          <AddNewColumnModal isOpen={isOpen} onClose={onClose} />
         </div>
-        <AddNewColumnModal isOpen={isOpen} onClose={onClose} />
-      </div>
-    </div>
+      )}
+    </>
   );
 };
 
 export default PlatformLaunch;
+
