@@ -50,7 +50,7 @@ const Sidebar: FC<SidebarProps> = ({ isSidebarOpen = true, isSidebarHidden, togg
               <Link href={link.url} key={link.name} className="hover:fill-brand-iris">
                 <div
                   className={cn(
-                    'duration-350 mb-0 flex cursor-pointer items-center justify-start gap-2 px-4 py-3 transition-all ease-in-out hover:bg-brand-zircon hover:text-brand-iris  md:justify-center xl:justify-start  rounded-r-[100px] rounded-b-[100px]xl:px-4 xl:py-2 text-white',
+                    'duration-350 mb-0 flex cursor-pointer items-center justify-start gap-2 px-4 py-3 transition-all ease-in-out hover:bg-brand-zircon hover:text-brand-iris  md:justify-center xl:justify-start  rounded-r-[100px] rounded-b-[100px]xl:px-4 xl:py-2 text-white ',
                     checkIfLinkIsActive(link.url) && 'bg-brand-iris text-white',
                     Idx !== LINKS.length - 1 && 'mb-3'
                   )}
