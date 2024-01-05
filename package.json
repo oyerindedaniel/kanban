@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "SKIP_ENV_VALIDATION=1 yarn build",
+    "build": "yarn build",
     "db:push": "prisma db push",
     "db:studio": "prisma studio",
     "dev": "next dev",
