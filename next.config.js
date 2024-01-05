@@ -17,6 +17,7 @@ const config = {
 
   //   return config;
   // },
+  output: 'standalone',
   reactStrictMode: true
 };
 
