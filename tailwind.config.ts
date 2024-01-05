@@ -7,6 +7,7 @@ module.exports = {
     './app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}'
   ],
+
   theme: {
     container: {
       center: true,
@@ -18,17 +19,22 @@ module.exports = {
     extend: {
       colors: {
         brand: {
-          iris: 'hsl(var(--brand-iris))',
+          iris: 'hsla(var(--brand-iris))',
           'biloba-flower': 'hsl(var(--brand-biloba-flower))',
           jaguar: 'hsl(var(--brand-jaguar))',
           dark: 'hsl(var(--brand-dark))',
           'ebony-clay': 'hsl(var(--brand-ebony-clay))',
           'bright-grey': 'hsl(var(--brand-bright-grey))',
-          'regent-grey': 'hsl(var(--brand-regent-grey))',
+          'regent-grey': 'hsla(var(--brand-regent-grey))',
           'lavender-mist': 'hsl(var(--brand-lavender-mist))',
-          zircon: 'hsl(var(--brand-zircon))',
+          zircon: 'hsla(var(--brand-zircon))',
           'valentine-red': 'hsl(var(--brand-valentine-red))',
-          'light-salmon-pink': 'hsl(var(--brand-light-salmon-pink))'
+          'light-salmon-pink': 'hsl(var(--brand-light-salmon-pink))',
+          todo: 'hsl(var(--brand-todo))',
+          doing: 'hsl(var(--brand-doing))',
+          done: 'hsl(var(--brand-done))',
+          'sky-blue': 'hsla(var(--brand-sky-blue))',
+          'light-blue': 'hsla(var(--brand-light-blue))'
         },
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
