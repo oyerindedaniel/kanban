@@ -30,6 +30,7 @@ module.exports = {
           'valentine-red': 'hsl(var(--brand-valentine-red))',
           'light-salmon-pink': 'hsl(var(--brand-light-salmon-pink))'
         },
+        mode: 'hsl(var(--mode))',
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',

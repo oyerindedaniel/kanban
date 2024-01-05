@@ -22,14 +22,14 @@ const DashboardLayout = ({ children }: LayoutProps) => {
     <div>
       {!isSidebarHidden ? (
         <div
-          className={`fixed h-[calc(100vh-96px)] left-0 bottom-0 z-30  w-[300px] border-[1px] border-gray-200 ${
+          className={`fixed h-[calc(100vh-96px)] left-0 bottom-0 z-30 w-[260px] ${
             isSidebarHidden ? 'hidden' : ''
           }`}
         >
           <Sidebar isSidebarHidden={isSidebarHidden} toggleSidebar={toggleSidebar} />
         </div>
       ) : (
-        <div className="text-white bg-brand-iris h-12 w-14 p-5 z-30 absolute bottom-8 rounded-r-[100px] rounded-br-[100px]">
+        <div className="text-white bg-brand-iris flex items-center justify-center h-12 w-14 p-5 z-30 absolute bottom-8 rounded-r-[100px] rounded-br-[100px]">
           <Image src={ViewIcon} alt="img" onClick={toggleSidebar} style={{ cursor: 'pointer' }} />
         </div>
       )}
@@ -40,8 +40,8 @@ const DashboardLayout = ({ children }: LayoutProps) => {
 
       <div
         className={cn(
-          'relative right-0 z-10 transition-all duration-500 mt-24 h-full min-h-[calc(100vh-96px)] p-6',
-          isSidebarHidden ? 'ml-0' : 'ml-[300px]'
+          'dark:bg-brand-dark bg-brand-lavender-mist text-black dark:text-white relative right-0 z-10 transition-all duration-500 mt-24 h-full min-h-[calc(100vh-96px)] p-6',
+          isSidebarHidden ? 'ml-0' : 'ml-[260px]'
         )}
       >
         {children}

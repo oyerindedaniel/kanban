@@ -10,7 +10,7 @@ const TopBar = () => {
   const pathname = usePathname();
 
   return (
-    <nav className=" flex h-24 items-center justify-between border-[1px] border-gray-200 bg-white shadow-sm md:p-1.5">
+    <nav className="bg-white dark:bg-brand-ebony-clay text-white dark:text-black flex h-24 items-center justify-between shadow-sm md:p-1.5">
       <Image src={KanbanLogo} alt="logo" />
       <div className="flex items-center justify-between text-sm">
         <div className="flex items-center gap-2">

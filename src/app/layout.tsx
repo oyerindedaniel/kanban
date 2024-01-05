@@ -3,6 +3,7 @@ import '@/styles/globals.css';
 import { Inter } from 'next/font/google';
 import { cookies } from 'next/headers';
 import DashboardLayout from '@/components/DashboardLayout';
+import { Providers } from '@/Providers';
 
 import { TRPCReactProvider } from '@/trpc/react';
 
@@ -22,7 +23,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body className={`font-sans ${inter.variable} bg-brand-zircon`}>
         <TRPCReactProvider cookies={cookies().toString()}>
-          <DashboardLayout> {children}</DashboardLayout>
+          <Providers>
+            <DashboardLayout> {children}</DashboardLayout>
+          </Providers>
         </TRPCReactProvider>
       </body>
     </html>
