@@ -16,9 +16,9 @@ const Platform = () => {
 
   return (
     <div className="">
-      <div className="grid grid-cols-2 mb-6">
-        <Button className="rounded-full bg-brand-todo" size="icon" />
-        <p className="text-brand-regent-grey text-xs mb-6 ml-2"> TODO </p>
+      <div className="flex gap-3 mb-6 items-center">
+        <div className="rounded-full h-4 w-4 bg-brand-todo" />
+        <p className="text-brand-regent-grey text-[15px] font-semibold"> TODO (1)</p>
       </div>
       <div className="flex flex-col gap-6">
         {LINKS.map((link, Idx) => (

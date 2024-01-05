@@ -6,6 +6,7 @@ import Sidebar from './Sidebar';
 import { KanbanLogo, ViewIcon } from '@/assets';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
+import { Button } from '../ui/button';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -29,8 +30,11 @@ const DashboardLayout = ({ children }: LayoutProps) => {
           <Sidebar isSidebarHidden={isSidebarHidden} toggleSidebar={toggleSidebar} />
         </div>
       ) : (
-        <div className="text-white bg-brand-iris h-12 w-14 p-5 z-30 absolute bottom-8 rounded-r-[100px] rounded-br-[100px] hover:bg-brand-biloba-flower">
-          <Image src={ViewIcon} alt="img" onClick={toggleSidebar} style={{ cursor: 'pointer' }} />
+        <div
+          onClick={toggleSidebar}
+          className="text-white bg-brand-iris h-12 w-14 cursor-pointer p-5 z-30 absolute bottom-8 rounded-r-[100px] rounded-br-[100px] hover:bg-brand-biloba-flower"
+        >
+          <Image src={ViewIcon} alt="img" />
         </div>
       )}
 

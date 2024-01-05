@@ -12,7 +12,7 @@ const PlatformLaunch = () => {
     onOpen();
   };
 
-  const ITEMS = 0;
+  const ITEMS = 2;
 
   return (
     <>

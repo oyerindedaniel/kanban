@@ -44,10 +44,12 @@ const AddNewTaskModal: FC<AddNewTaskProps> = ({ isOpen, onClose }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <div>
-        <ModalTitle>Add New Task</ModalTitle>
+        <ModalTitle>
+          <h4 className="text-lg text-black dark:text-white">Add New Task</h4>
+        </ModalTitle>
 
         <ModalBody>
-          <div className="grid w-full max-w-sm  items-left gap-1.5">
+          <div className="grid w-full items-left gap-1.5">
             <Label className="mb-2 text-brand-regent-grey">Title</Label>
             <Input className="mb-2" placeholder="Email" />
 
@@ -56,17 +58,15 @@ const AddNewTaskModal: FC<AddNewTaskProps> = ({ isOpen, onClose }) => {
 
             <Label className="my-2 text-brand-regent-grey">Subtasks</Label>
             {formValues.map((element, index) => (
-              <div className="form-inline" key={index}>
-                <div className="grid grid-cols-12 gap-2">
-                  <div className="col-span-11">
-                    <Input className="mb-3" onChange={(e) => handleChange(index, e)} />
-                  </div>
+              <div className="" key={index}>
+                <div className="flex items-center gap-3">
+                  <Input className="w-full" onChange={(e) => handleChange(index, e)} />
 
                   {index ? (
                     <>
                       <Button
-                        className="col-span-1 font-bold text-xl text-brand-regent-grey"
-                        size={'sm'}
+                        className="font-bold text-xl h-10 text-brand-regent-grey"
+                        size="sm"
                         onClick={() => removeFormFields(index)}
                         variant={null}
                       >
@@ -77,22 +77,17 @@ const AddNewTaskModal: FC<AddNewTaskProps> = ({ isOpen, onClose }) => {
                 </div>
               </div>
             ))}
-            <div>
-              <Button
-                className="bg-brand-iris/10 rounded-[100px] font-bold w-full text-brand-iris mb-6  hover:bg-brand-iris/10"
-                onClick={() => addFormFields()}
-                size={'lg'}
-              >
-                + Add New Subtask
-              </Button>
-            </div>
+
+            <Button
+              className="bg-brand-iris/10 rounded-[100px] mb-5 mt-3 font-bold w-full text-brand-iris  hover:bg-brand-iris/10"
+              onClick={() => addFormFields()}
+              size={'lg'}
+            >
+              + Add New Subtask
+            </Button>
 
             <Label className="mb-2 text-brand-regent-grey">Status</Label>
-            <select
-              name=""
-              id=""
-              className=" w-full max-w-sm rounded-md border-brand-regent-grey/20"
-            >
+            <select name="" id="" className="w-full rounded-md border-brand-regent-grey/20">
               <option value="todo">Todo</option>
             </select>
           </div>
