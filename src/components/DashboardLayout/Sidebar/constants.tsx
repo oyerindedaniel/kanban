@@ -1,8 +1,10 @@
 import { ReactNode } from 'react';
-import { SideBarIcon } from '@/assets';
+import { BiBookAlt } from 'react-icons/bi';
+import { type IconType } from 'react-icons/lib';
+import { SideBarSvg, ActiveSidebarIcon } from '@/assets';
 
 export type SideBarLink = {
-  icon: string;
+  icon: unknown;
   name: string;
   url: string;
 };
@@ -11,23 +13,8 @@ export type SideBarLinks = SideBarLink[];
 
 export const LINKS: SideBarLinks = [
   {
-    name: 'Platform Lunch',
-    url: '/platform-lunch',
-    icon: SideBarIcon
+    name: 'Platform Launch',
+    url: '/platform-launch',
+    icon: SideBarSvg
   }
-  // {
-  //   name: 'Marketing Plan',
-  //   url: '/marketing-plan',
-  //   icon: BiBookAlt
-  // },
-  // {
-  //   name: 'Roadmap',
-  //   url: '/roadmap',
-  //   icon: BiBookAlt
-  // },
-  // {
-  //   name: '+ Create New Board',
-  //   url: '/create-new',
-  //   icon: BiBookAlt
-  // }
 ];

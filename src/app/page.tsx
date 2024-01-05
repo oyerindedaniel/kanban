@@ -1,6 +1,6 @@
-import Link from "next/link";
+import Link from 'next/link';
 
-import { api } from "@/trpc/server";
+import { api } from '@/trpc/server';
 // import { CreatePost } from "./components/create-post";
 
 export default async function Home() {
