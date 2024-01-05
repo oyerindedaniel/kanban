@@ -13,7 +13,7 @@
     --brand-regent-grey: 216, 15%, 57%;
     --brand-lavender-mist: 221, 69%, 94%;
     --brand-zircon: 220, 69%, 97%;
-    --brand-valentine-red: 0, 78%, 63%;
+     --brand-valentine-red: 0, 78%, 63%;
     --brand-light-salmon-pink: 0, 100%, 80%;
     --brand-todo: 193, 75%, 59%;
     --brand-doing: 249, 83%, 70%;
@@ -21,7 +21,7 @@
     --brand-sky-blue: 219, 63%, 95%;
     --brand-light-blue: 218, 66%, 95%;
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 0 0% 0%;
 
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
@@ -60,14 +60,15 @@
     --brand-bright-grey: 236, 11%, 27%;
     --brand-regent-grey: 216, 15%, 57%;
     --brand-lavender-mist: 221, 69%, 94%;
-    --brand-zircon: 220, 69%, 97% --brand-valentine-red: 0, 78%, 63%;
+    --brand-zircon: 220, 69%, 97%;
+    --brand-valentine-red: 0, 78%, 63%;
     --brand-light-salmon-pink: 0, 100%, 80%;
     --brand-todo: 193, 75%, 59%;
     --brand-doing: 249, 83%, 70%;
     --brand-done: 154, 68%, 64%;
 
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --background: 0 0% 100%;
+    --foreground: 0 0% 0%;
 
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
@@ -101,6 +102,6 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-black;
   }
 }

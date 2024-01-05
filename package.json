@@ -15,7 +15,8 @@
     "check-format": "prettier --check \"**/*.{ts,tsx,md}\"",
     "check-lint": "eslint \"**/*.{ts,tsx}\" --ignore-pattern node_modules/",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "test-all": "yarn check-format && yarn check-lint && yarn check-types && yarn build"
+    "test-all": "yarn check-format && yarn check-lint && yarn check-types && yarn build",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.17",
@@ -67,6 +68,8 @@
     "eslint-plugin-prettier": "^5.1.0",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-tailwindcss": "^3.13.0",
+    "husky": "^8.0.0",
+    "lint-staged": "^15.2.0",
     "postcss": "^8.4.31",
     "prettier": "^3.1.1",
     "prettier-plugin-tailwindcss": "^0.5.7",
@@ -76,6 +79,9 @@
   },
   "ct3aMetadata": {
     "initVersion": "7.24.2"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": "eslint --cache"
   },
   "packageManager": "yarn@1.22.19"
 }

@@ -36,6 +36,7 @@ module.exports = {
           'sky-blue': 'hsla(var(--brand-sky-blue))',
           'light-blue': 'hsla(var(--brand-light-blue))'
         },
+        mode: 'hsl(var(--mode))',
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',

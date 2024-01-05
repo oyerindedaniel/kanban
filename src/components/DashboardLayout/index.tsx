@@ -40,7 +40,7 @@ const DashboardLayout = ({ children }: LayoutProps) => {
 
       <div
         className={cn(
-          'relative right-0 z-10 transition-all duration-500 mt-24 h-full min-h-[calc(100vh-96px)] p-6',
+          'dark:bg-brand-dark bg-brand-lavender-mist text-black dark:text-white relative right-0 z-10 transition-all duration-500 mt-24 h-full min-h-[calc(100vh-96px)] p-6',
           isSidebarHidden ? 'ml-0' : 'ml-[300px]'
         )}
       >
