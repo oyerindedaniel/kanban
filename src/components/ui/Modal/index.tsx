@@ -64,7 +64,7 @@ export const Modal: FC<ModalType> = ({ onClose, isOpen, closeOnOverlayClick = tr
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <div className="my-8 inline-block w-full max-w-md transform overflow-hidden rounded-lg bg-white p-6 text-left align-middle shadow-xl transition-all">
+              <div className="my-8 inline-block w-full max-w-md transform overflow-hidden rounded-lg bg-white dark:bg-brand-ebony-clay text-white dark:text-black p-6 text-left align-middle shadow-xl transition-all">
                 {children}
               </div>
             </Transition.Child>
