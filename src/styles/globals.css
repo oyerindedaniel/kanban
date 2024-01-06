@@ -102,6 +102,6 @@
     @apply border-border;
   }
   body {
-    /* @apply bg-black; */
+    @apply dark:bg-brand-dark bg-brand-lavender-mist text-black dark:text-white;
   }
 }

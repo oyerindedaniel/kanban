@@ -4,7 +4,7 @@
 import { Button } from '../ui/button';
 import { LINKS } from './constants';
 import { cn } from '@/lib/utils';
-import { useDisclosure } from 'hooks';
+import { useDisclosure } from '@/hooks';
 import AddNewColumnModal from '../Kanban/Modals/AddNewColumn';
 
 const Platform = () => {

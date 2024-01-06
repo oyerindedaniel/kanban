@@ -13,16 +13,15 @@ import ModeToggler from './ModeToggler';
 import { Switch } from '@/components/ui/switch';
 import { ActiveSidebarIcon, HideIcon, MoonIcon, SideBarSvg, SunIcon } from '@/assets';
 import { Button } from '@/components/ui/button';
-import { useDisclosure } from 'hooks';
+import { useDisclosure } from '@/hooks';
 import SideBarModal from '@/components/Kanban/Modals/SideBarModal';
 
 interface SidebarProps {
-  isSidebarOpen?: boolean;
-  isSidebarHidden: boolean;
+  isSidebarOpen: boolean;
   toggleSidebar: () => void;
 }
 
-const Sidebar: FC<SidebarProps> = ({ isSidebarOpen = true, isSidebarHidden, toggleSidebar }) => {
+const Sidebar: FC<SidebarProps> = ({ isSidebarOpen, toggleSidebar }) => {
   const pathname = usePathname();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -39,9 +38,8 @@ const Sidebar: FC<SidebarProps> = ({ isSidebarOpen = true, isSidebarHidden, togg
       <SideBarModal isOpen={isOpen} onClose={onClose} />
       <div
         className={cn(
-          'flex h-full w-full bg-white dark:bg-brand-ebony-clay text-white dark:text-black -translate-x-full flex-col overflow-hidden p-0 text-sm transition-all duration-100 ease-in-out',
-          isSidebarOpen && 'translate-x-0',
-          isSidebarHidden && 'hidden'
+          'flex h-full w-full  flex-col overflow-hidden p-0 text-sm transition-all duration-100 ease-in-out',
+          isSidebarOpen ? '' : 'hidden'
         )}
       >
         {/* <div className="mt-8 pl-8">

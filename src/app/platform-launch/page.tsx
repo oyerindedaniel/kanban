@@ -3,7 +3,7 @@
 import Platform from '@/components/PlatformLayout';
 import { Button } from '@/components/ui/button';
 import AddNewColumnModal from '@/components/Kanban/Modals/AddNewColumn';
-import { useDisclosure } from 'hooks';
+import { useDisclosure } from '@/hooks';
 
 const PlatformLaunch = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();

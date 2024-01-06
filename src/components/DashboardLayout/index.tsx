@@ -1,33 +1,50 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import TopBar from './Topbar';
 import Sidebar from './Sidebar';
 import { KanbanLogo, ViewIcon } from '@/assets';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { Button } from '../ui/button';
+import { updateUI } from '@/store/slice/UI';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { useInitialRender } from '@/hooks/useInitialRender';
 
 interface LayoutProps {
   children: React.ReactNode;
 }
 
 const DashboardLayout = ({ children }: LayoutProps) => {
-  const [isSidebarHidden, setIsSidebarHidden] = useState(false);
+  const { isSideBarOpen } = useAppSelector((state) => state.UIService.UI);
+
+  const [sideBarOpen, setSideBarOpen] = useState<boolean>(true);
+
+  useEffect(() => {
+    setSideBarOpen(isSideBarOpen);
+  }, []);
+
+  const dispatch = useAppDispatch();
 
   const toggleSidebar = () => {
-    setIsSidebarHidden(!isSidebarHidden);
+    dispatch(
+      updateUI({
+        isSideBarOpen: !sideBarOpen
+      })
+    );
+    setSideBarOpen((prevVal) => !prevVal);
   };
 
   return (
     <div>
-      {!isSidebarHidden ? (
+      {sideBarOpen ? (
         <div
-          className={`fixed h-[calc(100vh-96px)] left-0 bottom-0 z-30  w-[300px] border-[1px] border-gray-200 border-t-0 ${
-            isSidebarHidden ? 'hidden' : ''
-          }`}
+          className={cn(
+            'bg-white dark:bg-brand-ebony-clay text-white dark:text-black fixed h-[calc(100vh-96px)] left-0 bottom-0 z-30 w-[300px]',
+            sideBarOpen ? '' : 'hidden'
+          )}
         >
-          <Sidebar isSidebarHidden={isSidebarHidden} toggleSidebar={toggleSidebar} />
+          <Sidebar isSidebarOpen={sideBarOpen} toggleSidebar={toggleSidebar} />
         </div>
       ) : (
         <div
@@ -44,8 +61,8 @@ const DashboardLayout = ({ children }: LayoutProps) => {
 
       <div
         className={cn(
-          'dark:bg-brand-dark bg-brand-lavender-mist text-black overflow-auto dark:text-white relative right-0 z-10 transition-all duration-500 mt-24 h-full min-h-[calc(100vh-96px)] p-6',
-          isSidebarHidden ? 'ml-0' : 'ml-[300px]'
+          'dark:bg-brand-dark bg-brand-lavender-mist text-black dark:text-white overflow-auto relative right-0 z-10 transition-all duration-500 mt-24 h-full min-h-[calc(100vh-96px)] p-6',
+          sideBarOpen ? 'ml-[300px]' : 'ml-0'
         )}
       >
         {children}

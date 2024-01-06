@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { KanbanLogo } from '@/assets';
 import { MoreOptionsIcon } from '@/assets';
-import { useDisclosure } from 'hooks';
+import { useDisclosure } from '@/hooks';
 import AddNewTaskModal from '@/components/Kanban/Modals/AddNewTask';
 import Image from 'next/image';
 import {
@@ -40,9 +40,9 @@ const TopBar = () => {
   const path = capitalizePathname(handlePath).join(' ');
 
   return (
-    <nav className=" flex h-24 items-center border-[1px] border-b-0 border-gray-200 bg-white md:p-1.5">
+    <nav className="bg-white dark:bg-brand-ebony-clay text-white dark:text-black flex h-24 items-center md:p-1.5">
       <Image className="ml-6" src={KanbanLogo} alt="logo" />
-      <span className="border-l border-gray-200 h-24 ml-[115.5px]"></span>
+      <span className="h-24 ml-[115.5px]"></span>
 
       <div className=" flex justify-between items-center w-full  px-5">
         <div className="font-medium">
