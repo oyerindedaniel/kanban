@@ -9,6 +9,8 @@
 import { initTRPC } from '@trpc/server';
 import superjson from 'superjson';
 import { ZodError } from 'zod';
+import { handleServerError } from './lib/error';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
 import { db } from '@/server/db';
 
@@ -41,11 +43,15 @@ export const createTRPCContext = async (opts: { headers: Headers }) => {
 const t = initTRPC.context<typeof createTRPCContext>().create({
   transformer: superjson,
   errorFormatter({ shape, error }) {
+    const { type, statusCode, message } = handleServerError(error.cause);
     return {
       ...shape,
       data: {
         ...shape.data,
-        zodError: error.cause instanceof ZodError ? error.cause.flatten() : null
+        type,
+        message
+        // prismaError: error.cause instanceof PrismaClientKnownRequestError ? '' : null,
+        // zodError: error.cause instanceof ZodError ? error.cause.flatten() : null
       }
     };
   }

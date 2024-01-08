@@ -25,7 +25,7 @@ model Board {
 
 model Column {
     id        String      @id @default(uuid())
-    name      String      @unique
+    name      String 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
     board       Board     @relation(fields: [boardId], references: [id], onDelete: Cascade)
