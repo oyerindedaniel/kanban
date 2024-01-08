@@ -50,7 +50,7 @@ const TopBar = () => {
         </div>
         <div className="flex">
           <Button
-            className="bg-brand-iris text white  rounded-[100px] mr-6 hover:bg-brand-biloba-flower"
+            className="bg-brand-iris text white rounded-[100px] mr-6 hover:bg-brand-biloba-flower"
             onClick={handleAddNewTask}
           >
             +Add New Task

@@ -13,8 +13,8 @@ datasource db {
 
 model Board {
     id        String      @id @default(uuid())
-    name      String
-    columns String
+    name      String      @unique
+    columns Column[]
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
     tasks Task[]
@@ -23,9 +23,19 @@ model Board {
     @@index([id])
 }
 
+model Column {
+    id        String      @id @default(uuid())
+    name      String 
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    board       Board     @relation(fields: [boardId], references: [id], onDelete: Cascade)
+    boardId     String
+    @@index([id])
+}
+
 model Task {
     id        String     @id @default(uuid())
-    name      String
+    name      String     @unique
     description String
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -38,7 +48,7 @@ model Task {
 
 model SubTask {
     id        String      @id @default(uuid())
-    name      String
+    name      String      @unique
     isCompleted Boolean @default(false)
     currentStatus String
     createdAt DateTime @default(now())

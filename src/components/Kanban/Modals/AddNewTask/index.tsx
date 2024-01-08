@@ -49,7 +49,7 @@ const AddNewTaskModal: FC<AddNewTaskProps> = ({ isOpen, onClose }) => {
         </ModalTitle>
 
         <ModalBody>
-          <div className="grid w-full items-left gap-1.5">
+          <div className="w-full">
             <Label className="mb-2 text-brand-regent-grey">Title</Label>
             <Input className="mb-2" placeholder="Email" />
 
