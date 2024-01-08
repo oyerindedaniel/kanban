@@ -16,7 +16,7 @@ const ModeToggler = () => {
       <span className="text-[#828FA3]">
         <Image src={SunIcon} style={{ fill: 'currentColor' }} alt="img" />
       </span>
-      <Switch className="" onClick={handleThemeChange} />
+      <Switch className="" checked={theme === 'dark' ?? false} onClick={handleThemeChange} />
       <span className="text-[#828FA3]">
         <Image src={MoonIcon} style={{ color: '#828FA3' }} alt="img" />
       </span>

@@ -17,12 +17,15 @@ const AddNewColumnModal: FC<AddNewColumnProps> = ({ isOpen, onClose }) => {
 
         <ModalBody>
           <div className="grid w-full max-w-sm  items-left gap-1.5">
-            <Label className="mb-2 text-brand-regent-grey">Name</Label>
-            <Input placeholder="e.g. Todo" />
+            <Label className="dark:text-white mb-2 text-brand-regent-grey">Name</Label>
+            <Input
+              placeholder="e.g. Web Design"
+              className="dark:bg-brand-regent-grey/25 dark:text-white"
+            />
 
             <div>
               <Button
-                className="bg-brand-iris rounded-[100px] font-bold w-full  mt-6 hover:text-brand-iris hover:bg-brand-zircon"
+                className="dark:text-brand-iris dark:bg-white bg-brand-iris rounded-[100px] font-bold w-full  mt-6 hover:text-brand-iris hover:bg-brand-zircon"
                 size={'lg'}
               >
                 + Add New Column

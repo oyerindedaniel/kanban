@@ -38,15 +38,21 @@ const SideBarModal: FC<SideBarProps> = ({ isOpen, onClose }) => {
 
         <ModalBody>
           <div className="grid w-full max-w-sm  items-left gap-1.5">
-            <Label className="mb-2 text-brand-regent-grey">Name</Label>
-            <Input placeholder="e.g. Web Design" />
+            <Label className="dark:text-white mb-2 text-brand-regent-grey">Name</Label>
+            <Input
+              placeholder="e.g. Web Design"
+              className="dark:bg-brand-regent-grey/25 dark:text-white"
+            />
 
-            <Label className="my-2 text-brand-regent-grey">Columns</Label>
+            <Label className="my-2 text-brand-regent-grey dark:text-white">Columns</Label>
             {formValues.map((element, index) => (
               <div className="form-inline" key={index}>
                 <div className="grid grid-cols-12 gap-2">
                   <div className="col-span-11">
-                    <Input className="mb-3" onChange={(e) => handleChange(index, e)} />
+                    <Input
+                      className="mb-3 dark:bg-brand-regent-grey/25 dark:text-white"
+                      onChange={(e) => handleChange(index, e)}
+                    />
                   </div>
 
                   {index ? (
@@ -66,7 +72,7 @@ const SideBarModal: FC<SideBarProps> = ({ isOpen, onClose }) => {
             ))}
             <div>
               <Button
-                className="bg-brand-iris/10 rounded-[100px] font-bold w-full text-brand-iris mb-6 hover:bg-brand-iris/10"
+                className="dark:bg-white dark:hover:bg-white bg-brand-iris/10 rounded-[100px] font-bold w-full text-brand-iris mb-6 hover:bg-brand-iris/10"
                 onClick={() => addFormFields()}
                 size={'lg'}
               >

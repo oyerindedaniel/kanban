@@ -40,9 +40,10 @@ const TopBar = () => {
   const path = capitalizePathname(handlePath).join(' ');
 
   return (
-    <nav className=" flex h-24 items-center border-[1px] border-b-0 border-gray-200 bg-white md:p-1.5">
+    <nav className="dark:bg-brand-ebony-clay flex h-24 items-center border-[1px] border-b-0 border-gray-200 bg-white md:p-1.5">
       <Image className="ml-6" src={KanbanLogo} alt="logo" />
-      <span className="border-l border-gray-200 h-24 ml-[115.5px]"></span>
+      <h2 className="text-[#000112] text-[32px] font-bold ml-4 dark:text-white">kanban</h2>
+      <span className="border-l border-gray-200 h-24 ml-[118px]"></span>
 
       <div className=" flex justify-between items-center w-full  px-5">
         <div className="font-medium">
@@ -50,7 +51,7 @@ const TopBar = () => {
         </div>
         <div className="flex">
           <Button
-            className="bg-brand-iris text white  rounded-[100px] mr-6 hover:bg-brand-biloba-flower"
+            className="bg-brand-iris text white dark:text-white rounded-[100px] mr-6 hover:bg-brand-biloba-flower"
             onClick={handleAddNewTask}
           >
             +Add New Task

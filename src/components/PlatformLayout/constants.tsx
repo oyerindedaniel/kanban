@@ -13,5 +13,10 @@ export const LINKS: PlatformLinks = [
     id: 1,
     platformTitle: 'Build UI for onboarding flow',
     subtaskStatus: '0 of 3 subtasks'
+  },
+  {
+    id: 2,
+    platformTitle: 'Build UI for onboarding flow',
+    subtaskStatus: '0 of 3 subtasks'
   }
 ];

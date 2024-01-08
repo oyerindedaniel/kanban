@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import TopBar from './Topbar';
 import Sidebar from './Sidebar';
-import { KanbanLogo, ViewIcon } from '@/assets';
+import { ViewIcon } from '@/assets';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 
@@ -29,8 +29,11 @@ const DashboardLayout = ({ children }: LayoutProps) => {
           <Sidebar isSidebarHidden={isSidebarHidden} toggleSidebar={toggleSidebar} />
         </div>
       ) : (
-        <div className="text-white bg-brand-iris h-12 w-14 p-5 z-30 absolute bottom-8 rounded-r-[100px] rounded-br-[100px] hover:bg-brand-biloba-flower">
-          <Image src={ViewIcon} alt="img" onClick={toggleSidebar} style={{ cursor: 'pointer' }} />
+        <div
+          onClick={toggleSidebar}
+          className="text-white bg-brand-iris h-12 w-14 cursor-pointer p-5 z-30 absolute bottom-8 rounded-r-[100px] rounded-br-[100px] hover:bg-brand-biloba-flower"
+        >
+          <Image src={ViewIcon} alt="img" />
         </div>
       )}
 
@@ -40,7 +43,7 @@ const DashboardLayout = ({ children }: LayoutProps) => {
 
       <div
         className={cn(
-          'dark:bg-brand-dark bg-brand-lavender-mist text-black dark:text-white relative right-0 z-10 transition-all duration-500 mt-24 h-full min-h-[calc(100vh-96px)] p-6',
+          'dark:bg-brand-dark bg-brand-lavender-mist text-black overflow-auto dark:text-white relative right-0 z-10 transition-all duration-500 mt-24 h-full min-h-[calc(100vh-96px)] p-6',
           isSidebarHidden ? 'ml-0' : 'ml-[300px]'
         )}
       >
