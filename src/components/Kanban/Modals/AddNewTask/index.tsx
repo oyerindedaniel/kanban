@@ -35,17 +35,18 @@ import {
 } from '@/components/ui/select';
 
 const AddNewTaskModal: FC<AddNewTaskProps> = ({ isOpen, onClose }) => {
+  const form = useForm<Task>({
+    resolver: zodResolver(taskSchema)
+  });
+
   const mutateAddTask = api.task.create.useMutation({
     onSuccess: (data) => {
+      form.reset();
       console.log(data);
     },
     onError: (error) => {
       console.log(error);
     }
-  });
-
-  const form = useForm<Task>({
-    resolver: zodResolver(taskSchema)
   });
 
   const {

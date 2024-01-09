@@ -26,17 +26,18 @@ import { Label } from '@/components/ui/label';
 import { type Board, type BaseBoard, type Column, boardSchema, createBoardSchema } from '@/types';
 
 const SideBarModal: FC<SideBarProps> = ({ isOpen, onClose }) => {
+  const form = useForm<BaseBoard>({
+    resolver: zodResolver(createBoardSchema)
+  });
+
   const mutateAddBoard = api.board.create.useMutation({
     onSuccess: (data) => {
+      form.reset();
       console.log(data);
     },
     onError: (error) => {
       console.log(error);
     }
-  });
-
-  const form = useForm<BaseBoard>({
-    resolver: zodResolver(createBoardSchema)
   });
 
   const {
