@@ -19,7 +19,7 @@ const taskSchema = z.object({
   name: z.string(),
   description: z.string(),
   boardId: z.string().optional(),
-  status: z.string(),
+  columnId: z.string(),
   // board: boardSchema,
   subTasks: z.array(subTaskSchema)
 });

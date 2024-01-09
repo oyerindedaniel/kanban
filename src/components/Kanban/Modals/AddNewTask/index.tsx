@@ -15,6 +15,7 @@ import {
   FormDescription
 } from '@/components/ui/form';
 import { type FC } from 'react';
+import { api } from '@/trpc/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { type AddNewTaskProps } from './types';
 import { Button } from '@/components/ui/button';
@@ -34,11 +35,21 @@ import {
 } from '@/components/ui/select';
 
 const AddNewTaskModal: FC<AddNewTaskProps> = ({ isOpen, onClose }) => {
+  const mutateAddTask = api.task.create.useMutation({
+    onSuccess: (data) => {
+      console.log(data);
+    },
+    onError: (error) => {
+      console.log(error);
+    }
+  });
+
   const form = useForm<Task>({
     resolver: zodResolver(taskSchema)
   });
 
   const {
+    register,
     control,
     setValue,
     getValues,
@@ -70,7 +81,7 @@ const AddNewTaskModal: FC<AddNewTaskProps> = ({ isOpen, onClose }) => {
   }, [fields]);
 
   const onSubmit = (data: Task) => {
-    // mutateAddBoard.mutate(data);
+    mutateAddTask.mutate({ ...data, boardId: '166c8c3a-821e-448c-bcdc-5aef97816e06' });
   };
 
   return (
@@ -153,32 +164,20 @@ const AddNewTaskModal: FC<AddNewTaskProps> = ({ isOpen, onClose }) => {
                 >
                   + Add New SubTask
                 </Button>
-                <FormField
-                  control={form.control}
-                  name="status"
-                  render={({ field }) => (
-                    <FormItem className="mb-4">
-                      <FormLabel required>Status</FormLabel>
-                      <FormControl>
-                        <select
-                          className="w-full rounded-md dark:border-brand-bright-grey border-input text-black dark:text-white bg-white dark:bg-brand-ebony-clay"
-                          {...field}
-                        >
-                          <option value="todo">Todo</option>
-                        </select>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                <select
+                  {...register('columnId', { required: true })}
+                  className="w-full rounded-md dark:border-brand-bright-grey border-input text-black dark:text-white bg-white dark:bg-brand-ebony-clay"
+                >
+                  <option value="079291e5-58c1-4e6a-9275-5103f97db485">Todo</option>
+                </select>
                 <Button
                   type="submit"
-                  // disabled={mutateAddBoard.isLoading}
+                  disabled={mutateAddTask.isLoading}
                   variant="default"
                   className="font-medium w-full my-6"
                   size="lg"
                 >
-                  {/* {mutateAddBoard.isLoading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />} */}
+                  {mutateAddTask.isLoading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
                   Create Task
                 </Button>
               </form>
