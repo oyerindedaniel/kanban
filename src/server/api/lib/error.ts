@@ -16,6 +16,13 @@ export const handleServerError = (error: any) => {
         message: `${error?.meta?.modelName} ${targetField}: Unique constraint violation`
       };
     }
+  } else if (error instanceof ZodError) {
+    // Handle Zod errors
+    return {
+      type: 'zod',
+      statusCode: 400,
+      message: error.flatten()
+    };
   } else if (error instanceof TRPCError) {
     // Handle tRPC errors
     const httpCode = getHTTPStatusCodeFromError(error);
@@ -23,13 +30,6 @@ export const handleServerError = (error: any) => {
       type: 'trpc',
       statusCode: httpCode,
       message: error.message
-    };
-  } else if (error instanceof ZodError) {
-    // Handle Zod errors
-    return {
-      type: 'zod',
-      statusCode: 400,
-      message: error.flatten()
     };
   }
   // For other errors, provide a generic error response

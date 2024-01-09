@@ -6,24 +6,26 @@ export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 
 const subTaskSchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  isCompleted: z.boolean(),
-  currentStatus: z.string(),
+  id: z.string().optional(),
+  name: z.string().trim().min(1, { message: 'Can’t be empty' }),
+  isCompleted: z.boolean().optional(),
+  currentStatus: z.string().optional(),
   taskId: z.string().optional(),
   boardId: z.string().optional()
 });
 
 const taskSchema = z.object({
-  id: z.string(),
+  id: z.string().optional(),
   name: z.string(),
   description: z.string(),
   boardId: z.string().optional(),
+  columnId: z.string(),
   // board: boardSchema,
   subTasks: z.array(subTaskSchema)
 });
 
 const columnSchema = z.object({
+  id: z.string().optional(),
   name: z.string().trim().min(1, { message: 'Can’t be empty' })
 });
 

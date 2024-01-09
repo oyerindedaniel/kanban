@@ -25,10 +25,12 @@ const Platform = () => {
           <div
             key={Idx}
             className={cn(
-              'bg-white flex flex-col h-[88px] justify-center rounded-lg cursor-pointer px-4 py-3 shadow-md'
+              'bg-white dark:bg-brand-ebony-clay text-white dark:text-black flex flex-col h-[88px] justify-center rounded-lg cursor-pointer px-4 py-3 shadow-md'
             )}
           >
-            <p className="font-medium hover:text-brand-iris">{link.platformTitle}</p>
+            <p className="font-medium text-black dark:text-white hover:text-brand-iris">
+              {link.platformTitle}
+            </p>
             <p className="font-medium text-brand-regent-grey">{link.subtaskStatus}</p>
           </div>
         ))}
