@@ -25,20 +25,6 @@ export const boardRouter = createTRPCRouter({
     return {
       data: boardWithColumns
     };
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    // } catch (error: any) {
-    //   console.error(error);
-    //   const { statusCode, message } = handleServerError(error);
-    //   // throw new TRPCError({
-    //   //   code: 'BAD_REQUEST',
-    //   //   message,
-    //   //   cause: error
-    //   // });
-    //   return {
-    //     statusCode,
-    //     message
-    //   };
-    // }
   }),
   money: publicProcedure.input(createBoardSchema).mutation(async ({ ctx, input }) => {
     const { name, columns } = input;

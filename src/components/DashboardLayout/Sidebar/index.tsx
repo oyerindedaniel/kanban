@@ -14,7 +14,7 @@ import { Switch } from '@/components/ui/switch';
 import { ActiveSidebarIcon, HideIcon, MoonIcon, SideBarSvg, SunIcon } from '@/assets';
 import { Button } from '@/components/ui/button';
 import { useDisclosure } from '@/hooks';
-import SideBarModal from '@/components/Kanban/Modals/SideBarModal';
+import SideBarModal from '@/components/Kanban/Modals/Board';
 
 interface SidebarProps {
   isSidebarOpen: boolean;

@@ -14,13 +14,12 @@ datasource db {
 model Board {
     id        String      @id @default(uuid())
     name      String      @unique
-    columns Column[]
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+    columns Column[]
     tasks Task[]
-    subTasks SubTask[]
+    // subTasks SubTask[]
 
-    @@index([id])
 }
 
 model Column {
@@ -30,7 +29,7 @@ model Column {
     updatedAt DateTime @updatedAt
     board       Board     @relation(fields: [boardId], references: [id], onDelete: Cascade)
     boardId     String
-    @@index([id])
+    tasks Task[]
 }
 
 model Task {
@@ -41,9 +40,9 @@ model Task {
     updatedAt DateTime @updatedAt
     board       Board     @relation(fields: [boardId], references: [id], onDelete: Cascade)
     boardId     String
+    column       Column     @relation(fields: [columnId], references: [id], onDelete: Cascade)
+    columnId     String
     subTasks SubTask[]
-
-    @@index([id])
 }
 
 model SubTask {
@@ -55,8 +54,8 @@ model SubTask {
     updatedAt DateTime @updatedAt
     task       Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
     taskId     String
-    board       Board     @relation(fields: [boardId], references: [id], onDelete: Cascade)
-    boardId     String
+    // board       Board     @relation(fields: [boardId], references: [id], onDelete: Cascade)
+    // boardId     String
 
-    @@index([id]) // searching and querying based on the "id" field will be more efficient
+    // @@index([id]) // searching and querying based on the "id" field will be more efficient
 }

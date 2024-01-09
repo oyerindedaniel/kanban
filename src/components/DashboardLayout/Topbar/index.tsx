@@ -40,7 +40,7 @@ const TopBar = () => {
   const path = capitalizePathname(handlePath).join(' ');
 
   return (
-    <nav className="bg-white dark:bg-brand-ebony-clay text-white dark:text-black flex h-24 items-center md:p-1.5">
+    <nav className="bg-white dark:bg-brand-ebony-clay text-black dark:text-white flex h-24 items-center md:p-1.5">
       <Image className="ml-6" src={KanbanLogo} alt="logo" />
       <span className="h-24 ml-[115.5px]"></span>
 
