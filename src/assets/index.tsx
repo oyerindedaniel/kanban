@@ -1,4 +1,3 @@
-import React from 'react';
 import MoonIcon from './moon-icon.svg';
 import SunIcon from './sun-icon.svg';
 import HideIcon from './hide-icon.svg';
