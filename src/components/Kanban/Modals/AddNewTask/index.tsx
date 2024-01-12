@@ -42,7 +42,7 @@ const AddNewTaskModal: FC<AddNewTaskProps> = ({ isOpen, onClose }) => {
   const mutateAddTask = api.task.create.useMutation({
     onSuccess: (data) => {
       form.reset();
-      console.log(data);
+      onClose();
     },
     onError: (error) => {
       console.log(error);

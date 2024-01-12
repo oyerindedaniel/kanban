@@ -3,10 +3,12 @@ import { type Board } from '@/types';
 
 type globalService = {
   boards: Array<Board> | null;
+  activeBoard: Board | null;
 };
 
 const initialState: globalService = {
-  boards: null
+  boards: null,
+  activeBoard: null
 };
 
 type GlobalStatePayload<T extends keyof globalService> = {

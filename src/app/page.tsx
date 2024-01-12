@@ -10,18 +10,23 @@ import { type Board } from '@/types';
 import { api } from '@/trpc/react';
 import Loading from '@/components/ui/loading';
 import { useAppDispatch } from '@/store/hooks';
+import { useAppSelector } from '@/store/hooks';
 import { setGlobalState } from '@/store/slice/Global';
 
 const PlatformLaunch = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const dispatch = useAppDispatch();
+  const { activeBoard } = useAppSelector((state) => state.GlobalService);
 
   const data = api.column.findAll.useQuery(undefined, {
+    enabled: Boolean(activeBoard),
     refetchInterval: false,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false
   });
+
+  console.log(activeBoard);
 
   const columns = useMemo(() => {
     if (data) {
@@ -31,9 +36,9 @@ const PlatformLaunch = () => {
     return [];
   }, [data]);
 
-  console.log(columns?.length);
+  console.log(data.fetchStatus);
 
-  return data.isLoading || data.isRefetching ? (
+  return (data.isLoading && !data.fetchStatus) || data.isRefetching ? (
     <Loading />
   ) : data.isError ? (
     <div className="flex flex-col items-center justify-center h-[75vh]">
@@ -54,7 +59,11 @@ const PlatformLaunch = () => {
     <>
       <AddNewColumnModal isOpen={isOpen} onClose={onClose} />
       {columns && columns?.length > 0 ? (
-        <div className={`grid grid-cols-${columns.length + 1} gap-8 w-[1250px]`}>
+        <div
+          className={`grid grid-cols-${columns?.length + 1} gap-8 w-[calc(318px*${
+            columns?.length + 1
+          })]`}
+        >
           {columns.map((column) => (
             <Platform key={column.id} column={column} />
           ))}
@@ -85,3 +94,7 @@ const PlatformLaunch = () => {
 };
 
 export default PlatformLaunch;
+
+// w-[calc(321px * ${
+//             columns.length + 1
+//           })]
