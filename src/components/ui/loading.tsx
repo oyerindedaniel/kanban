@@ -1,12 +1,37 @@
-const Loading = () => {
+import React from 'react';
+
+interface LoadingProps {
+  spinnerWidth?: number;
+  spinnerHeight?: number;
+  parentHeight?: number;
+}
+
+const Loading: React.FC<LoadingProps> = ({
+  spinnerWidth = 64,
+  spinnerHeight = 64,
+  parentHeight = 75
+}) => {
+  const spinnerStyle: React.CSSProperties = {
+    width: `${spinnerWidth}px`,
+    height: `${spinnerHeight}px`
+  };
+
+  const containerStyle: React.CSSProperties = {
+    height: `${parentHeight}vh`
+  };
+
   return (
-    <div className="fixed inset-0 z-[100] dark:bg-brand-dark bg-brand-lavender-mist flex items-center justify-center bg-white bg-opacity-50">
-      <div className="flex flex-col items-center justify-center gap-3">
-        <div className="h-16 w-16 animate-loading rounded-full border-t-4 border-brand-iris dark:border-white border-opacity-50">
-          &nbsp;
-        </div>
-        <span className="text-lg text-brand-iris dark:text-white">Loading</span>
+    <div
+      className="bg-inherit flex flex-col gap-2 items-center justify-center"
+      style={containerStyle}
+    >
+      <div
+        className="animate-loading rounded-full border-t-4 border-brand-iris dark:border-white"
+        style={spinnerStyle}
+      >
+        &nbsp;
       </div>
+      <span className="text-lg text-brand-iris dark:text-white">Loading</span>
     </div>
   );
 };

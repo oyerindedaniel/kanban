@@ -54,8 +54,10 @@ const createBoardSchema = z.object({
 
 const boardSchema = z.object({
   id: z.string(),
+  name: z.string(),
+  columns: z.array(createColumnSchema).optional(),
   tasks: z.array(createTaskSchema).optional(),
-  createdAt: z.string()
+  createdAt: z.string().optional()
   // subTasks: z.array(subTaskSchema)
 });
 

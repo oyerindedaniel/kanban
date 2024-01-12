@@ -45,9 +45,7 @@ const TopBar = () => {
       <span className="h-24 ml-[115.5px]"></span>
 
       <div className=" flex justify-between items-center w-full  px-5">
-        <div className="font-medium">
-          <p>{path}</p>
-        </div>
+        <span className="font-bold text-2xl">{path.split('-').join(' ')}</span>
         <div className="flex">
           <Button
             className="bg-brand-iris text white rounded-[100px] mr-6 hover:bg-brand-biloba-flower"

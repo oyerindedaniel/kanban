@@ -33,7 +33,7 @@ const SideBarModal: FC<SideBarProps> = ({ isOpen, onClose }) => {
   const mutateAddBoard = api.board.create.useMutation({
     onSuccess: (data) => {
       form.reset();
-      console.log(data);
+      onClose();
     },
     onError: (error) => {
       console.log(error);
