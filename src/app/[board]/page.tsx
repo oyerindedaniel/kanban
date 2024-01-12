@@ -19,9 +19,6 @@ const PlatformLaunch = () => {
       <AddNewColumnModal isOpen={isOpen} onClose={onClose} />
       {ITEMS > 0 ? (
         <div className="grid grid-cols-4 gap-8 w-[1250px]">
-          <Platform />
-          <Platform />
-          <Platform />
           {/* <Platform /> */}
           <div className="h-[360px] w-72 bg-gradient-to-b from-brand-sky-blue/100 to-brand-light-blue/50 justify-center flex rounded-md cursor-pointer ">
             <p

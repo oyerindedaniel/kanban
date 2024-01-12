@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 import { createTRPCRouter, publicProcedure } from '@/server/api/trpc';
-import { createBoardSchema } from '@/types';
+import { createBoardSchema, boardSchema } from '@/types';
 import { handleServerError } from '../lib/error';
 import { TRPCError } from '@trpc/server';
 
@@ -12,7 +12,7 @@ export const boardRouter = createTRPCRouter({
     // try {
     const boardWithColumns = await ctx.db.board.create({
       data: {
-        name,
+        name: name.toLowerCase(),
         columns: {
           create: columns
         }
@@ -26,27 +26,16 @@ export const boardRouter = createTRPCRouter({
       data: boardWithColumns
     };
   }),
-  money: publicProcedure.input(createBoardSchema).mutation(async ({ ctx, input }) => {
-    const { name, columns } = input;
+  findAll: publicProcedure.query(async ({ ctx, input }) => {
+    const boards = await ctx.db.board.findMany({
+      include: {
+        columns: { include: { tasks: true } }
+      }
+    });
 
-    try {
-      const boardWithColumns = await ctx.db.board.create({
-        data: {
-          name,
-          columns: {
-            create: columns
-          }
-        },
-        include: {
-          columns: true
-        }
-      });
-
-      return {
-        greeting: `Hello ${input.name}`,
-        daniel: 'daniel'
-      };
-    } catch (error) {}
+    return {
+      boards: boards || []
+    };
   })
 });
 
