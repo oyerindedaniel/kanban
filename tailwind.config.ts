@@ -7,7 +7,6 @@ module.exports = {
     './app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}'
   ],
-
   theme: {
     container: {
       center: true,
@@ -92,9 +91,9 @@ module.exports = {
         }
       },
       animation: {
-        loading: 'loading 1s linear infinite',
         'accordion-down': 'accordion-down 0.2s ease-out',
-        'accordion-up': 'accordion-up 0.2s ease-out'
+        'accordion-up': 'accordion-up 0.2s ease-out',
+        loading: 'loading 2s linear infinite'
       }
     }
   },

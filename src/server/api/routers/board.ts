@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 import { createTRPCRouter, publicProcedure } from '@/server/api/trpc';
-import { createBoardSchema } from '@/types';
+import { createBoardSchema, boardSchema } from '@/types';
 import { handleServerError } from '../lib/error';
 import { TRPCError } from '@trpc/server';
 
@@ -12,7 +12,7 @@ export const boardRouter = createTRPCRouter({
     // try {
     const boardWithColumns = await ctx.db.board.create({
       data: {
-        name,
+        name: name.toLowerCase(),
         columns: {
           create: columns
         }

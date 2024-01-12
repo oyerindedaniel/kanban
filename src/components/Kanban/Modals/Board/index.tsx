@@ -23,10 +23,10 @@ import { Button } from '@/components/ui/button';
 import { Modal, ModalBody, ModalTitle, ModalFooter } from '@/components/ui/Modal';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { type Board, type BaseBoard, type Column, boardSchema, createBoardSchema } from '@/types';
+import { createBoardSchema, type CreateBoard, type CreateColumn } from '@/types';
 
 const SideBarModal: FC<SideBarProps> = ({ isOpen, onClose }) => {
-  const form = useForm<BaseBoard>({
+  const form = useForm<CreateBoard>({
     resolver: zodResolver(createBoardSchema)
   });
 
@@ -58,7 +58,7 @@ const SideBarModal: FC<SideBarProps> = ({ isOpen, onClose }) => {
   };
 
   const addNewColumn = useCallback(
-    (value: Column, options?: FieldArrayMethodProps) => {
+    (value: CreateColumn, options?: FieldArrayMethodProps) => {
       append(value);
       // clearErrors();
     },
@@ -71,7 +71,7 @@ const SideBarModal: FC<SideBarProps> = ({ isOpen, onClose }) => {
     }
   }, [fields]);
 
-  const onSubmit = (data: BaseBoard) => {
+  const onSubmit = (data: CreateBoard) => {
     mutateAddBoard.mutate(data);
   };
 

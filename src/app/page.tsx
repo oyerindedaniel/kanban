@@ -6,6 +6,7 @@ import Platform from '@/components/PlatformLayout';
 import { Button } from '@/components/ui/button';
 import AddNewColumnModal from '@/components/Kanban/Modals/AddNewColumn';
 import { useDisclosure } from '@/hooks';
+import { type Board } from '@/types';
 import { api } from '@/trpc/react';
 import Loading from '@/components/ui/loading';
 import { useAppDispatch } from '@/store/hooks';
@@ -16,23 +17,21 @@ const PlatformLaunch = () => {
 
   const dispatch = useAppDispatch();
 
-  const data = api.board.findAll.useQuery(undefined, {
+  const data = api.column.findAll.useQuery(undefined, {
     refetchInterval: false,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false
   });
 
-  useMemo(() => {
+  const columns = useMemo(() => {
     if (data) {
-      // dispatch(
-      //   setGlobalState({
-      //     boards: data?.data ?? [] as const
-      //   })
-      // );
+      //   dispatch(setGlobalState({ dataKey: 'boards', data: data?.data?.boards ?? [] }));
+      return data?.data?.column;
     }
+    return [];
   }, [data]);
 
-  const ITEMS = 2;
+  console.log(columns?.length);
 
   return data.isLoading || data.isRefetching ? (
     <Loading />
@@ -54,12 +53,11 @@ const PlatformLaunch = () => {
   ) : (
     <>
       <AddNewColumnModal isOpen={isOpen} onClose={onClose} />
-      {ITEMS > 0 ? (
-        <div className="grid grid-cols-4 gap-8 w-[1250px]">
-          <Platform />
-          <Platform />
-          <Platform />
-          {/* <Platform /> */}
+      {columns && columns?.length > 0 ? (
+        <div className={`grid grid-cols-${columns.length + 1} gap-8 w-[1250px]`}>
+          {columns.map((column) => (
+            <Platform key={column.id} column={column} />
+          ))}
           <div className="h-[360px] w-72 bg-gradient-to-b from-brand-sky-blue/100 to-brand-light-blue/50 justify-center flex rounded-md cursor-pointer">
             <p
               className="my-auto font-medium text-brand-regent-grey hover:text-brand-iris"

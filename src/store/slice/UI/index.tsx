@@ -9,7 +9,7 @@ if (typeof window !== 'undefined') {
 }
 
 type UIPayload = {
-  // theme: 'light' | 'dark' | 'system';
+  theme: 'light' | 'dark' | 'system';
   isSideBarOpen: boolean;
 };
 

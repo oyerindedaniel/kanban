@@ -23,7 +23,7 @@ import { Modal, ModalBody, ModalTitle, ModalFooter } from '@/components/ui/Modal
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import { taskSchema, type Task, type SubTask } from '@/types';
+import { createTaskSchema, type CreateTask, type CreateSubTask } from '@/types';
 import {
   Select,
   SelectContent,
@@ -35,8 +35,8 @@ import {
 } from '@/components/ui/select';
 
 const AddNewTaskModal: FC<AddNewTaskProps> = ({ isOpen, onClose }) => {
-  const form = useForm<Task>({
-    resolver: zodResolver(taskSchema)
+  const form = useForm<CreateTask>({
+    resolver: zodResolver(createTaskSchema)
   });
 
   const mutateAddTask = api.task.create.useMutation({
@@ -68,7 +68,7 @@ const AddNewTaskModal: FC<AddNewTaskProps> = ({ isOpen, onClose }) => {
   };
 
   const addNewTask = useCallback(
-    (value: SubTask, options?: FieldArrayMethodProps) => {
+    (value: CreateSubTask, options?: FieldArrayMethodProps) => {
       append(value);
       // clearErrors();
     },
@@ -81,7 +81,7 @@ const AddNewTaskModal: FC<AddNewTaskProps> = ({ isOpen, onClose }) => {
     }
   }, [fields]);
 
-  const onSubmit = (data: Task) => {
+  const onSubmit = (data: CreateTask) => {
     mutateAddTask.mutate({ ...data, boardId: '166c8c3a-821e-448c-bcdc-5aef97816e06' });
   };
 
