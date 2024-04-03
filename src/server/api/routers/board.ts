@@ -9,22 +9,44 @@ export const boardRouter = createTRPCRouter({
   create: publicProcedure.input(createBoardSchema).mutation(async ({ ctx, input }) => {
     const { name, columns } = input;
 
-  const boardWithColumns = await ctx.db.board.create({
-    data: {
-      name: name.toLowerCase(),
-      columns: {
-        create: columns
+    const boardWithColumns = await ctx.db.board.create({
+      data: {
+        name: name.toLowerCase(),
+        columns: {
+          create: columns
+        }
+      },
+      include: {
+        columns: true
       }
-    },
-    include: {
-      columns: true
-    }
-  });
+    });
 
     return {
       data: boardWithColumns
     };
   }),
+  findById: publicProcedure
+    .input(
+      z.object({
+        id: z.string()
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const { id } = input;
+
+      const column = await ctx.db.board.findUnique({
+        where: {
+          id
+        },
+        include: {
+          columns: { include: { tasks: true } }
+        }
+      });
+
+      return {
+        data: column
+      };
+    }),
   findAll: publicProcedure.query(async ({ ctx, input }) => {
     const boards = await ctx.db.board.findMany({
       select: {
@@ -34,8 +56,7 @@ export const boardRouter = createTRPCRouter({
     });
 
     return {
-      boards: boards || []
+      data: boards || []
     };
   })
 });
-

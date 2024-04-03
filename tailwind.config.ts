@@ -1,5 +1,6 @@
-/** @type {import('tailwindcss').Config} */
-module.exports = {
+import type { Config } from 'tailwindcss';
+
+const config = {
   darkMode: ['class'],
   content: [
     './pages/**/*.{ts,tsx}',
@@ -7,6 +8,7 @@ module.exports = {
     './app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}'
   ],
+  prefix: '',
   theme: {
     container: {
       center: true,
@@ -35,7 +37,6 @@ module.exports = {
           'sky-blue': 'hsla(var(--brand-sky-blue))',
           'light-blue': 'hsla(var(--brand-light-blue))'
         },
-        mode: 'hsl(var(--mode))',
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
@@ -77,29 +78,21 @@ module.exports = {
       },
       keyframes: {
         'accordion-down': {
-          from: { height: 0 },
+          from: { height: '0' },
           to: { height: 'var(--radix-accordion-content-height)' }
         },
         'accordion-up': {
           from: { height: 'var(--radix-accordion-content-height)' },
-          to: { height: 0 }
-        },
-        loading: {
-          to: {
-            transform: 'rotate(360deg)'
-          }
+          to: { height: '0' }
         }
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
-        'accordion-up': 'accordion-up 0.2s ease-out',
-        loading: 'loading 2s linear infinite'
+        'accordion-up': 'accordion-up 0.2s ease-out'
       }
     }
   },
-  plugins: [
-    require('@tailwindcss/typography'),
-    require('@tailwindcss/forms'),
-    require('tailwindcss-animate')
-  ]
-};
+  plugins: [require('tailwindcss-animate')]
+} satisfies Config;
+
+export default config;

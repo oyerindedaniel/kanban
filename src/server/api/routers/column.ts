@@ -1,10 +1,74 @@
 import { z } from 'zod';
 
+import { CreateColumnSchema } from '@/components/modals/add-new-column';
 import { createTRPCRouter, publicProcedure } from '@/server/api/trpc';
-import { columnSchema } from '@/types';
-import { TRPCError } from '@trpc/server';
 
 export const columnRouter = createTRPCRouter({
+  create: publicProcedure.input(CreateColumnSchema).mutation(async ({ ctx, input }) => {
+    const { columns } = input;
+    const createdColumns = await Promise.all(
+      columns.map(async (column) => {
+        const createdColumn = await ctx.db.column.create({
+          data: {
+            name: column.name,
+            boardId: column.boardId!
+          },
+          include: {
+            tasks: { include: { subTasks: true } }
+          }
+        });
+        return createdColumn;
+      })
+    );
+
+    return {
+      data: createdColumns
+    };
+  }),
+  findById: publicProcedure
+    .input(
+      z.object({
+        id: z.string()
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const { id } = input;
+
+      const column = await ctx.db.column.findUnique({
+        where: {
+          id
+        },
+        include: {
+          tasks: { include: { subTasks: true } }
+        }
+      });
+
+      return {
+        data: column
+      };
+    }),
+  findByBoardId: publicProcedure
+    .input(
+      z.object({
+        boardId: z.string()
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const { boardId } = input;
+
+      const column = await ctx.db.column.findMany({
+        where: {
+          boardId
+        },
+        include: {
+          tasks: { include: { subTasks: true } }
+        }
+      });
+
+      return {
+        data: column
+      };
+    }),
   findAll: publicProcedure.query(async ({ ctx, input }) => {
     const columns = await ctx.db.column.findMany({
       include: {
@@ -12,70 +76,8 @@ export const columnRouter = createTRPCRouter({
       }
     });
 
-    const data = columns.map(({ createdAt, tasks, updatedAt, boardId, ...column }) => ({
-      ...column,
-      createdAt: createdAt.toString(),
-      tasks: tasks.map(({ createdAt, updatedAt, boardId, columnId, subTasks, ...task }) => ({
-        ...task,
-        createdAt: createdAt.toString(),
-        subTasks: subTasks.map(({ createdAt, updatedAt, taskId, ...subTask }) => ({
-          ...subTask,
-          createdAt: createdAt.toString()
-        }))
-      }))
-    }));
-
     return {
-      column: data || []
+      data: columns
     };
-  }),
-  findBy: publicProcedure
-    .input(
-      z.object({
-        activeBoardId: z.string().optional()
-      })
-    )
-    .query(async ({ input: { activeBoardId }, ctx }) => {
-      try {
-        const columns = await ctx.db.column.findMany({
-          where: {
-            boardId: activeBoardId
-          },
-          include: {
-            board: true,
-            tasks: {
-              include: {
-                subTasks: true
-              }
-            }
-          }
-        });
-
-        // if (!columns || columns.length === 0) {
-        //   throw new Error('No columns found for the specified boardId.');
-        // }
-        const data = columns.map(({ createdAt, tasks, updatedAt, boardId, ...column }) => ({
-          ...column,
-          createdAt: createdAt.toString(),
-          tasks: tasks.map(({ createdAt, updatedAt, boardId, columnId, subTasks, ...task }) => ({
-            ...task,
-            createdAt: createdAt.toString(),
-            subTasks: subTasks.map(({ createdAt, updatedAt, taskId, ...subTask }) => ({
-              ...subTask,
-              createdAt: createdAt.toString()
-            }))
-          }))
-        }));
-
-        return {
-          column: data
-        };
-      } catch (error) {
-        // return {
-        //   error: {
-        //     message: error.message || 'An error occurred while fetching data.'
-        //   }
-        // };
-      }
-    })
+  })
 });

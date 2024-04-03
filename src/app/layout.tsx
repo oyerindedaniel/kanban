@@ -5,6 +5,7 @@ import { cookies } from 'next/headers';
 import DashboardLayout from '@/components/DashboardLayout';
 import { Toaster } from '@/components/ui/toaster';
 import { Providers } from '@/Providers';
+import { ModalProvider } from '@/components/providers/modal-provider';
 
 import { TRPCReactProvider } from '@/trpc/react';
 
@@ -25,7 +26,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={`font-sans ${inter.variable}`}>
         <TRPCReactProvider cookies={cookies().toString()}>
           <Providers>
-            <DashboardLayout> {children}</DashboardLayout>
+            <DashboardLayout>{children}</DashboardLayout>
+            <ModalProvider />
             <Toaster />
           </Providers>
         </TRPCReactProvider>

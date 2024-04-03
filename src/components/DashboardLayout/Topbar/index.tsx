@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button';
 import { KanbanLogo } from '@/assets';
 import { MoreOptionsIcon } from '@/assets';
 import { useDisclosure } from '@/hooks';
-import AddNewTaskModal from '@/components/Kanban/Modals/AddNewTask';
 import Image from 'next/image';
 import {
   DropdownMenu,
@@ -53,7 +52,6 @@ const TopBar = () => {
           >
             +Add New Task
           </Button>
-          <AddNewTaskModal isOpen={isOpen} onClose={onClose} />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Image className="cursor-pointer" src={MoreOptionsIcon} alt="More options" />

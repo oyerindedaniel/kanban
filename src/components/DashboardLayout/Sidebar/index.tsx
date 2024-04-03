@@ -2,25 +2,20 @@
 
 'use client';
 
-import { type FC, useMemo, useState, useEffect } from 'react';
-import { BiSolidError } from 'react-icons/bi';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { BiBookAlt } from 'react-icons/bi';
-import { LINKS } from './constants';
-import { cn } from '@/lib/utils';
-import { api } from '@/trpc/react';
-import Image from 'next/image';
-import ModeToggler from './ModeToggler';
-import { Switch } from '@/components/ui/switch';
-import { ActiveSidebarIcon, HideIcon, MoonIcon, SideBarSvg, SunIcon } from '@/assets';
+import { ActiveSidebarIcon, HideIcon, SideBarSvg } from '@/assets';
 import { Button } from '@/components/ui/button';
+import ErrorComponent from '@/components/ui/error';
+import Loading from '@/components/ui/loading';
 import { useDisclosure } from '@/hooks';
-import SideBarModal from '@/components/Kanban/Modals/Board';
+import { cn } from '@/lib/utils';
 import { useAppDispatch } from '@/store/hooks';
 import { setGlobalState } from '@/store/slice/Global';
-import Loading from '@/components/ui/loading';
-import { type Board } from '@/types';
+import { api } from '@/trpc/react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useMemo, type FC } from 'react';
+import ModeToggler from './ModeToggler';
 
 interface SidebarProps {
   isSidebarOpen: boolean;
@@ -36,19 +31,13 @@ const Sidebar: FC<SidebarProps> = ({ isSidebarOpen, toggleSidebar }) => {
   const data = api.board.findAll.useQuery(undefined, {
     refetchInterval: false,
     refetchOnReconnect: false,
-    refetchOnWindowFocus: false
+    refetchOnWindowFocus: false,
+    retry: false
   });
 
   const boards = useMemo(() => {
     if (data) {
-      const boards = data?.data?.boards ?? [];
-      const foundBoard = boards.find(
-        (board) => board.name.trim() === pathname.trim().split('-').join(' ').slice(1)
-      );
-      if (foundBoard) {
-        dispatch(setGlobalState({ dataKey: 'activeBoard', data: foundBoard }));
-      }
-      return boards;
+      return data?.data?.data;
     }
     return [];
   }, [data]);
@@ -63,7 +52,6 @@ const Sidebar: FC<SidebarProps> = ({ isSidebarOpen, toggleSidebar }) => {
 
   return (
     <>
-      <SideBarModal isOpen={isOpen} onClose={onClose} />
       <div
         className={cn(
           'flex h-full w-full  flex-col overflow-hidden p-0 text-sm transition-all duration-100 ease-in-out',
@@ -77,22 +65,14 @@ const Sidebar: FC<SidebarProps> = ({ isSidebarOpen, toggleSidebar }) => {
         <div className="flex h-full flex-col justify-between overflow-y-auto">
           <div>
             {data.isLoading || data.isRefetching ? (
-              <Loading spinnerHeight={50} spinnerWidth={50} parentHeight={55} />
+              <Loading />
             ) : data.isError ? (
-              <div className="flex flex-col items-center justify-center h-[75vh]">
-                <span className="text-destructive mb-1">
-                  <BiSolidError size="85px" fill="currentColor" />
-                </span>
-                <p className="text-brand-regent-grey mb-3 text-md text-center font-medium">
-                  An error occurred.
-                </p>
-                <Button
-                  className="bg-brand-iris rounded-[100px] hover:bg-brand-biloba-flower hover:text-white"
-                  onClick={() => data.refetch()}
-                >
-                  Try Again
-                </Button>
-              </div>
+              <ErrorComponent
+                description="An error occurred."
+                refetchButtonText=" Try Again"
+                refetch={data.refetch()}
+                isRefetching={data.isRefetching}
+              />
             ) : boards && boards?.length > 0 ? (
               <div className="flex flex-col">
                 <span className="uppercase px-4 pt-5 pb-3 text-md font-bold text-brand-regent-grey">{`All Boards (${boards.length})`}</span>
