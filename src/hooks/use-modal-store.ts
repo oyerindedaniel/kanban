@@ -1,11 +1,11 @@
+import { type Board, type Column, type Task } from '@prisma/client';
 import { create } from 'zustand';
-import { Board, Column, Task } from '@/types';
 
 export type ModalType = 'addNewTask' | 'addNewColumn' | 'addNewBoard';
 
 interface ModalData {
   task?: Partial<Task>;
-  board?: Partial<Board>;
+  board?: Board['id'];
   column?: Partial<Column>;
 }
 

@@ -6,14 +6,13 @@ import { ActiveSidebarIcon, HideIcon, SideBarSvg } from '@/assets';
 import { Button } from '@/components/ui/button';
 import ErrorComponent from '@/components/ui/error';
 import Loading from '@/components/ui/loading';
-import { useDisclosure } from '@/hooks';
+import { useModal } from '@/hooks/use-modal-store';
 import { cn } from '@/lib/utils';
-import { useAppDispatch } from '@/store/hooks';
-import { setGlobalState } from '@/store/slice/Global';
 import { api } from '@/trpc/react';
+import { type Board } from '@prisma/client';
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useMemo, type FC } from 'react';
 import ModeToggler from './ModeToggler';
 
@@ -24,9 +23,8 @@ interface SidebarProps {
 
 const Sidebar: FC<SidebarProps> = ({ isSidebarOpen, toggleSidebar }) => {
   const pathname = usePathname();
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const dispatch = useAppDispatch();
+  const router = useRouter();
+  const { onOpen } = useModal();
 
   const data = api.board.findAll.useQuery(undefined, {
     refetchInterval: false,
@@ -43,11 +41,11 @@ const Sidebar: FC<SidebarProps> = ({ isSidebarOpen, toggleSidebar }) => {
   }, [data]);
 
   const handleAddNewBoard = () => {
-    onOpen();
+    onOpen('addNewBoard');
   };
 
-  const checkIfLinkIsActive = (link: string) => {
-    return pathname.trim().split('-').join(' ') === `/${link}`;
+  const checkIfLinkIsActive = (link: Board['slug']) => {
+    return pathname.trim().toLowerCase().split('/')[2] === link;
   };
 
   return (
@@ -58,14 +56,10 @@ const Sidebar: FC<SidebarProps> = ({ isSidebarOpen, toggleSidebar }) => {
           isSidebarOpen ? '' : 'hidden'
         )}
       >
-        {/* <div className="mt-8 pl-8">
-      <Image src={KanbanLogo} alt="img" />
-    </div> */}
-
         <div className="flex h-full flex-col justify-between overflow-y-auto">
           <div>
             {data.isLoading || data.isRefetching ? (
-              <Loading />
+              <Loading size="36" />
             ) : data.isError ? (
               <ErrorComponent
                 description="An error occurred."
@@ -76,21 +70,19 @@ const Sidebar: FC<SidebarProps> = ({ isSidebarOpen, toggleSidebar }) => {
             ) : boards && boards?.length > 0 ? (
               <div className="flex flex-col">
                 <span className="uppercase px-4 pt-5 pb-3 text-md font-bold text-brand-regent-grey">{`All Boards (${boards.length})`}</span>
-                {boards.map((board, Idx) => {
+                {boards.map((board, idx) => {
                   return (
                     <Link
                       href={board.name.trim().split(' ').join('-')}
                       key={board.id}
                       className="hover:fill-brand-iris"
-                      onClick={() =>
-                        dispatch(setGlobalState({ dataKey: 'activeBoard', data: board }))
-                      }
+                      onClick={() => router.push(`/board/${boards[0]?.slug}`)}
                     >
                       <div
                         className={cn(
                           'duration-150 flex gap-4 cursor-pointer items-center justify-start px-4 py-5 transition-all ease-in-out hover:bg-brand-lavender-mist hover:text-white md:justify-center xl:justify-start rounded-r-[100px] dark:hover:bg-white hover:text-brand-iris text-base font-bold text-brand-regent-grey',
-                          checkIfLinkIsActive(board.name) && 'bg-brand-iris text-white'
-                          // Idx !== LINKS.length - 1 && 'mb-3'
+                          checkIfLinkIsActive(board.slug) && 'bg-brand-iris text-white',
+                          idx !== boards.length - 1 && 'mb-3'
                         )}
                       >
                         <SideBarSvg className="" />
@@ -107,7 +99,7 @@ const Sidebar: FC<SidebarProps> = ({ isSidebarOpen, toggleSidebar }) => {
               variant="unstyled"
               onClick={handleAddNewBoard}
             >
-              <Image src={ActiveSidebarIcon} alt="img"></Image>
+              <Image src={ActiveSidebarIcon} alt="add new board" />
               <span className="text-base">+ Create New Board</span>
             </Button>
           </div>

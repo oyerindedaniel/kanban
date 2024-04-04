@@ -13,24 +13,13 @@ import { Input } from '@/components/ui/input';
 import { useEffectOnce } from '@/hooks';
 import { useModal } from '@/hooks/use-modal-store';
 import { api } from '@/trpc/react';
+import { createColumnsSchema, type CreateColumn, type CreateColumns } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { ReloadIcon } from '@radix-ui/react-icons';
 import { useRouter } from 'next/navigation';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useFieldArray, useForm, type FieldArrayMethodProps } from 'react-hook-form';
 import { RiCloseLine } from 'react-icons/ri';
-import * as z from 'zod';
-
-const ColumnSchema = z.object({
-  name: z.string().trim().min(1, { message: 'Can’t be empty' }),
-  boardId: z.string().optional()
-});
-
-export const CreateColumnSchema = z.object({
-  columns: z.array(ColumnSchema)
-});
-
-type CreateColumn = z.infer<typeof CreateColumnSchema>;
-type Column = z.infer<typeof ColumnSchema>;
 
 const AddNewColumnModal = () => {
   const router = useRouter();
@@ -41,20 +30,20 @@ const AddNewColumnModal = () => {
 
   const mutateAddColumn = api.column.create.useMutation({
     onSuccess: (data) => {
+      router.refresh();
       form.reset();
       onClose();
-      router.refresh();
     },
     onError: (error) => {
       console.error(error);
     }
   });
 
-  const form = useForm<CreateColumn>({
-    resolver: zodResolver(CreateColumnSchema)
+  const form = useForm<CreateColumns>({
+    resolver: zodResolver(createColumnsSchema)
   });
 
-  const defaultValues = { name: '', boardId: '' };
+  const defaultValues = { name: '' };
 
   const {
     register,
@@ -71,7 +60,15 @@ const AddNewColumnModal = () => {
     name: 'columns'
   });
 
-  const onSubmit = (data: CreateColumn) => {
+  console.log(form.formState.errors);
+
+  console.log('type', type, 'data', data);
+
+  useEffect(() => {
+    form.setValue('boardId', data.board!);
+  }, [form, data]);
+
+  const onSubmit = (data: CreateColumns) => {
     mutateAddColumn.mutate(data);
   };
 
@@ -80,7 +77,7 @@ const AddNewColumnModal = () => {
   };
 
   const addNewColumn = useCallback(
-    (value: Column, options?: FieldArrayMethodProps) => {
+    (value: CreateColumn, options?: FieldArrayMethodProps) => {
       append(value);
       // clearErrors();
     },
@@ -145,7 +142,14 @@ const AddNewColumnModal = () => {
               + Add New Column
             </Button>
             <DialogFooter className="px-6 py-4">
-              <Button variant="default" className="rounded-[100px] w-full" size="lg">
+              <Button
+                type="submit"
+                disabled={mutateAddColumn.isLoading}
+                variant="default"
+                className="font-medium w-full"
+                size="lg"
+              >
+                {mutateAddColumn.isLoading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
                 Create New Column(s)
               </Button>
             </DialogFooter>

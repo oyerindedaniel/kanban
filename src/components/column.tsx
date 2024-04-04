@@ -3,7 +3,7 @@
 import { type Column, type Task } from '@prisma/client';
 import { type FC } from 'react';
 
-interface ColumnProps {
+export interface ColumnProps {
   column: Column & {
     tasks: Array<Task>;
   };

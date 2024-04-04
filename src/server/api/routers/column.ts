@@ -1,17 +1,17 @@
 import { z } from 'zod';
 
-import { CreateColumnSchema } from '@/components/modals/add-new-column';
 import { createTRPCRouter, publicProcedure } from '@/server/api/trpc';
+import { createColumnsSchema } from '@/types';
 
 export const columnRouter = createTRPCRouter({
-  create: publicProcedure.input(CreateColumnSchema).mutation(async ({ ctx, input }) => {
-    const { columns } = input;
+  create: publicProcedure.input(createColumnsSchema).mutation(async ({ ctx, input }) => {
+    const { columns, boardId } = input;
     const createdColumns = await Promise.all(
       columns.map(async (column) => {
         const createdColumn = await ctx.db.column.create({
           data: {
             name: column.name,
-            boardId: column.boardId!
+            boardId
           },
           include: {
             tasks: { include: { subTasks: true } }
@@ -47,6 +47,30 @@ export const columnRouter = createTRPCRouter({
         data: column
       };
     }),
+  findByBoardSlug: publicProcedure
+    .input(
+      z.object({
+        slug: z.string()
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const { slug } = input;
+
+      const columns = await ctx.db.column.findMany({
+        where: {
+          board: {
+            slug
+          }
+        },
+        include: {
+          tasks: { include: { subTasks: true } }
+        }
+      });
+
+      return {
+        data: columns
+      };
+    }),
   findByBoardId: publicProcedure
     .input(
       z.object({
@@ -56,7 +80,7 @@ export const columnRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       const { boardId } = input;
 
-      const column = await ctx.db.column.findMany({
+      const columns = await ctx.db.column.findMany({
         where: {
           boardId
         },
@@ -66,7 +90,7 @@ export const columnRouter = createTRPCRouter({
       });
 
       return {
-        data: column
+        data: columns
       };
     }),
   findAll: publicProcedure.query(async ({ ctx, input }) => {

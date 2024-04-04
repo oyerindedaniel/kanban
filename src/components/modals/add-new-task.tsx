@@ -20,13 +20,14 @@ import {
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import { useEffectOnce } from '@/hooks';
 import { useModal } from '@/hooks/use-modal-store';
 import { api } from '@/trpc/react';
 import { createTaskSchema, type CreateSubTask, type CreateTask } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ReloadIcon } from '@radix-ui/react-icons';
 import { useRouter } from 'next/navigation';
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import { useFieldArray, useForm, type FieldArrayMethodProps } from 'react-hook-form';
 import { RiCloseLine } from 'react-icons/ri';
 
@@ -79,11 +80,11 @@ const AddNewTaskModal = () => {
     [errors, append, clearErrors]
   );
 
-  useEffect(() => {
+  useEffectOnce(() => {
     if (fields.length === 0) {
       addNewTask({ name: '' });
     }
-  }, [fields]);
+  });
 
   const onSubmit = (data: CreateTask) => {
     mutateAddTask.mutate({ ...data });
@@ -96,7 +97,7 @@ const AddNewTaskModal = () => {
 
   return (
     <Dialog open={isModalOpen} onOpenChange={handleClose}>
-      <DialogContent className="bg-white text-black p-0 overflow-hidden">
+      <DialogContent className="bg-white text-black overflow-hidden">
         <DialogHeader>
           <DialogTitle className="text-lg text-black dark:text-white">Add New Task</DialogTitle>
         </DialogHeader>

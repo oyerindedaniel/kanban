@@ -1,42 +1,27 @@
 'use client';
 
-import Link from 'next/link';
-import { useState } from 'react';
-import { usePathname } from 'next/navigation';
+import { KanbanLogo, MoreOptionsIcon } from '@/assets';
 import { Button } from '@/components/ui/button';
-import { KanbanLogo } from '@/assets';
-import { MoreOptionsIcon } from '@/assets';
-import { useDisclosure } from '@/hooks';
-import Image from 'next/image';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
+import { useDisclosure } from '@/hooks';
+import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 
 const TopBar = () => {
   const pathname = usePathname();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { onOpen } = useDisclosure();
 
   const handleAddNewTask = () => {
     onOpen();
   };
 
-  const handlePath = pathname.slice(1).split('-');
-
-  const capitalizePathname = (path: string[]) => {
-    return path.map((p) => {
-      if (p.length > 0) {
-        return p.charAt(0).toUpperCase() + p.slice(1);
-      }
-    });
-  };
-
-  const path = capitalizePathname(handlePath).join(' ');
+  const boardName = pathname.trim().toLowerCase().split('/')[2];
 
   return (
     <nav className="bg-white dark:bg-brand-ebony-clay text-black dark:text-white flex h-24 items-center md:p-1.5">
@@ -44,7 +29,7 @@ const TopBar = () => {
       <span className="h-24 ml-[115.5px]"></span>
 
       <div className=" flex justify-between items-center w-full  px-5">
-        <span className="font-bold text-2xl">{path.split('-').join(' ')}</span>
+        <span className="font-bold text-2xl capitalize">{boardName}</span>
         <div className="flex">
           <Button
             className="bg-brand-iris text white rounded-[100px] mr-6 hover:bg-brand-biloba-flower"

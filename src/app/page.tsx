@@ -29,14 +29,14 @@ const PlatformLaunch = () => {
 
   useEffect(() => {
     if (boards && boards?.length > 0) {
-      router.push(`/board/${boards[0]?.id}`);
+      router.push(`/board/${boards[0]?.slug}`);
     }
   }, [boards]);
 
   return (
-    <div className="relative">
-      {(data.isLoading && !data.fetchStatus) || data.isRefetching ? (
-        <Loading />
+    <div>
+      {data.isLoading || data.isRefetching ? (
+        <Loading size="48" />
       ) : data.isError ? (
         <ErrorComponent
           description="An error occurred."

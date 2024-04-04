@@ -1,17 +1,17 @@
 import { z } from 'zod';
 
 import { createTRPCRouter, publicProcedure } from '@/server/api/trpc';
-import { createBoardSchema, boardSchema } from '@/types';
-import { handleServerError } from '../lib/error';
-import { TRPCError } from '@trpc/server';
+import { createBoardSchema } from '@/types';
+import { generateUniqueSlug } from '../lib/utils';
 
 export const boardRouter = createTRPCRouter({
   create: publicProcedure.input(createBoardSchema).mutation(async ({ ctx, input }) => {
     const { name, columns } = input;
-
+    const slug = await generateUniqueSlug(name, ctx);
     const boardWithColumns = await ctx.db.board.create({
       data: {
         name: name.toLowerCase(),
+        slug,
         columns: {
           create: columns
         }
@@ -47,11 +47,34 @@ export const boardRouter = createTRPCRouter({
         data: column
       };
     }),
+  findBySlug: publicProcedure
+    .input(
+      z.object({
+        slug: z.string()
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const { slug } = input;
+
+      const column = await ctx.db.board.findUnique({
+        where: {
+          slug
+        },
+        include: {
+          columns: { include: { tasks: true } }
+        }
+      });
+
+      return {
+        data: column
+      };
+    }),
   findAll: publicProcedure.query(async ({ ctx, input }) => {
     const boards = await ctx.db.board.findMany({
       select: {
         id: true,
-        name: true
+        name: true,
+        slug: true
       }
     });
 

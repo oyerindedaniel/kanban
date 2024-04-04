@@ -1,5 +1,5 @@
-import { z, ZodType, ZodTypeDef } from 'zod';
 import { type store } from '@/store';
+import { z } from 'zod';
 
 export type RootState = ReturnType<typeof store.getState>;
 
@@ -36,15 +36,13 @@ const taskSchema = z.object({
   subTasks: z.array(subTaskSchema)
 });
 
-const columnSchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  createdAt: z.string(),
-  tasks: z.array(taskSchema)
-});
-
 const createColumnSchema = z.object({
   name: z.string().trim().min(1, { message: 'Can’t be empty' })
+});
+
+const createColumnsSchema = z.object({
+  columns: z.array(createColumnSchema),
+  boardId: z.string()
 });
 
 const createBoardSchema = z.object({
@@ -62,25 +60,35 @@ const boardSchema = z.object({
 });
 
 export {
-  createTaskSchema,
-  createSubTaskSchema,
   boardSchema,
   createBoardSchema,
-  columnSchema,
+  createColumnSchema,
+  createColumnsSchema,
+  createSubTaskSchema,
+  createTaskSchema,
   subTaskSchema,
   taskSchema
 };
 
 type SubTask = z.infer<typeof subTaskSchema>;
 type Task = z.infer<typeof taskSchema>;
-type Column = z.infer<typeof columnSchema>;
+type CreateColumn = z.infer<typeof createColumnSchema>;
 type Board = z.infer<typeof boardSchema>;
 type CreateBoard = z.infer<typeof createBoardSchema>;
-type CreateColumn = z.infer<typeof createColumnSchema>;
+type CreateColumns = z.infer<typeof createColumnsSchema>;
 type CreateSubTask = z.infer<typeof createSubTaskSchema>;
 type CreateTask = z.infer<typeof createTaskSchema>;
 
-export type { CreateSubTask, CreateTask, Board, Column, Task, SubTask, CreateBoard, CreateColumn };
+export type {
+  Board,
+  CreateBoard,
+  CreateColumn,
+  CreateColumns,
+  CreateSubTask,
+  CreateTask,
+  SubTask,
+  Task
+};
 
 // type BaseBoard = {
 //   name: string;

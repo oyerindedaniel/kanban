@@ -18,18 +18,19 @@ import {
   FormMessage
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { useEffectOnce } from '@/hooks';
 import { useModal } from '@/hooks/use-modal-store';
 import { api } from '@/trpc/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ReloadIcon } from '@radix-ui/react-icons';
 import { useRouter } from 'next/navigation';
-import { useCallback, useEffect, type FC } from 'react';
+import { useCallback } from 'react';
 import { useFieldArray, useForm, type FieldArrayMethodProps } from 'react-hook-form';
 import { RiCloseLine } from 'react-icons/ri';
 
 import { createBoardSchema, type CreateBoard, type CreateColumn } from '@/types';
 
-const AddNewBoard: FC = () => {
+const AddNewBoard = () => {
   const router = useRouter();
 
   const { isOpen, onClose, type, data } = useModal();
@@ -42,9 +43,9 @@ const AddNewBoard: FC = () => {
 
   const mutateAddBoard = api.board.create.useMutation({
     onSuccess: (data) => {
+      router.refresh();
       form.reset();
       onClose();
-      router.refresh();
     },
     onError: (error) => {
       console.error(error);
@@ -77,11 +78,11 @@ const AddNewBoard: FC = () => {
     [errors, append, clearErrors]
   );
 
-  useEffect(() => {
+  useEffectOnce(() => {
     if (fields.length === 0) {
       addNewColumn({ name: '' });
     }
-  }, [fields]);
+  });
 
   const onSubmit = (data: CreateBoard) => {
     mutateAddBoard.mutate(data);
@@ -94,9 +95,9 @@ const AddNewBoard: FC = () => {
 
   return (
     <Dialog open={isModalOpen} onOpenChange={handleClose}>
-      <DialogContent className="bg-white text-black p-0 overflow-hidden">
-        <DialogHeader className="pt-8 px-6">
-          <DialogTitle className="text-2xl text-center font-bold">Add New Column</DialogTitle>
+      <DialogContent className="bg-white text-black sm:max-w-xl">
+        <DialogHeader className="pt-8">
+          <DialogTitle className="text-lg text-black dark:text-white">Add New Board</DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -117,7 +118,7 @@ const AddNewBoard: FC = () => {
             <div className="flex flex-col gap-3 mt-2">
               {fields.map((column, Idx) => (
                 <div key={Idx}>
-                  <div className="w-full flex items-center gap-2">
+                  <div className="flex items-center gap-2">
                     <FormField
                       control={control}
                       name={`columns.${Idx}.name`}
@@ -143,16 +144,16 @@ const AddNewBoard: FC = () => {
                 </div>
               ))}
             </div>
-            <DialogFooter className="bg-gray-100 px-6 py-4">
-              <Button
-                type="button"
-                className="font-bold w-full my-6"
-                variant="secondary"
-                onClick={() => addNewColumn({ name: '' })}
-                size="lg"
-              >
-                + Add New Column
-              </Button>
+            <Button
+              type="button"
+              className="font-bold w-full my-4"
+              variant="secondary"
+              onClick={() => addNewColumn({ name: '' })}
+              size="lg"
+            >
+              + Add New Column
+            </Button>
+            <DialogFooter className="px-6 py-4">
               <Button
                 type="submit"
                 disabled={mutateAddBoard.isLoading}
