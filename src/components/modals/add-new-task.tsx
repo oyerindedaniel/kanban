@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 'use client';
 
 import { Button } from '@/components/ui/button';
@@ -49,7 +48,7 @@ const AddNewTaskModal = () => {
       router.refresh();
     },
     onError: (error) => {
-      console.log(error);
+      console.error(error);
     }
   });
 

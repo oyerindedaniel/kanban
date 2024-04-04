@@ -60,10 +60,6 @@ const AddNewColumnModal = () => {
     name: 'columns'
   });
 
-  console.log(form.formState.errors);
-
-  console.log('type', type, 'data', data);
-
   useEffect(() => {
     form.setValue('boardId', data.board!);
   }, [form, data]);
