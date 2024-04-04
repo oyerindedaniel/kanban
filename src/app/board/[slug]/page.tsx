@@ -22,11 +22,8 @@ export default function Board({ params: { slug } }: { params: { slug: string } }
     }
   );
 
-  console.log(activeBoardId);
-
   useEffect(() => {
     const boardId = data?.data?.data?.[0]?.boardId;
-    console.log(boardId);
     if (!!boardId) setActiveBoardId(boardId);
   }, [data]);
 
@@ -48,7 +45,7 @@ export default function Board({ params: { slug } }: { params: { slug: string } }
       ) : data.isError ? (
         <ErrorComponent
           description="An error occurred."
-          refetchButtonText=" Try Again"
+          refetchButtonText="Try Again"
           refetch={data.refetch()}
           isRefetching={data.isRefetching}
         />

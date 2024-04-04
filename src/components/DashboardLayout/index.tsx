@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import TopBar from './Topbar';
-import Sidebar from './Sidebar';
+import TopBar from './topbar';
+import Sidebar from './sidebar';
 import { KanbanLogo, ViewIcon } from '@/assets';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';

@@ -14,7 +14,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useMemo, type FC } from 'react';
-import ModeToggler from './ModeToggler';
+import ModeToggler from './mode-toggler';
 
 interface SidebarProps {
   isSidebarOpen: boolean;
@@ -59,7 +59,7 @@ const Sidebar: FC<SidebarProps> = ({ isSidebarOpen, toggleSidebar }) => {
         <div className="flex h-full flex-col justify-between overflow-y-auto">
           <div>
             {data.isLoading || data.isRefetching ? (
-              <Loading size="36" />
+              <Loading size="36" description="loading boards" />
             ) : data.isError ? (
               <ErrorComponent
                 description="An error occurred."
@@ -76,7 +76,7 @@ const Sidebar: FC<SidebarProps> = ({ isSidebarOpen, toggleSidebar }) => {
                       href={board.name.trim().split(' ').join('-')}
                       key={board.id}
                       className="hover:fill-brand-iris"
-                      onClick={() => router.push(`/board/${boards[0]?.slug}`)}
+                      onClick={() => router.push(`/board/${board?.slug}`)}
                     >
                       <div
                         className={cn(

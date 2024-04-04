@@ -36,7 +36,7 @@ const PlatformLaunch = () => {
   return (
     <div>
       {data.isLoading || data.isRefetching ? (
-        <Loading size="48" />
+        <Loading size="48" description="loading boards" />
       ) : data.isError ? (
         <ErrorComponent
           description="An error occurred."
