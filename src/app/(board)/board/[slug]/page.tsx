@@ -9,7 +9,11 @@ import { useModal } from '@/hooks/use-modal-store';
 import { api } from '@/trpc/react';
 import { useEffect, useMemo, useState } from 'react';
 
-export default function Board({ params: { slug } }: { params: { slug: string } }) {
+interface BoardPageProps {
+  params: { slug: string };
+}
+
+export default function BoardPage({ params: { slug } }: BoardPageProps) {
   const { onOpen } = useModal();
   const [activeBoardId, setActiveBoardId] = useState('');
 

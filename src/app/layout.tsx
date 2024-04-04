@@ -1,11 +1,10 @@
 import '@/styles/globals.css';
 
-import { Inter } from 'next/font/google';
-import { cookies } from 'next/headers';
-import DashboardLayout from '@/components/DashboardLayout';
-import { Toaster } from '@/components/ui/toaster';
 import { Providers } from '@/Providers';
 import { ModalProvider } from '@/components/providers/modal-provider';
+import { Toaster } from '@/components/ui/toaster';
+import { Inter } from 'next/font/google';
+import { cookies } from 'next/headers';
 
 import { TRPCReactProvider } from '@/trpc/react';
 
@@ -26,7 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={`font-sans ${inter.variable}`}>
         <TRPCReactProvider cookies={cookies().toString()}>
           <Providers>
-            <DashboardLayout>{children}</DashboardLayout>
+            {children}
             <ModalProvider />
             <Toaster />
           </Providers>

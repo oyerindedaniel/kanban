@@ -27,6 +27,7 @@ import { useRouter } from 'next/navigation';
 import { useCallback } from 'react';
 import { useFieldArray, useForm, type FieldArrayMethodProps } from 'react-hook-form';
 import { RiCloseLine } from 'react-icons/ri';
+import { QueryClient } from '@tanstack/react-query';
 
 import { createBoardSchema, type CreateBoard, type CreateColumn } from '@/types';
 
@@ -43,9 +44,10 @@ const AddNewBoard = () => {
 
   const mutateAddBoard = api.board.create.useMutation({
     onSuccess: (data) => {
-      router.refresh();
       form.reset();
       onClose();
+      router.refresh();
+      // router.push(`/board/${data.data.slug}`);
     },
     onError: (error) => {
       console.error(error);
