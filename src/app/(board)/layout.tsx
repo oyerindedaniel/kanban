@@ -1,6 +1,6 @@
-import Sidebar from '@/components/DashboardLayout/sidebar';
-import TopBar from '@/components/DashboardLayout/topbar';
-import LayoutContainer from '@/components/layout-container';
+import LayoutContainer from '@/components/layout/layout-container';
+import Sidebar from '@/components/layout/sidebar';
+import TopBar from '@/components/layout/topbar';
 
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
   return (

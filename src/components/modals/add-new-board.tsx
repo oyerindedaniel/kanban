@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 'use client';
 
 import { Button } from '@/components/ui/button';
@@ -27,7 +26,6 @@ import { useRouter } from 'next/navigation';
 import { useCallback } from 'react';
 import { useFieldArray, useForm, type FieldArrayMethodProps } from 'react-hook-form';
 import { RiCloseLine } from 'react-icons/ri';
-import { QueryClient } from '@tanstack/react-query';
 
 import { createBoardSchema, type CreateBoard, type CreateColumn } from '@/types';
 
@@ -46,8 +44,8 @@ const AddNewBoard = () => {
     onSuccess: (data) => {
       form.reset();
       onClose();
+      router.push(`/board/${data.data.slug}`);
       router.refresh();
-      // router.push(`/board/${data.data.slug}`);
     },
     onError: (error) => {
       console.error(error);
@@ -97,7 +95,7 @@ const AddNewBoard = () => {
 
   return (
     <Dialog open={isModalOpen} onOpenChange={handleClose}>
-      <DialogContent className="bg-white text-black sm:max-w-xl">
+      <DialogContent className="bg-white text-black overflow-hidden">
         <DialogHeader className="pt-8">
           <DialogTitle className="text-lg text-black dark:text-white">Add New Board</DialogTitle>
         </DialogHeader>

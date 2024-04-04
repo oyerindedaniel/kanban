@@ -1,6 +1,6 @@
 import { api } from '@/trpc/server';
 import { redirect } from 'next/navigation';
-import NoBoard from '../no-board';
+import NoBoard from '../../components/no-board';
 
 export default async function PlatformLaunch() {
   const data = await api.board.findAll.query();
