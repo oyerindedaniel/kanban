@@ -29,10 +29,10 @@ const AddNewColumnModal = () => {
   const isModalOpen = isOpen && type === 'addNewColumn';
 
   const mutateAddColumn = api.column.create.useMutation({
-    onSuccess: (data) => {
-      router.refresh();
+    onSuccess: () => {
       form.reset();
       onClose();
+      router.refresh();
     },
     onError: (error) => {
       console.error(error);
@@ -46,11 +46,8 @@ const AddNewColumnModal = () => {
   const defaultValues = { name: '' };
 
   const {
-    register,
     control,
     reset,
-    setValue,
-    getValues,
     clearErrors,
     formState: { errors }
   } = form;
@@ -67,6 +64,8 @@ const AddNewColumnModal = () => {
   const onSubmit = (data: CreateColumns) => {
     mutateAddColumn.mutate(data);
   };
+
+  console.log(data);
 
   const removeColumn = (Idx: number) => {
     remove(Idx);

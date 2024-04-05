@@ -17,10 +17,17 @@ import {
   FormMessage
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { useEffectOnce } from '@/hooks';
 import { useModal } from '@/hooks/use-modal-store';
+import { useAppSelector } from '@/store/hooks';
 import { api } from '@/trpc/react';
 import { createTaskSchema, type CreateSubTask, type CreateTask } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -32,6 +39,8 @@ import { RiCloseLine } from 'react-icons/ri';
 
 const AddNewTaskModal = () => {
   const router = useRouter();
+
+  const { columns } = useAppSelector((state) => state.GlobalService);
 
   const { isOpen, onClose, type, data } = useModal();
 
@@ -131,7 +140,9 @@ const AddNewTaskModal = () => {
                 </FormItem>
               )}
             />
-            <FormLabel required>Subtasks</FormLabel>
+            <FormLabel className="mb-3 inline-block" required>
+              Subtasks
+            </FormLabel>
             <div className="flex flex-col gap-3">
               {fields.map((column, Idx) => (
                 <div key={Idx}>
@@ -175,25 +186,29 @@ const AddNewTaskModal = () => {
               name="columnId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Channel Type</FormLabel>
+                  <FormLabel>Status</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger className="w-full rounded-md dark:border-brand-bright-grey border-input text-black dark:text-white bg-white dark:bg-brand-ebony-clay">
-                        <SelectValue placeholder="Select a channel type" />
+                        <SelectValue placeholder="Select a status" />
                       </SelectTrigger>
                     </FormControl>
-                    <SelectContent></SelectContent>
+                    <SelectContent>
+                      {columns && columns.length > 0 ? (
+                        columns.map((column) => (
+                          <SelectItem key={column.id} value={column.id}>
+                            {column.name}
+                          </SelectItem>
+                        ))
+                      ) : (
+                        <SelectItem value="">No status, please reload</SelectItem>
+                      )}
+                    </SelectContent>
                   </Select>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            {/* <select
-                {...register('columnId', { required: true })}
-                className=""
-              >
-                <option value="079291e5-58c1-4e6a-9275-5103f97db485">Todo</option>
-              </select> */}
             <DialogFooter className="px-6 py-4">
               <Button
                 type="submit"

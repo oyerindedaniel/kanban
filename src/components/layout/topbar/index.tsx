@@ -9,19 +9,17 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
-import { useDisclosure } from '@/hooks';
+import { useModal } from '@/hooks/use-modal-store';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 
 const TopBar = () => {
   const pathname = usePathname();
-  const { onOpen } = useDisclosure();
-
-  const handleAddNewTask = () => {
-    onOpen();
-  };
+  const { onOpen } = useModal();
 
   const boardName = pathname.trim().toLowerCase().split('/')[2];
+
+  console.log(boardName);
 
   return (
     <nav className="bg-white dark:bg-brand-ebony-clay text-black dark:text-white flex h-24 items-center md:p-1.5">
@@ -30,10 +28,13 @@ const TopBar = () => {
 
       <div className=" flex justify-between items-center w-full  px-5">
         <span className="font-bold text-2xl capitalize">{boardName}</span>
-        <div className="flex">
+        <div className="flex gap-4">
           <Button
-            className="bg-brand-iris text white rounded-[100px] mr-6 hover:bg-brand-biloba-flower"
-            onClick={handleAddNewTask}
+            variant="default"
+            disabled={!boardName}
+            onClick={() => {
+              onOpen('addNewTask');
+            }}
           >
             +Add New Task
           </Button>

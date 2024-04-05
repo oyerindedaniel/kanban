@@ -2,12 +2,28 @@ import { z } from 'zod';
 
 import { createTRPCRouter, publicProcedure } from '@/server/api/trpc';
 import { createBoardSchema } from '@/types';
+import { TRPCError } from '@trpc/server';
 import { generateUniqueSlug } from '../lib/utils';
 
 export const boardRouter = createTRPCRouter({
   create: publicProcedure.input(createBoardSchema).mutation(async ({ ctx, input }) => {
     const { name, columns } = input;
+
+    const existedName = await ctx.db.board.findFirst({
+      where: {
+        name: name.toLowerCase()
+      }
+    });
+
+    if (existedName) {
+      throw new TRPCError({
+        code: 'BAD_REQUEST',
+        message: 'Board Name exist.'
+      });
+    }
+
     const slug = await generateUniqueSlug(name, ctx);
+
     const boardWithColumns = await ctx.db.board.create({
       data: {
         name: name.toLowerCase(),

@@ -1,10 +1,9 @@
-import { TRPCError } from '@trpc/server';
-import { ZodError } from 'zod';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
+import { TRPCError } from '@trpc/server';
 import { getHTTPStatusCodeFromError } from '@trpc/server/http';
+import { ZodError } from 'zod';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const handleServerError = (error: any) => {
+export const handleServerError = (error: TRPCError | ZodError) => {
   if (error instanceof PrismaClientKnownRequestError) {
     // Handle Prisma unique constraint violation error
     if (error.code === 'P2002' && error.meta?.modelName) {
@@ -16,12 +15,12 @@ export const handleServerError = (error: any) => {
         message: `${error?.meta?.modelName} ${targetField}: Unique constraint violation`
       };
     }
-  } else if (error instanceof ZodError) {
+  } else if (error instanceof ZodError || error?.code === 'BAD_REQUEST') {
     // Handle Zod errors
     return {
       type: 'zod',
       statusCode: 400,
-      message: error.flatten()
+      message: error instanceof ZodError ? error.flatten() : error?.message
     };
   } else if (error instanceof TRPCError) {
     // Handle tRPC errors

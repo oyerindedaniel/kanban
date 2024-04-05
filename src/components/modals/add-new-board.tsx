@@ -19,15 +19,16 @@ import {
 import { Input } from '@/components/ui/input';
 import { useEffectOnce } from '@/hooks';
 import { useModal } from '@/hooks/use-modal-store';
+import { formatError, type ErrorObject } from '@/lib/utils';
 import { api } from '@/trpc/react';
+import { createBoardSchema, type CreateBoard, type CreateColumn } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ReloadIcon } from '@radix-ui/react-icons';
 import { useRouter } from 'next/navigation';
 import { useCallback } from 'react';
 import { useFieldArray, useForm, type FieldArrayMethodProps } from 'react-hook-form';
 import { RiCloseLine } from 'react-icons/ri';
-
-import { createBoardSchema, type CreateBoard, type CreateColumn } from '@/types';
+import ErrorAlert from '../ui/error-response';
 
 const AddNewBoard = () => {
   const router = useRouter();
@@ -37,7 +38,11 @@ const AddNewBoard = () => {
   const isModalOpen = isOpen && type === 'addNewBoard';
 
   const form = useForm<CreateBoard>({
-    resolver: zodResolver(createBoardSchema)
+    resolver: zodResolver(createBoardSchema),
+    defaultValues: {
+      name: '',
+      columns: [{ name: '' }]
+    }
   });
 
   const mutateAddBoard = api.board.create.useMutation({
@@ -55,8 +60,6 @@ const AddNewBoard = () => {
   const {
     control,
     reset,
-    setValue,
-    getValues,
     clearErrors,
     formState: { errors }
   } = form;
@@ -84,6 +87,8 @@ const AddNewBoard = () => {
     }
   });
 
+  form.getValues('name');
+
   const onSubmit = (data: CreateBoard) => {
     mutateAddBoard.mutate(data);
   };
@@ -99,6 +104,9 @@ const AddNewBoard = () => {
         <DialogHeader className="pt-8">
           <DialogTitle className="text-lg text-black dark:text-white">Add New Board</DialogTitle>
         </DialogHeader>
+        {mutateAddBoard.isError && (
+          <ErrorAlert errors={formatError(mutateAddBoard.error?.shape?.data as ErrorObject)} />
+        )}
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <FormField
