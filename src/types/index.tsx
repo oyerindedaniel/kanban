@@ -22,10 +22,14 @@ const createTaskSchema = z.object({
 
 const subTaskSchema = z.object({
   id: z.string(),
-  name: z.string(),
-  isCompleted: z.boolean().nullable(),
-  currentStatus: z.string().nullable(),
-  createdAt: z.string()
+  isCompleted: z.boolean().default(false)
+});
+
+const subTasksSchema = z.object({
+  subTasks: z.array(subTaskSchema),
+  columnId: z.string(),
+  previousColumnId: z.string().optional(),
+  taskId: z.string()
 });
 
 const taskSchema = z.object({
@@ -67,6 +71,7 @@ export {
   createSubTaskSchema,
   createTaskSchema,
   subTaskSchema,
+  subTasksSchema,
   taskSchema
 };
 

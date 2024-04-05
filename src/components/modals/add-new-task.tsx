@@ -46,12 +46,14 @@ const AddNewTaskModal = () => {
 
   const isModalOpen = isOpen && type === 'addNewTask';
 
+  const activeBoardId = columns![0]?.boardId;
+
   const form = useForm<CreateTask>({
     resolver: zodResolver(createTaskSchema)
   });
 
   const mutateAddTask = api.task.create.useMutation({
-    onSuccess: (data) => {
+    onSuccess: () => {
       form.reset();
       onClose();
       router.refresh();
@@ -62,11 +64,8 @@ const AddNewTaskModal = () => {
   });
 
   const {
-    register,
     control,
     reset,
-    setValue,
-    getValues,
     clearErrors,
     formState: { errors }
   } = form;
@@ -95,7 +94,8 @@ const AddNewTaskModal = () => {
   });
 
   const onSubmit = (data: CreateTask) => {
-    mutateAddTask.mutate({ ...data });
+    console.log(data);
+    mutateAddTask.mutate({ ...data, boardId: activeBoardId });
   };
 
   const handleClose = () => {

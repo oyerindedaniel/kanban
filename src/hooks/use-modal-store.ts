@@ -1,12 +1,14 @@
-import { type Board, type Column, type Task } from '@prisma/client';
+import { type ColumnProps } from '@/components/column';
+import { type TaskProps } from '@/components/task';
+import { type Board } from '@prisma/client';
 import { create } from 'zustand';
 
-export type ModalType = 'addNewTask' | 'addNewColumn' | 'addNewBoard';
+export type ModalType = 'addNewTask' | 'addNewColumn' | 'addNewBoard' | 'viewTask';
 
 interface ModalData {
-  task?: Partial<Task>;
+  task?: TaskProps['task'];
   board?: Board['id'];
-  column?: Partial<Column>;
+  column?: ColumnProps['column'];
 }
 
 interface ModalStore {
@@ -22,5 +24,5 @@ export const useModal = create<ModalStore>((set) => ({
   data: {},
   isOpen: false,
   onOpen: (type, data = {}) => set({ isOpen: true, type, data }),
-  onClose: () => set({ type: null, isOpen: false })
+  onClose: () => set({ type: null, isOpen: false, data: {} })
 }));

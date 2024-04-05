@@ -52,7 +52,7 @@ const Columns: FC<Props> = ({ columns, activeBoardId }) => {
       {columns.map((column) => (
         <div style={{ maxWidth: `${COLUMN_WIDTH}px` }} key={column.id}>
           <Column column={column} />
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-4">
             {column.tasks?.map((task) => <Task key={task?.id} task={task} />)}
           </div>
         </div>

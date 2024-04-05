@@ -65,8 +65,6 @@ const AddNewColumnModal = () => {
     mutateAddColumn.mutate(data);
   };
 
-  console.log(data);
-
   const removeColumn = (Idx: number) => {
     remove(Idx);
   };

@@ -87,8 +87,6 @@ const AddNewBoard = () => {
     }
   });
 
-  form.getValues('name');
-
   const onSubmit = (data: CreateBoard) => {
     mutateAddBoard.mutate(data);
   };

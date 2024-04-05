@@ -89,7 +89,11 @@ const FormLabel = React.forwardRef<
     <span className="relative w-max">
       <Label
         ref={ref}
-        className={cn('text-black dark:text-white', error && 'text-destructive', className)}
+        className={cn(
+          'text-brand-regent-grey dark:text-white',
+          error && 'text-destructive',
+          className
+        )}
         htmlFor={formItemId}
         {...props}
       />

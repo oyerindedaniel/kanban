@@ -19,8 +19,6 @@ const TopBar = () => {
 
   const boardName = pathname.trim().toLowerCase().split('/')[2];
 
-  console.log(boardName);
-
   return (
     <nav className="bg-white dark:bg-brand-ebony-clay text-black dark:text-white flex h-24 items-center md:p-1.5">
       <Image className="ml-6" src={KanbanLogo} alt="logo" />
