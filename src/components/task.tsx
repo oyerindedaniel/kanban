@@ -14,14 +14,24 @@ export interface TaskProps {
 const Task: FC<TaskProps> = ({ task }) => {
   const { onOpen } = useModal();
 
+  const taskId = task.id;
+
+  const columnId = task.columnId;
+
   const taskSubTasks = task.subTasks;
 
   const taskSubTasksIsCompletedLength = taskSubTasks?.filter(
     (subTask) => subTask.isCompleted
   ).length;
 
+  const handleOnDrag = (e: React.DragEvent<HTMLDivElement>) => {
+    e.dataTransfer.setData('text', JSON.stringify({ previousColumnId: columnId, taskId }));
+  };
+
   return (
     <div
+      draggable
+      onDragStart={handleOnDrag}
       className={cn(
         'bg-white dark:bg-brand-ebony-clay text-white dark:text-black flex flex-col h-[88px] justify-center rounded-lg cursor-pointer px-4 py-3 shadow-md'
       )}

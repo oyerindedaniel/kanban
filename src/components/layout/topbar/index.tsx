@@ -1,6 +1,6 @@
 'use client';
 
-import { KanbanLogo, MoreOptionsIcon } from '@/assets';
+import { KanbanLogo, KanbanLogoDark, MoreOptionsIcon } from '@/assets';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -10,10 +10,13 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useModal } from '@/hooks/use-modal-store';
 import { useAppSelector } from '@/store/hooks';
+import { useTheme } from 'next-themes';
 import Image from 'next/image';
 
 const TopBar = () => {
   const { onOpen } = useModal();
+
+  const { theme } = useTheme();
 
   const { board } = useAppSelector((state) => state.GlobalService);
 
@@ -21,7 +24,11 @@ const TopBar = () => {
 
   return (
     <nav className="bg-white dark:bg-brand-ebony-clay text-black dark:text-white flex h-24 items-center md:p-1.5">
-      <Image className="ml-6" src={KanbanLogo} alt="logo" />
+      {theme === 'light' ? (
+        <Image className="ml-6" src={KanbanLogo} alt="logo" />
+      ) : (
+        <Image className="ml-6" src={KanbanLogoDark} alt="logo" />
+      )}
       <span className="h-24 ml-[116px]"></span>
       <div className=" flex justify-between items-center w-full  px-5">
         <span className="font-bold text-2xl capitalize">{boardName}</span>

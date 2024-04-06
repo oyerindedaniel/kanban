@@ -212,7 +212,9 @@ const ViewTask = () => {
               ))}
             </div>
             <div className="mt-2">
-              {!!previousColumnId && <FormDescription>Status changed, update</FormDescription>}
+              {!!previousColumnId && (
+                <FormDescription>Status changed, update status</FormDescription>
+              )}
             </div>
 
             <FormField

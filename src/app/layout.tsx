@@ -5,6 +5,7 @@ import { ModalProvider } from '@/components/providers/modal-provider';
 import { Toaster } from '@/components/ui/toaster';
 import { Inter } from 'next/font/google';
 import { cookies } from 'next/headers';
+import { Toaster as ToasterSonner } from '@/components/ui/sonner';
 
 import { TRPCReactProvider } from '@/trpc/react';
 
@@ -26,8 +27,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <TRPCReactProvider cookies={cookies().toString()}>
           <Providers>
             {children}
-            <ModalProvider />
+            <ToasterSonner />
             <Toaster />
+            <ModalProvider />
           </Providers>
         </TRPCReactProvider>
       </body>

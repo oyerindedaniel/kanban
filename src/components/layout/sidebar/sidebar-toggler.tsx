@@ -1,6 +1,6 @@
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { ViewIcon } from '@/assets';
-import { updateUI } from '@/store/slice/UI';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { updateUI } from '@/store/slice/ui';
 import Image from 'next/image';
 
 const SideBarToggler = () => {

@@ -5,8 +5,18 @@ import ViewIcon from './view-icon.svg';
 import KanbanLogo from './KanbanLogo.svg';
 import MoreOptionsIcon from './more-options.svg';
 import ActiveSidebarIcon from './active-sidebar.svg';
+import KanbanLogoDark from './KanbanLogoDark.svg';
 
-export { MoonIcon, SunIcon, HideIcon, ViewIcon, KanbanLogo, MoreOptionsIcon, ActiveSidebarIcon };
+export {
+  MoonIcon,
+  SunIcon,
+  HideIcon,
+  ViewIcon,
+  KanbanLogo,
+  MoreOptionsIcon,
+  ActiveSidebarIcon,
+  KanbanLogoDark
+};
 
 type ImageItemProps = {
   className: string;
