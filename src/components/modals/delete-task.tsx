@@ -58,7 +58,13 @@ export default function DeleteTask() {
             {isDeleting && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
             Delete
           </Button>
-          <Button variant="cancel" size="sm" className="w-2/4" disabled={isDeleting}>
+          <Button
+            onClick={onClose}
+            variant="cancel"
+            size="sm"
+            className="w-2/4"
+            disabled={isDeleting}
+          >
             Cancel
           </Button>
         </AlertDialogFooter>

@@ -34,7 +34,7 @@ import { createTaskSchema, type CreateSubTask, type CreateTask } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ReloadIcon } from '@radix-ui/react-icons';
 import { useRouter } from 'next/navigation';
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import { useFieldArray, useForm, type FieldArrayMethodProps } from 'react-hook-form';
 import { RiCloseLine } from 'react-icons/ri';
 import ErrorAlert from '../ui/error-response';
@@ -46,9 +46,11 @@ const AddNewTaskModal = () => {
 
   const { isOpen, onClose, type, data } = useModal();
 
+  console.log(data);
+
   const isModalOpen = isOpen && type === 'addNewTask';
 
-  const asEdit = data?.asEdit ?? false;
+  const asEdit = (data?.asEdit && isModalOpen) ?? false;
 
   const taskId = asEdit ? data?.task!.id : '';
   const taskName = asEdit ? data?.task!.name : '';
@@ -66,12 +68,6 @@ const AddNewTaskModal = () => {
     // @ts-ignore
     values: { name: taskName, description: taskDescription, columnId, subTasks, boardId }
   });
-
-  useEffect(() => {
-    if (!asEdit) {
-      form.reset();
-    }
-  }, [asEdit]);
 
   const {
     control,
@@ -124,8 +120,6 @@ const AddNewTaskModal = () => {
       console.error(error);
     }
   });
-
-  console.log(form.formState.errors);
 
   const onSubmit = (data: CreateTask) => {
     if (asEdit) {

@@ -34,11 +34,18 @@ const Columns: FC<Props> = ({ columns, activeBoard }) => {
   useEffect(() => {
     dispatch(
       setGlobalState({
+        dataKey: 'board' as const,
+        data: activeBoard
+      })
+    );
+
+    dispatch(
+      setGlobalState({
         dataKey: 'columns' as const,
         data: columns
       })
     );
-  }, [dispatch, columns]);
+  }, [dispatch, columns, activeBoard]);
 
   return (
     <div

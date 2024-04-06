@@ -41,7 +41,9 @@ const taskSchema = z.object({
 });
 
 const createColumnSchema = z.object({
-  name: z.string().trim().min(1, { message: 'Can’t be empty' })
+  id: z.string().optional(),
+  name: z.string().trim().min(1, { message: 'Can’t be empty' }),
+  boardId: z.string().optional()
 });
 
 const createColumnsSchema = z.object({

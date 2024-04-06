@@ -44,6 +44,13 @@ export const taskRouter = createTRPCRouter({
   update: publicProcedure.input(createTaskSchema).mutation(async ({ ctx, input }) => {
     const { columnId, name, description, subTasks } = input;
 
+    if (!subTasks || (subTasks && subTasks.length === 0)) {
+      throw new TRPCError({
+        code: 'BAD_REQUEST',
+        message: 'Enter at least one subtask'
+      });
+    }
+
     const taskId = subTasks[0]?.taskId;
 
     await ctx.db.task.update({

@@ -20,6 +20,7 @@ import { Input } from '@/components/ui/input';
 import { useEffectOnce } from '@/hooks';
 import { useModal } from '@/hooks/use-modal-store';
 import { formatError, type ErrorObject } from '@/lib/utils';
+import { useAppSelector } from '@/store/hooks';
 import { api } from '@/trpc/react';
 import { createBoardSchema, type CreateBoard, type CreateColumn } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -33,28 +34,25 @@ import ErrorAlert from '../ui/error-response';
 const AddNewBoard = () => {
   const router = useRouter();
 
+  const { columns } = useAppSelector((state) => state.GlobalService);
+
   const { isOpen, onClose, type, data } = useModal();
 
   const isModalOpen = isOpen && type === 'addNewBoard';
 
+  const asEdit = (data?.asEdit && isModalOpen) ?? false;
+
+  const boardId = asEdit ? data?.board!.id : '';
+  const boardName = asEdit ? data?.board!.name : '';
+
+  const boardColumns = asEdit
+    ? columns?.map(({ id, name }) => ({ id, name, boardId }))
+    : [{ name: '' }];
+
   const form = useForm<CreateBoard>({
     resolver: zodResolver(createBoardSchema),
-    defaultValues: {
-      name: '',
-      columns: [{ name: '' }]
-    }
-  });
-
-  const mutateAddBoard = api.board.create.useMutation({
-    onSuccess: (data) => {
-      form.reset();
-      onClose();
-      router.push(`/board/${data.data.slug}`);
-      router.refresh();
-    },
-    onError: (error) => {
-      console.error(error);
-    }
+    // @ts-ignore
+    values: { name: boardName, columns: boardColumns }
   });
 
   const {
@@ -87,7 +85,34 @@ const AddNewBoard = () => {
     }
   });
 
+  const mutateAddBoard = api.board.create.useMutation({
+    onSuccess: (data) => {
+      form.reset();
+      onClose();
+      router.push(`/board/${data.data.slug}`);
+      router.refresh();
+    },
+    onError: (error) => {
+      console.error(error);
+    }
+  });
+
+  const mutateUpdateBoard = api.board.update.useMutation({
+    onSuccess: (data) => {
+      form.reset();
+      onClose();
+      router.refresh();
+    },
+    onError: (error) => {
+      console.error(error);
+    }
+  });
+
   const onSubmit = (data: CreateBoard) => {
+    if (asEdit) {
+      return mutateUpdateBoard.mutate(data);
+    }
+
     mutateAddBoard.mutate(data);
   };
 
@@ -95,6 +120,8 @@ const AddNewBoard = () => {
     reset();
     onClose();
   };
+
+  const isSubmitting = mutateUpdateBoard.isLoading || mutateAddBoard.isLoading;
 
   return (
     <Dialog open={isModalOpen} onOpenChange={handleClose}>
@@ -162,13 +189,13 @@ const AddNewBoard = () => {
             <DialogFooter className="px-6 py-4">
               <Button
                 type="submit"
-                disabled={mutateAddBoard.isLoading}
+                disabled={isSubmitting}
                 variant="default"
                 className="font-medium w-full"
                 size="lg"
               >
-                {mutateAddBoard.isLoading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
-                Create New Board
+                {isSubmitting && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
+                {asEdit ? 'Edit Board' : 'Create New Board'}
               </Button>
             </DialogFooter>
           </form>

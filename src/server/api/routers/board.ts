@@ -41,6 +41,64 @@ export const boardRouter = createTRPCRouter({
       data: boardWithColumns
     };
   }),
+  update: publicProcedure.input(createBoardSchema).mutation(async ({ ctx, input }) => {
+    const { name, columns } = input;
+
+    if (!columns || (columns && columns.length === 0)) {
+      throw new TRPCError({
+        code: 'BAD_REQUEST',
+        message: 'Enter at least one column'
+      });
+    }
+
+    const boardId = columns[0]?.boardId;
+
+    const existingBoard = await ctx.db.board.findUnique({
+      where: { id: boardId },
+      include: { columns: true }
+    });
+
+    if (!existingBoard) {
+      throw new TRPCError({
+        code: 'BAD_REQUEST',
+        message: 'Board does not exist'
+      });
+    }
+
+    const columnsToUpdate = [];
+    const columnsToDelete = [];
+
+    for (const existingColumn of existingBoard.columns) {
+      const matchingColumn = columns.find((column) => column.id === existingColumn.id);
+
+      if (matchingColumn) {
+        columnsToUpdate.push({
+          where: { id: existingColumn.id },
+          data: { name: matchingColumn.name }
+        });
+      } else {
+        columnsToDelete.push({ id: existingColumn.id });
+      }
+    }
+
+    await ctx.db.board.update({
+      where: {
+        id: boardId
+      },
+      data: {
+        name,
+        columns: {
+          updateMany: columnsToUpdate,
+          deleteMany: columnsToDelete,
+          create: columns.filter((column) => !column.id)
+        }
+      }
+    });
+
+    return {
+      data: true
+    };
+  }),
   delete: publicProcedure
     .input(
       z.object({
