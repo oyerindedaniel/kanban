@@ -28,8 +28,6 @@ export const columnRouter = createTRPCRouter({
   update: publicProcedure.input(subTasksSchema).mutation(async ({ ctx, input }) => {
     const { columnId, previousColumnId, taskId, subTasks } = input;
 
-    console.log({ columnId, previousColumnId, taskId });
-
     if (!previousColumnId || !columnId) {
       throw new TRPCError({
         code: 'BAD_REQUEST',

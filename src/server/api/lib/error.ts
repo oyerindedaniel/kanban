@@ -6,7 +6,7 @@ import { ZodError } from 'zod';
 import { env } from '@/env';
 
 export const handleServerError = (error: TRPCError | ZodError) => {
-  if (error instanceof PrismaClientKnownRequestError && env.NODE_ENV === 'production') {
+  if (error instanceof PrismaClientKnownRequestError && env.NODE_ENV === 'development') {
     // Handle Prisma unique constraint violation error
     if (error.code === 'P2002' && error.meta?.modelName) {
       const targetField = Array.isArray(error.meta.target) ? error.meta.target[0] : undefined;
