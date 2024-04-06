@@ -12,18 +12,18 @@ export default async function BoardPage({ params: { slug } }: BoardPageProps) {
 
   const columns = data?.data;
 
-  const boardId = data?.data[0]?.board;
+  const board = data?.data[0]?.board;
 
-  if (!boardId) {
+  if (!board) {
     return redirect('/');
   }
 
   return (
     <div>
       {columns && columns?.length > 0 ? (
-        <Columns columns={columns} activeBoard={boardId} />
+        <Columns columns={columns} activeBoard={board} />
       ) : (
-        <NoColumn activeBoard={boardId} />
+        <NoColumn activeBoard={board} />
       )}
     </div>
   );

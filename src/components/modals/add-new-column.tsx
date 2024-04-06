@@ -12,7 +12,7 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from '@/component
 import { Input } from '@/components/ui/input';
 import { useEffectOnce } from '@/hooks';
 import { useModal } from '@/hooks/use-modal-store';
-import { type ErrorObject, formatError } from '@/lib/utils';
+import { formatError, type ErrorObject } from '@/lib/utils';
 import { api } from '@/trpc/react';
 import { createColumnsSchema, type CreateColumn, type CreateColumns } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -22,9 +22,11 @@ import { useCallback, useEffect } from 'react';
 import { useFieldArray, useForm, type FieldArrayMethodProps } from 'react-hook-form';
 import { RiCloseLine } from 'react-icons/ri';
 import ErrorAlert from '../ui/error-response';
+import { useToast } from '../ui/use-toast';
 
 const AddNewColumnModal = () => {
   const router = useRouter();
+  const { toast } = useToast();
 
   const { isOpen, onClose, type, data } = useModal();
 
@@ -66,6 +68,15 @@ const AddNewColumnModal = () => {
   }, [form, data]);
 
   const onSubmit = (data: CreateColumns) => {
+    const columns = data?.columns;
+
+    if (!columns || (columns && columns.length === 0)) {
+      return toast({
+        variant: 'destructive',
+        description: 'Enter at least one column'
+      });
+    }
+
     mutateAddColumn.mutate(data);
   };
 

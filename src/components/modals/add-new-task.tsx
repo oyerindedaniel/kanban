@@ -38,15 +38,16 @@ import { useCallback } from 'react';
 import { useFieldArray, useForm, type FieldArrayMethodProps } from 'react-hook-form';
 import { RiCloseLine } from 'react-icons/ri';
 import ErrorAlert from '../ui/error-response';
+import { useToast } from '../ui/use-toast';
 
 const AddNewTaskModal = () => {
   const router = useRouter();
 
+  const { toast } = useToast();
+
   const { columns } = useAppSelector((state) => state.GlobalService);
 
   const { isOpen, onClose, type, data } = useModal();
-
-  console.log(data);
 
   const isModalOpen = isOpen && type === 'addNewTask';
 
@@ -122,6 +123,15 @@ const AddNewTaskModal = () => {
   });
 
   const onSubmit = (data: CreateTask) => {
+    const subTasks = data?.subTasks;
+
+    if (!subTasks || (subTasks && subTasks.length === 0)) {
+      return toast({
+        variant: 'destructive',
+        description: 'Enter at least one subtask'
+      });
+    }
+
     if (asEdit) {
       return mutateUpdateTask.mutate(data);
     }

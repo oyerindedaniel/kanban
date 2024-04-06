@@ -19,8 +19,6 @@ const TopBar = () => {
 
   const boardName = board?.name ?? '';
 
-  console.log(board);
-
   return (
     <nav className="bg-white dark:bg-brand-ebony-clay text-black dark:text-white flex h-24 items-center md:p-1.5">
       <Image className="ml-6" src={KanbanLogo} alt="logo" />
