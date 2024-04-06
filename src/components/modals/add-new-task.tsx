@@ -27,17 +27,17 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { useEffectOnce } from '@/hooks';
 import { useModal } from '@/hooks/use-modal-store';
+import { formatError, type ErrorObject } from '@/lib/utils';
 import { useAppSelector } from '@/store/hooks';
 import { api } from '@/trpc/react';
 import { createTaskSchema, type CreateSubTask, type CreateTask } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ReloadIcon } from '@radix-ui/react-icons';
 import { useRouter } from 'next/navigation';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useFieldArray, useForm, type FieldArrayMethodProps } from 'react-hook-form';
 import { RiCloseLine } from 'react-icons/ri';
 import ErrorAlert from '../ui/error-response';
-import { ErrorObject, formatError } from '@/lib/utils';
 
 const AddNewTaskModal = () => {
   const router = useRouter();
@@ -48,22 +48,30 @@ const AddNewTaskModal = () => {
 
   const isModalOpen = isOpen && type === 'addNewTask';
 
+  const asEdit = data?.asEdit ?? false;
+
+  const taskId = asEdit ? data?.task!.id : '';
+  const taskName = asEdit ? data?.task!.name : '';
+  const taskDescription = asEdit ? data?.task!.description : '';
+  const columnId = asEdit ? data?.task!.columnId : '';
+  const subTasks = asEdit
+    ? data?.task?.subTasks.map((subTask) => ({ ...subTask, taskId }))
+    : [{ name: '' }];
+  const boardId = asEdit ? data?.task?.boardId : '';
+
   const activeBoardId = columns?.[0]?.boardId ?? '';
 
   const form = useForm<CreateTask>({
-    resolver: zodResolver(createTaskSchema)
+    resolver: zodResolver(createTaskSchema),
+    // @ts-ignore
+    values: { name: taskName, description: taskDescription, columnId, subTasks, boardId }
   });
 
-  const mutateAddTask = api.task.create.useMutation({
-    onSuccess: () => {
+  useEffect(() => {
+    if (!asEdit) {
       form.reset();
-      onClose();
-      router.refresh();
-    },
-    onError: (error) => {
-      console.error(error);
     }
-  });
+  }, [asEdit]);
 
   const {
     control,
@@ -81,7 +89,7 @@ const AddNewTaskModal = () => {
     remove(Idx);
   };
 
-  const addNewTask = useCallback(
+  const addNewSubTask = useCallback(
     (value: CreateSubTask, options?: FieldArrayMethodProps) => {
       append(value);
       // clearErrors();
@@ -91,13 +99,43 @@ const AddNewTaskModal = () => {
 
   useEffectOnce(() => {
     if (fields.length === 0) {
-      addNewTask({ name: '' });
+      addNewSubTask({ name: '' });
     }
   });
 
+  const mutateAddTask = api.task.create.useMutation({
+    onSuccess: () => {
+      form.reset();
+      onClose();
+      router.refresh();
+    },
+    onError: (error) => {
+      console.error(error);
+    }
+  });
+
+  const mutateUpdateTask = api.task.update.useMutation({
+    onSuccess: () => {
+      form.reset();
+      onClose();
+      router.refresh();
+    },
+    onError: (error) => {
+      console.error(error);
+    }
+  });
+
+  console.log(form.formState.errors);
+
   const onSubmit = (data: CreateTask) => {
+    if (asEdit) {
+      return mutateUpdateTask.mutate(data);
+    }
+
     mutateAddTask.mutate({ ...data, boardId: activeBoardId });
   };
+
+  const isLoading = mutateAddTask.isLoading || mutateUpdateTask.isLoading;
 
   const handleClose = () => {
     reset();
@@ -180,7 +218,7 @@ const AddNewTaskModal = () => {
               type="button"
               className="font-bold w-full my-4"
               variant="secondary"
-              onClick={() => addNewTask({ name: '' })}
+              onClick={() => addNewSubTask({ name: '' })}
               size="lg"
             >
               + Add New SubTask
@@ -216,13 +254,13 @@ const AddNewTaskModal = () => {
             <DialogFooter className="px-6 py-4">
               <Button
                 type="submit"
-                disabled={mutateAddTask.isLoading}
+                disabled={isLoading}
                 variant="default"
                 className="font-medium w-full my-6"
                 size="lg"
               >
-                {mutateAddTask.isLoading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
-                Create Task
+                {isLoading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
+                {asEdit ? 'Update Task' : 'Create Task'}
               </Button>
             </DialogFooter>
           </form>

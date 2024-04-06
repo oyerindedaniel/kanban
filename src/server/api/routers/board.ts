@@ -41,6 +41,25 @@ export const boardRouter = createTRPCRouter({
       data: boardWithColumns
     };
   }),
+  delete: publicProcedure
+    .input(
+      z.object({
+        id: z.string()
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { id } = input;
+
+      await ctx.db.board.delete({
+        where: {
+          id
+        }
+      });
+
+      return {
+        data: true
+      };
+    }),
   findById: publicProcedure
     .input(
       z.object({
@@ -55,7 +74,14 @@ export const boardRouter = createTRPCRouter({
           id
         },
         include: {
-          columns: { include: { tasks: true } }
+          columns: {
+            include: {
+              tasks: true
+            },
+            orderBy: {
+              createdAt: 'desc'
+            }
+          }
         }
       });
 
@@ -77,7 +103,12 @@ export const boardRouter = createTRPCRouter({
           slug
         },
         include: {
-          columns: { include: { tasks: true } }
+          columns: {
+            include: { tasks: true },
+            orderBy: {
+              createdAt: 'desc'
+            }
+          }
         }
       });
 
@@ -91,6 +122,9 @@ export const boardRouter = createTRPCRouter({
         id: true,
         name: true,
         slug: true
+      },
+      orderBy: {
+        createdAt: 'desc'
       }
     });
 

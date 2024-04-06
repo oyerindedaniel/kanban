@@ -1,7 +1,8 @@
 import { z } from 'zod';
 
 import { createTRPCRouter, publicProcedure } from '@/server/api/trpc';
-import { createColumnsSchema } from '@/types';
+import { createColumnsSchema, subTasksSchema } from '@/types';
+import { TRPCError } from '@trpc/server';
 
 export const columnRouter = createTRPCRouter({
   create: publicProcedure.input(createColumnsSchema).mutation(async ({ ctx, input }) => {
@@ -24,6 +25,29 @@ export const columnRouter = createTRPCRouter({
       data: createdColumns
     };
   }),
+  update: publicProcedure.input(subTasksSchema).mutation(async ({ ctx, input }) => {
+    const { columnId, previousColumnId, taskId, subTasks } = input;
+
+    if (!previousColumnId || !columnId) {
+      throw new TRPCError({
+        code: 'BAD_REQUEST',
+        message: 'Column does not exist.'
+      });
+    }
+
+    await ctx.db.column.update({
+      where: { id: columnId },
+      data: {
+        tasks: {
+          connect: { id: taskId }
+        }
+      }
+    });
+
+    return {
+      data: true
+    };
+  }),
   findById: publicProcedure
     .input(
       z.object({
@@ -38,7 +62,12 @@ export const columnRouter = createTRPCRouter({
           id
         },
         include: {
-          tasks: { include: { subTasks: true } }
+          tasks: {
+            include: { subTasks: true },
+            orderBy: {
+              createdAt: 'desc'
+            }
+          }
         }
       });
 
@@ -62,7 +91,13 @@ export const columnRouter = createTRPCRouter({
           }
         },
         include: {
-          tasks: { include: { subTasks: true } }
+          board: true,
+          tasks: {
+            include: { subTasks: true },
+            orderBy: {
+              createdAt: 'desc'
+            }
+          }
         }
       });
 
@@ -84,7 +119,12 @@ export const columnRouter = createTRPCRouter({
           boardId
         },
         include: {
-          tasks: { include: { subTasks: true } }
+          tasks: {
+            include: { subTasks: true },
+            orderBy: {
+              createdAt: 'desc'
+            }
+          }
         }
       });
 
@@ -95,7 +135,12 @@ export const columnRouter = createTRPCRouter({
   findAll: publicProcedure.query(async ({ ctx, input }) => {
     const columns = await ctx.db.column.findMany({
       include: {
-        tasks: { include: { subTasks: true } }
+        tasks: {
+          include: { subTasks: true },
+          orderBy: {
+            createdAt: 'desc'
+          }
+        }
       }
     });
 

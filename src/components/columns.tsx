@@ -19,14 +19,14 @@ export interface Props {
       tasks: Array<TaskType & { subTasks: Array<SubTask> }>;
     }
   >;
-  activeBoardId: Board['id'];
+  activeBoard: Board;
 }
 
 const GAP = 32;
 const ADD_COLUMN_WIDTH = 288;
 const COLUMN_WIDTH = 320;
 
-const Columns: FC<Props> = ({ columns, activeBoardId }) => {
+const Columns: FC<Props> = ({ columns, activeBoard }) => {
   const { onOpen } = useModal();
 
   const dispatch = useAppDispatch();
@@ -60,7 +60,7 @@ const Columns: FC<Props> = ({ columns, activeBoardId }) => {
 
       <div
         style={{ maxWidth: `${ADD_COLUMN_WIDTH}px` }}
-        onClick={() => onOpen('addNewColumn', { board: activeBoardId })}
+        onClick={() => onOpen('addNewColumn', { board: activeBoard })}
         className="min-h-[75vh] bg-gradient-to-b from-brand-sky-blue/100 to-brand-light-blue/50 justify-center flex rounded-lg cursor-pointer"
       >
         <p className="my-auto font-medium text-brand-regent-grey hover:text-brand-iris">

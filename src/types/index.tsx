@@ -6,9 +6,9 @@ export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 
 const createSubTaskSchema = z.object({
+  id: z.string().optional(),
   name: z.string().trim().min(1, { message: 'Can’t be empty' }),
   isCompleted: z.boolean().optional(),
-  currentStatus: z.string().optional(),
   taskId: z.string().optional()
 });
 

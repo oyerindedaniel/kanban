@@ -12,16 +12,18 @@ import { ReloadIcon } from '@radix-ui/react-icons';
 import { useRouter } from 'next/navigation';
 import { Button } from '../ui/button';
 
-export default function DeleteTask() {
+export default function DeleteBoard() {
   const router = useRouter();
 
   const { isOpen, onClose, type, data } = useModal();
 
-  const isModalOpen = isOpen && type === 'deleteTask';
+  const isModalOpen = isOpen && type === 'deleteBoard';
 
-  const taskId = data?.task?.id ?? '';
+  const boardId = data?.board?.id ?? '';
 
-  const mutateDeleteTask = api.task.delete.useMutation({
+  const boardName = data?.board?.name ?? '';
+
+  const mutateDeleteBoard = api.board.delete.useMutation({
     onSuccess: () => {
       onClose();
       router.refresh();
@@ -35,16 +37,16 @@ export default function DeleteTask() {
     onClose();
   };
 
-  const isDeleting = mutateDeleteTask.isLoading;
+  const isDeleting = mutateDeleteBoard.isLoading;
 
   return (
     <AlertDialog open={isModalOpen} onOpenChange={handleClose}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Delete this task?</AlertDialogTitle>
+          <AlertDialogTitle>Delete this board?</AlertDialogTitle>
           <AlertDialogDescription>
-            Are you sure you want to delete the ‘Build settings UI’ task and its subtasks? This
-            action cannot be reversed.
+            {`Are you sure you want to delete the ‘${boardName}’ board? This action will remove all
+            columns and tasks and cannot be reversed.`}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -53,7 +55,7 @@ export default function DeleteTask() {
             variant="destructive"
             size="sm"
             disabled={isDeleting}
-            onClick={() => mutateDeleteTask.mutate({ id: taskId })}
+            onClick={() => mutateDeleteBoard.mutate({ id: boardId })}
           >
             {isDeleting && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
             Delete

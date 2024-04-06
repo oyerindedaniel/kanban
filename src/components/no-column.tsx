@@ -6,10 +6,10 @@ import { type FC } from 'react';
 import { Button } from './ui/button';
 
 interface Props {
-  activeBoardId: Board['id'];
+  activeBoard: Board;
 }
 
-const NoColumn: FC<Props> = ({ activeBoardId }) => {
+const NoColumn: FC<Props> = ({ activeBoard }) => {
   const { onOpen } = useModal();
 
   return (
@@ -17,7 +17,7 @@ const NoColumn: FC<Props> = ({ activeBoardId }) => {
       <p className="text-brand-regent-grey font-medium mb-8">
         This board is empty. Create a new column to get started.
       </p>
-      <Button variant="default" onClick={() => onOpen('addNewColumn', { board: activeBoardId })}>
+      <Button variant="default" onClick={() => onOpen('addNewColumn', { board: activeBoard })}>
         + Add New Column
       </Button>
     </div>

@@ -15,7 +15,7 @@ import { usePathname } from 'next/navigation';
 
 const TopBar = () => {
   const pathname = usePathname();
-  const { onOpen } = useModal();
+  const { isOpen, onOpen, onClose, type, data } = useModal();
 
   const boardName = pathname.trim().toLowerCase().split('/')[2];
 
@@ -45,7 +45,10 @@ const TopBar = () => {
               <DropdownMenuItem className="cursor-pointer">
                 <span>Edit Board</span>
               </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer">
+              <DropdownMenuItem
+                className="cursor-pointer"
+                onClick={() => onOpen('deleteBoard', { task: data.task })}
+              >
                 <span className="text-brand-valentine-red">Delete Board</span>
               </DropdownMenuItem>
             </DropdownMenuContent>

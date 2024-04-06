@@ -1,5 +1,5 @@
 import { createTRPCRouter, publicProcedure } from '@/server/api/trpc';
-import { createTaskSchema, subTasksSchema } from '@/types';
+import { createTaskSchema } from '@/types';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 
@@ -41,21 +41,28 @@ export const taskRouter = createTRPCRouter({
       data: task
     };
   }),
-  update: publicProcedure.input(subTasksSchema).mutation(async ({ ctx, input }) => {
-    const { columnId, previousColumnId, taskId, subTasks } = input;
+  update: publicProcedure.input(createTaskSchema).mutation(async ({ ctx, input }) => {
+    const { columnId, name, description, subTasks } = input;
 
-    if (!previousColumnId || !columnId) {
-      throw new TRPCError({
-        code: 'BAD_REQUEST',
-        message: 'Column does not exist.'
-      });
-    }
+    const taskId = subTasks[0]?.taskId;
 
-    await ctx.db.column.update({
-      where: { id: columnId },
+    await ctx.db.task.update({
+      where: {
+        id: taskId
+      },
       data: {
-        tasks: {
-          connect: { id: taskId }
+        name,
+        description,
+        column: {
+          connect: { id: columnId }
+        },
+        subTasks: {
+          updateMany: subTasks.map((subTask) => ({
+            where: { id: subTask.id },
+            data: {
+              name: subTask.name
+            }
+          }))
         }
       }
     });
@@ -87,6 +94,9 @@ export const taskRouter = createTRPCRouter({
     const tasks = await ctx.db.task.findMany({
       include: {
         subTasks: true
+      },
+      orderBy: {
+        createdAt: 'desc'
       }
     });
 

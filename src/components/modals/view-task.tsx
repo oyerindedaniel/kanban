@@ -131,7 +131,7 @@ const ViewTask = () => {
     }
   });
 
-  const mutateUpdateColumn = api.task.update.useMutation({
+  const mutateUpdateColumn = api.column.update.useMutation({
     onSuccess: () => {
       onClose();
       router.refresh();
@@ -165,7 +165,7 @@ const ViewTask = () => {
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-48">
                 <DropdownMenuItem
-                  onClick={() => onOpen('addNewTask', { task: data.task })}
+                  onClick={() => onOpen('addNewTask', { task: data.task, asEdit: true })}
                   className="cursor-pointer"
                 >
                   <span>Edit Task</span>

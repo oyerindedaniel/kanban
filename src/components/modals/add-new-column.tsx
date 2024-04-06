@@ -12,7 +12,7 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from '@/component
 import { Input } from '@/components/ui/input';
 import { useEffectOnce } from '@/hooks';
 import { useModal } from '@/hooks/use-modal-store';
-import { ErrorObject, formatError } from '@/lib/utils';
+import { type ErrorObject, formatError } from '@/lib/utils';
 import { api } from '@/trpc/react';
 import { createColumnsSchema, type CreateColumn, type CreateColumns } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -29,6 +29,8 @@ const AddNewColumnModal = () => {
   const { isOpen, onClose, type, data } = useModal();
 
   const isModalOpen = isOpen && type === 'addNewColumn';
+
+  const boardId = data.board?.id;
 
   const mutateAddColumn = api.column.create.useMutation({
     onSuccess: () => {
@@ -60,7 +62,7 @@ const AddNewColumnModal = () => {
   });
 
   useEffect(() => {
-    form.setValue('boardId', data.board!);
+    form.setValue('boardId', boardId!);
   }, [form, data]);
 
   const onSubmit = (data: CreateColumns) => {
