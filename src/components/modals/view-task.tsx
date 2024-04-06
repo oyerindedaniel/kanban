@@ -1,5 +1,6 @@
 'use client';
 
+import { MoreOptionsIcon } from '@/assets';
 import {
   Dialog,
   DialogContent,
@@ -7,6 +8,12 @@ import {
   DialogHeader,
   DialogTitle
 } from '@/components/ui/dialog';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu';
 import {
   Form,
   FormControl,
@@ -29,6 +36,7 @@ import { api } from '@/trpc/react';
 import { subTasksSchema, type subTaskSchema } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ReloadIcon } from '@radix-ui/react-icons';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo } from 'react';
 import { useFieldArray, useForm, type FieldArrayMethodProps } from 'react-hook-form';
@@ -40,7 +48,7 @@ type subTask = z.infer<typeof subTaskSchema>;
 type subTasks = z.infer<typeof subTasksSchema>;
 
 const ViewTask = () => {
-  const { isOpen, onClose, type, data } = useModal();
+  const { isOpen, onOpen, onClose, type, data } = useModal();
 
   const router = useRouter();
 
@@ -55,19 +63,17 @@ const ViewTask = () => {
   const activeColumn = (columns ?? []).find((column) =>
     column.tasks.find((task) => task.id === taskId)
   ) ?? { id: '' };
+
   const otherNonActiveColumn = (columns ?? []).filter(
     (column) => column.id !== activeColumn.id
   ) ?? [{ id: '' }];
+
   const formattedTaskSubTasks = useMemo(() => {
     return taskSubTasks?.map((subTask) => ({
       id: subTask.id,
       isCompleted: subTask.isCompleted!
     }));
   }, [taskSubTasks]);
-
-  const taskSubTasksIsCompletedLength = taskSubTasks?.filter(
-    (subTask) => subTask.isCompleted
-  ).length;
 
   const isModalOpen = isOpen && type === 'viewTask';
 
@@ -81,14 +87,18 @@ const ViewTask = () => {
     }
   });
 
+  const subTasks = form.getValues('subTasks');
+
+  const taskSubTasksIsCompletedLength = subTasks?.filter((subTask) => subTask.isCompleted).length;
+
   // watches for changes in columnId
   const currentActiveColumnId = form.watch('columnId');
+
   const previousColumnId = form.watch('previousColumnId');
 
   useEffect(() => {
     const previousColumnId =
       activeColumn.id === currentActiveColumnId ? undefined : activeColumn.id;
-    console.log(previousColumnId);
     form.setValue('previousColumnId', previousColumnId);
   }, [currentActiveColumnId, activeColumn.id]);
 
@@ -147,7 +157,28 @@ const ViewTask = () => {
       <DialogContent className="bg-white text-black overflow-hidden">
         {isSubmitting && <p className="text-sm text-gray-400">Updating ...</p>}
         <DialogHeader className="pt-4 text-black dark:text-white">
-          <DialogTitle className="text-xl">{taskName}</DialogTitle>
+          <DialogTitle className="text-xl flex justify-between">
+            <span>{taskName}</span>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Image className="cursor-pointer" src={MoreOptionsIcon} alt="More options" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-48">
+                <DropdownMenuItem
+                  onClick={() => onOpen('addNewTask', { task: data.task })}
+                  className="cursor-pointer"
+                >
+                  <span>Edit Task</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => onOpen('deleteTask', { task: data.task })}
+                  className="cursor-pointer"
+                >
+                  <span className="text-brand-valentine-red">Delete Task</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </DialogTitle>
           <DialogDescription className="text-base text-black dark:text-white">
             {taskDescription}
           </DialogDescription>
@@ -162,7 +193,7 @@ const ViewTask = () => {
                     control={form.control}
                     name={`subTasks.${Idx}.isCompleted`}
                     render={({ field }) => (
-                      <FormItem className="flex flex-row bg-brand-lavender-mist items-start space-x-3 space-y-0 rounded-md border p-4">
+                      <FormItem className="flex flex-row bg-brand-lavender-mist dark:bg-brand-dark items-start space-x-3 space-y-0 rounded-md border p-4">
                         <FormControl>
                           <Checkbox
                             type="submit"

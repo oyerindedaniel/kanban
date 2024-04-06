@@ -10,7 +10,9 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: 'bg-brand-iris text-white hover:bg-brand-biloba-flower',
-        destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
+        destructive: 'bg-brand-valentine-red hover:bg-brand-light-salmon-pink text-white',
+        cancel:
+          'bg-brand-lavender-mist hover:bg-brand-lavender-mist/95 dark:bg-white text-brand-iris',
         outline: 'border border-input bg-background hover:bg-accent hover:text-accent-foreground',
         secondary: 'bg-brand-iris/10 text-brand-iris dark:bg-white',
         ghost: 'hover:bg-accent hover:text-accent-foreground',
@@ -20,7 +22,7 @@ const buttonVariants = cva(
       size: {
         default: 'h-10 py-2 px-4',
         xs: 'h-10 px-3',
-        sm: 'h-12 px-3',
+        sm: 'h-11 px-3',
         lg: 'h-12 px-14',
         icon: 'h-9 w-9'
       }

@@ -12,6 +12,7 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from '@/component
 import { Input } from '@/components/ui/input';
 import { useEffectOnce } from '@/hooks';
 import { useModal } from '@/hooks/use-modal-store';
+import { ErrorObject, formatError } from '@/lib/utils';
 import { api } from '@/trpc/react';
 import { createColumnsSchema, type CreateColumn, type CreateColumns } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -20,6 +21,7 @@ import { useRouter } from 'next/navigation';
 import { useCallback, useEffect } from 'react';
 import { useFieldArray, useForm, type FieldArrayMethodProps } from 'react-hook-form';
 import { RiCloseLine } from 'react-icons/ri';
+import ErrorAlert from '../ui/error-response';
 
 const AddNewColumnModal = () => {
   const router = useRouter();
@@ -94,6 +96,9 @@ const AddNewColumnModal = () => {
         <DialogHeader className="pt-8">
           <DialogTitle className="text-lg text-black dark:text-white">Add New Column</DialogTitle>
         </DialogHeader>
+        {mutateAddColumn.isError && (
+          <ErrorAlert errors={formatError(mutateAddColumn.error?.shape?.data as ErrorObject)} />
+        )}
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <div className="flex flex-col gap-3">

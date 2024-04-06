@@ -6,6 +6,7 @@ import AddNewBoard from '../modals/add-new-board';
 import AddNewColumnModal from '../modals/add-new-column';
 import AddNewTaskModal from '../modals/add-new-task';
 import ViewTask from '../modals/view-task';
+import { DeleteTask } from '../modals/delete-task';
 
 export const ModalProvider = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -24,6 +25,7 @@ export const ModalProvider = () => {
       <AddNewColumnModal />
       <AddNewTaskModal />
       <ViewTask />
+      <DeleteTask />
     </>
   );
 };

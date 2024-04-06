@@ -9,13 +9,13 @@ export const boardRouter = createTRPCRouter({
   create: publicProcedure.input(createBoardSchema).mutation(async ({ ctx, input }) => {
     const { name, columns } = input;
 
-    const existedName = await ctx.db.board.findFirst({
+    const existedBoard = await ctx.db.board.findFirst({
       where: {
         name: name.toLowerCase()
       }
     });
 
-    if (existedName) {
+    if (existedBoard) {
       throw new TRPCError({
         code: 'BAD_REQUEST',
         message: 'Board Name exist.'

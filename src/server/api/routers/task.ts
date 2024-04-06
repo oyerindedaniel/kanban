@@ -1,10 +1,18 @@
 import { createTRPCRouter, publicProcedure } from '@/server/api/trpc';
 import { createTaskSchema, subTasksSchema } from '@/types';
 import { TRPCError } from '@trpc/server';
+import { z } from 'zod';
 
 export const taskRouter = createTRPCRouter({
   create: publicProcedure.input(createTaskSchema).mutation(async ({ ctx, input }) => {
     const { name, description, columnId, subTasks, boardId } = input;
+
+    if (!subTasks || (subTasks && subTasks.length === 0)) {
+      throw new TRPCError({
+        code: 'BAD_REQUEST',
+        message: 'Enter at least one subtask'
+      });
+    }
 
     const task = await ctx.db.task.create({
       data: {
@@ -56,6 +64,25 @@ export const taskRouter = createTRPCRouter({
       data: true
     };
   }),
+  delete: publicProcedure
+    .input(
+      z.object({
+        id: z.string()
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { id } = input;
+
+      await ctx.db.task.delete({
+        where: {
+          id
+        }
+      });
+
+      return {
+        data: true
+      };
+    }),
   findAll: publicProcedure.query(async ({ ctx, input }) => {
     const tasks = await ctx.db.task.findMany({
       include: {
@@ -64,7 +91,7 @@ export const taskRouter = createTRPCRouter({
     });
 
     return {
-      tasks: tasks || []
+      data: tasks || []
     };
   })
 });

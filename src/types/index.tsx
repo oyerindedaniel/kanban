@@ -94,32 +94,3 @@ export type {
   SubTask,
   Task
 };
-
-// type BaseBoard = {
-//   name: string;
-//   columns: {
-//     name: string;
-//     tasks: {
-//       name: string;
-//       description: string;
-//       columnId: string;
-//       subTasks: {
-//         name: string;
-//         id?: string | undefined;
-//         isCompleted?: boolean | undefined;
-//         currentStatus?: string | undefined;
-//         createdAt?: Date | undefined;
-//         updatedAt?: Date | undefined;
-//         taskId?: string | undefined;
-//       }[];
-//       id?: string | undefined;
-//       createdAt?: Date | undefined;
-//       updatedAt?: Date | undefined;
-//       boardId?: string | undefined;
-//     }[];
-//     id?: string | undefined;
-//     createdAt?: Date | undefined;
-//     updatedAt?: Date | undefined;
-//     boardId?: string | undefined;
-//   }[];
-// };

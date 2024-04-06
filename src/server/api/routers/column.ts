@@ -7,8 +7,8 @@ export const columnRouter = createTRPCRouter({
   create: publicProcedure.input(createColumnsSchema).mutation(async ({ ctx, input }) => {
     const { columns, boardId } = input;
     const createdColumns = await Promise.all(
-      columns.map(async (column) => {
-        const createdColumn = await ctx.db.column.create({
+      columns.map((column) => {
+        return ctx.db.column.create({
           data: {
             name: column.name,
             boardId
@@ -17,7 +17,6 @@ export const columnRouter = createTRPCRouter({
             tasks: { include: { subTasks: true } }
           }
         });
-        return createdColumn;
       })
     );
 

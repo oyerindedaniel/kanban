@@ -13,7 +13,7 @@ const ErrorAlert: React.FC<ErrorAlertProps> = ({ errors }) => {
       {errors.map((error, Idx) => (
         <Alert key={Idx} variant="destructive">
           <IoIosAlert size="24px" />
-          <AlertDescription className="capitalize">{error.message!}</AlertDescription>
+          <AlertDescription>{error.message!}</AlertDescription>
         </Alert>
       ))}
     </div>

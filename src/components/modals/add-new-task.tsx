@@ -36,6 +36,8 @@ import { useRouter } from 'next/navigation';
 import { useCallback } from 'react';
 import { useFieldArray, useForm, type FieldArrayMethodProps } from 'react-hook-form';
 import { RiCloseLine } from 'react-icons/ri';
+import ErrorAlert from '../ui/error-response';
+import { ErrorObject, formatError } from '@/lib/utils';
 
 const AddNewTaskModal = () => {
   const router = useRouter();
@@ -46,7 +48,7 @@ const AddNewTaskModal = () => {
 
   const isModalOpen = isOpen && type === 'addNewTask';
 
-  const activeBoardId = columns![0]?.boardId;
+  const activeBoardId = columns?.[0]?.boardId ?? '';
 
   const form = useForm<CreateTask>({
     resolver: zodResolver(createTaskSchema)
@@ -94,7 +96,6 @@ const AddNewTaskModal = () => {
   });
 
   const onSubmit = (data: CreateTask) => {
-    console.log(data);
     mutateAddTask.mutate({ ...data, boardId: activeBoardId });
   };
 
@@ -109,6 +110,9 @@ const AddNewTaskModal = () => {
         <DialogHeader>
           <DialogTitle className="text-lg text-black dark:text-white">Add New Task</DialogTitle>
         </DialogHeader>
+        {mutateAddTask.isError && (
+          <ErrorAlert errors={formatError(mutateAddTask.error?.shape?.data as ErrorObject)} />
+        )}
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <FormField

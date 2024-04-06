@@ -20,7 +20,6 @@ model Board {
     columns Column[]
     tasks Task[]
     // subTasks SubTask[]
-
 }
 
 model Column {
@@ -31,11 +30,13 @@ model Column {
     board       Board     @relation(fields: [boardId], references: [id], onDelete: Cascade)
     boardId     String
     tasks Task[]
+
+    @@unique([boardId, name])
 }
 
 model Task {
     id        String     @id @default(uuid())
-    name      String     @unique
+    name      String
     description String
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -44,11 +45,13 @@ model Task {
     column       Column     @relation(fields: [columnId], references: [id], onDelete: Cascade)
     columnId     String
     subTasks SubTask[]
+
+    @@unique([columnId, name])
 }
 
 model SubTask {
     id        String      @id @default(uuid())
-    name      String      @unique
+    name      String
     isCompleted Boolean? @default(false)
     currentStatus String?
     createdAt DateTime @default(now())
@@ -57,6 +60,4 @@ model SubTask {
     taskId     String
     // board       Board     @relation(fields: [boardId], references: [id], onDelete: Cascade)
     // boardId     String
-
-    // @@index([id]) // searching and querying based on the "id" field will be more efficient
 }
