@@ -53,6 +53,36 @@ export const taskRouter = createTRPCRouter({
 
     const taskId = subTasks[0]?.taskId;
 
+    const existingTask = await ctx.db.task.findUnique({
+      where: { id: taskId },
+      include: {
+        subTasks: true
+      }
+    });
+
+    if (!existingTask) {
+      throw new TRPCError({
+        code: 'BAD_REQUEST',
+        message: 'Task does not exist'
+      });
+    }
+
+    const subTasksToUpdate = [];
+    const subTasksToDelete = [];
+
+    for (const existingSubTask of existingTask.subTasks) {
+      const matchingSubTask = subTasks.find((subTask) => subTask.id === existingSubTask.id);
+
+      if (matchingSubTask) {
+        subTasksToUpdate.push({
+          where: { id: existingSubTask.id },
+          data: { name: matchingSubTask.name }
+        });
+      } else {
+        subTasksToDelete.push({ id: existingSubTask.id });
+      }
+    }
+
     await ctx.db.task.update({
       where: {
         id: taskId
@@ -64,12 +94,9 @@ export const taskRouter = createTRPCRouter({
           connect: { id: columnId }
         },
         subTasks: {
-          updateMany: subTasks.map((subTask) => ({
-            where: { id: subTask.id },
-            data: {
-              name: subTask.name
-            }
-          }))
+          updateMany: subTasksToUpdate,
+          deleteMany: subTasksToDelete,
+          create: subTasks.filter((subTask) => !subTask.id)
         }
       }
     });

@@ -12,6 +12,7 @@ import { useModal } from '@/hooks/use-modal-store';
 import { useAppSelector } from '@/store/hooks';
 import { useTheme } from 'next-themes';
 import Image from 'next/image';
+import { useInitialRender } from '@/hooks/useInitialRender';
 
 const TopBar = () => {
   const { onOpen } = useModal();
@@ -22,9 +23,11 @@ const TopBar = () => {
 
   const boardName = board?.name ?? '';
 
+  const initialRenderComplete = useInitialRender();
+
   return (
     <nav className="bg-white dark:bg-brand-ebony-clay text-black dark:text-white flex h-24 items-center md:p-1.5">
-      {theme === 'light' ? (
+      {theme === 'light' && initialRenderComplete ? (
         <Image className="ml-6" src={KanbanLogo} alt="logo" />
       ) : (
         <Image className="ml-6" src={KanbanLogoDark} alt="logo" />

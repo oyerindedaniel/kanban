@@ -146,11 +146,15 @@ const AddNewTaskModal = () => {
     onClose();
   };
 
+  console.log(fields);
+
   return (
     <Dialog open={isModalOpen} onOpenChange={handleClose}>
       <DialogContent className="bg-white text-black overflow-hidden">
         <DialogHeader>
-          <DialogTitle className="text-lg text-black dark:text-white">Add New Task</DialogTitle>
+          <DialogTitle className="text-lg text-black dark:text-white">
+            {asEdit ? 'Edit' : 'Add'} New Task
+          </DialogTitle>
         </DialogHeader>
         {mutateAddTask.isError && (
           <ErrorAlert errors={formatError(mutateAddTask.error?.shape?.data as ErrorObject)} />
@@ -191,7 +195,7 @@ const AddNewTaskModal = () => {
             </FormLabel>
             <div className="flex flex-col gap-3">
               {fields.map((column, Idx) => (
-                <div key={Idx}>
+                <div key={column.id}>
                   <div className="w-full flex items-center gap-2">
                     <FormField
                       control={control}
@@ -199,7 +203,11 @@ const AddNewTaskModal = () => {
                       render={({ field }) => (
                         <FormItem>
                           <FormControl>
-                            <Input placeholder={`Subtask ${Idx + 1}`} {...field} />
+                            <Input
+                              defaultValue={column.name}
+                              placeholder={`Subtask ${Idx + 1}`}
+                              {...field}
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>

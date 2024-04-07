@@ -50,9 +50,9 @@ const AddNewBoard = () => {
     : [{ name: '' }];
 
   const form = useForm<CreateBoard>({
-    resolver: zodResolver(createBoardSchema),
+    resolver: zodResolver(createBoardSchema)
     // @ts-ignore
-    values: { name: boardName, columns: boardColumns }
+    // values: { name: boardName, columns: boardColumns }
   });
 
   const {
@@ -68,6 +68,7 @@ const AddNewBoard = () => {
   });
 
   const removeColumn = (Idx: number) => {
+    console.log(Idx);
     remove(Idx);
   };
 
@@ -127,7 +128,9 @@ const AddNewBoard = () => {
     <Dialog open={isModalOpen} onOpenChange={handleClose}>
       <DialogContent className="bg-white text-black overflow-hidden">
         <DialogHeader className="pt-8">
-          <DialogTitle className="text-lg text-black dark:text-white">Add New Board</DialogTitle>
+          <DialogTitle className="text-lg text-black dark:text-white">
+            {asEdit ? 'Edit' : 'Add'} New Board
+          </DialogTitle>
         </DialogHeader>
         {mutateAddBoard.isError && (
           <ErrorAlert errors={formatError(mutateAddBoard.error?.shape?.data as ErrorObject)} />
@@ -150,7 +153,7 @@ const AddNewBoard = () => {
             <FormLabel required>Board Columns</FormLabel>
             <div className="flex flex-col gap-3 mt-2">
               {fields.map((column, Idx) => (
-                <div key={Idx}>
+                <div key={column.id}>
                   <div className="flex items-center gap-2">
                     <FormField
                       control={control}
@@ -158,7 +161,11 @@ const AddNewBoard = () => {
                       render={({ field }) => (
                         <FormItem>
                           <FormControl>
-                            <Input placeholder={`Todo ${Idx + 1}`} {...field} />
+                            <Input
+                              defaultValue={column.name}
+                              placeholder={`Todo ${Idx + 1}`}
+                              {...field}
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>

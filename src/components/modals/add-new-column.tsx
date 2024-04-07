@@ -116,7 +116,7 @@ const AddNewColumnModal = () => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <div className="flex flex-col gap-3">
               {fields.map((column, Idx) => (
-                <div key={Idx}>
+                <div key={column.id}>
                   <div className="w-full flex items-center gap-2">
                     <FormField
                       control={control}
@@ -124,7 +124,11 @@ const AddNewColumnModal = () => {
                       render={({ field }) => (
                         <FormItem>
                           <FormControl>
-                            <Input placeholder={`Column ${Idx + 1}`} {...field} />
+                            <Input
+                              defaultValue={column.name}
+                              placeholder={`Column ${Idx + 1}`}
+                              {...field}
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
