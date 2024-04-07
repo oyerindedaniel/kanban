@@ -50,9 +50,9 @@ const AddNewBoard = () => {
     : [{ name: '' }];
 
   const form = useForm<CreateBoard>({
-    resolver: zodResolver(createBoardSchema)
+    resolver: zodResolver(createBoardSchema),
     // @ts-ignore
-    // values: { name: boardName, columns: boardColumns }
+    values: { name: boardName, columns: boardColumns }
   });
 
   const {

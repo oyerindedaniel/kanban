@@ -9,10 +9,10 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { useModal } from '@/hooks/use-modal-store';
+import { useInitialRender } from '@/hooks/useInitialRender';
 import { useAppSelector } from '@/store/hooks';
 import { useTheme } from 'next-themes';
 import Image from 'next/image';
-import { useInitialRender } from '@/hooks/useInitialRender';
 
 const TopBar = () => {
   const { onOpen } = useModal();
@@ -27,11 +27,16 @@ const TopBar = () => {
 
   return (
     <nav className="bg-white dark:bg-brand-ebony-clay text-black dark:text-white flex h-24 items-center md:p-1.5">
-      {theme === 'light' && initialRenderComplete ? (
-        <Image className="ml-6" src={KanbanLogo} alt="logo" />
-      ) : (
-        <Image className="ml-6" src={KanbanLogoDark} alt="logo" />
+      {initialRenderComplete && (
+        <>
+          {theme === 'light' ? (
+            <Image className="ml-6" src={KanbanLogo} alt="logo" />
+          ) : (
+            <Image className="ml-6" src={KanbanLogoDark} alt="logo" />
+          )}
+        </>
       )}
+
       <span className="h-24 ml-[116px]"></span>
       <div className=" flex justify-between items-center w-full  px-5">
         <span className="font-bold text-2xl capitalize">{boardName}</span>
