@@ -20,6 +20,9 @@ const config = {
     '@typescript-eslint/no-empty-function': 'off',
     '@typescript-eslint/no-unsafe-call': 'off',
     '@typescript-eslint/ban-ts-comment': 'warn',
+    '@typescript-eslint/no-unsafe-return': 'warn',
+    '@typescript-eslint/no-unsafe-member-access': 'warn',
+    '@typescript-eslint/no-unsafe-argument': 'warn',
 
     '@typescript-eslint/consistent-type-imports': [
       'warn',
