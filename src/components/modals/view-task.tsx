@@ -43,6 +43,8 @@ import { useFieldArray, useForm, type FieldArrayMethodProps } from 'react-hook-f
 import { type z } from 'zod';
 import { Button } from '../ui/button';
 import { Checkbox } from '../ui/checkbox';
+import { type TaskProps } from '../task';
+import { type ColumnProps } from '../column';
 
 type subTask = z.infer<typeof subTaskSchema>;
 type subTasks = z.infer<typeof subTasksSchema>;
@@ -61,11 +63,11 @@ const ViewTask = () => {
 
   // used to set the initial columnId
   const activeColumn = (columns ?? []).find((column) =>
-    column.tasks.find((task) => task.id === taskId)
+    column.tasks.find((task: TaskProps['task']) => task.id === taskId)
   ) ?? { id: '' };
 
   const otherNonActiveColumn = (columns ?? []).filter(
-    (column) => column.id !== activeColumn.id
+    (column: ColumnProps['column']) => column.id !== activeColumn.id
   ) ?? [{ id: '' }];
 
   const formattedTaskSubTasks = useMemo(() => {
@@ -238,7 +240,7 @@ const ViewTask = () => {
                     </FormControl>
                     <SelectContent>
                       {columns && columns.length > 0 ? (
-                        columns.map((column) => (
+                        columns.map((column: ColumnProps['column']) => (
                           <SelectItem key={column.id} value={column.id}>
                             {column.name}
                           </SelectItem>

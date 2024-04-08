@@ -39,6 +39,7 @@ import { useFieldArray, useForm, type FieldArrayMethodProps } from 'react-hook-f
 import { RiCloseLine } from 'react-icons/ri';
 import ErrorAlert from '../ui/error-response';
 import { useToast } from '../ui/use-toast';
+import { ColumnProps } from '../column';
 
 const AddNewTaskModal = () => {
   const router = useRouter();
@@ -247,7 +248,7 @@ const AddNewTaskModal = () => {
                     </FormControl>
                     <SelectContent>
                       {columns && columns.length > 0 ? (
-                        columns.map((column) => (
+                        columns.map((column: ColumnProps['column']) => (
                           <SelectItem key={column.id} value={column.id}>
                             {column.name}
                           </SelectItem>

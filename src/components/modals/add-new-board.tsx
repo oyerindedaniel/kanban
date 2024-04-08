@@ -46,7 +46,7 @@ const AddNewBoard = () => {
   const boardName = asEdit ? data?.board!.name : '';
 
   const boardColumns = asEdit
-    ? columns?.map(({ id, name }) => ({ id, name, boardId }))
+    ? columns?.map(({ id, name }: { id: string; name: string }) => ({ id, name, boardId }))
     : [{ name: '' }];
 
   const form = useForm<CreateBoard>({
