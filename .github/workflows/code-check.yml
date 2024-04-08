@@ -1,0 +1,99 @@
+name: Code check
+
+on:
+  push:
+    branches: ['develop']
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    name: Lint
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+
+      - name: Install Yarn
+        run: npm install -g yarn
+
+      - name: Cache Yarn packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.yarn
+          key: yarn-packages-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            yarn-packages-${{ runner.os }}-
+
+      - name: Install dependencies
+        run: yarn install
+
+      - run: cp .env.example .env.local
+
+      - run: yarn lint
+
+  format:
+    runs-on: ubuntu-latest
+    name: Format
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+
+      - name: Install Yarn
+        run: npm install -g yarn
+
+      - name: Cache Yarn packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.yarn
+          key: yarn-packages-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            yarn-packages-${{ runner.os }}-
+
+      - name: Install dependencies
+        run: yarn install
+
+      - run: cp .env.example .env.local
+
+      - run: yarn check-format
+
+  tsc:
+    runs-on: ubuntu-latest
+    name: Typecheck
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+
+      - name: Install Yarn
+        run: npm install -g yarn
+
+      - name: Cache Yarn packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.yarn
+          key: yarn-packages-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            yarn-packages-${{ runner.os }}-
+
+      - name: Install dependencies
+        run: yarn install
+
+      - run: cp .env.example .env.local
+
+      - run: yarn check-types
