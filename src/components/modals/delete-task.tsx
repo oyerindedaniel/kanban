@@ -49,7 +49,7 @@ export default function DeleteTask() {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <Button
-            className="w-2/4"
+            className="w-full md:w-2/4"
             variant="destructive"
             size="sm"
             disabled={isDeleting}
@@ -62,7 +62,7 @@ export default function DeleteTask() {
             onClick={onClose}
             variant="cancel"
             size="sm"
-            className="w-2/4"
+            className="w-full md:w-2/4 mb-3 md:mb-0"
             disabled={isDeleting}
           >
             Cancel

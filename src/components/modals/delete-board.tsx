@@ -52,7 +52,7 @@ export default function DeleteBoard() {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <Button
-            className="w-2/4"
+            className="w-full md:w-2/4"
             variant="destructive"
             size="sm"
             disabled={isDeleting}
@@ -65,7 +65,7 @@ export default function DeleteBoard() {
             onClick={onClose}
             variant="cancel"
             size="sm"
-            className="w-2/4"
+            className="mb-3 md:mb-0 w-full md:w-2/4"
             disabled={isDeleting}
           >
             Cancel

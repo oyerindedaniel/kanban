@@ -68,7 +68,6 @@ const AddNewBoard = () => {
   });
 
   const removeColumn = (Idx: number) => {
-    console.log(Idx);
     remove(Idx);
   };
 

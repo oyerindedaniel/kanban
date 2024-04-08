@@ -1,12 +1,14 @@
 import LayoutContainer from '@/components/layout/layout-container';
 import Sidebar from '@/components/layout/sidebar';
 import TopBar from '@/components/layout/topbar';
+import SideBarToggler from '@/components/layout/sidebar/sidebar-toggler';
 
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div>
       <Sidebar />
-      <div className="fixed right-0 top-0 z-30 w-full max-w-full overflow-auto">
+      <SideBarToggler />
+      <div className="fixed right-0 top-0 z-30 w-full">
         <TopBar />
       </div>
       <LayoutContainer>{children}</LayoutContainer>

@@ -11,6 +11,7 @@ import {
 import { useModal } from '@/hooks/use-modal-store';
 import { useInitialRender } from '@/hooks/useInitialRender';
 import { useAppSelector } from '@/store/hooks';
+import { Plus } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import Image from 'next/image';
 
@@ -26,21 +27,23 @@ const TopBar = () => {
   const initialRenderComplete = useInitialRender();
 
   return (
-    <nav className="bg-white dark:bg-brand-ebony-clay text-black dark:text-white flex h-24 items-center md:p-1.5">
+    <nav className="bg-white dark:bg-brand-ebony-clay relative text-black dark:text-white flex h-24 items-center px-4">
       {initialRenderComplete && (
-        <>
+        <div>
           {theme === 'light' ? (
-            <Image className="ml-6" src={KanbanLogo} alt="logo" />
+            <Image className="ml-6 mr-6" src={KanbanLogo} alt="logo" />
           ) : (
-            <Image className="ml-6" src={KanbanLogoDark} alt="logo" />
+            <Image className="ml-6 mr-6" src={KanbanLogoDark} alt="logo" />
           )}
-        </>
+        </div>
       )}
 
-      <span className="h-24 ml-[116px]"></span>
-      <div className=" flex justify-between items-center w-full  px-5">
-        <span className="font-bold text-2xl capitalize">{boardName}</span>
-        <div className="flex gap-4">
+      {/* <span className="h-24 md:ml-[116px]"></span> */}
+      <div className="flex justify-between items-center w-full">
+        <span className="font-bold text-2xl capitalize hidden absolute left-[300px] md:block">
+          {boardName}
+        </span>
+        <div className="flex gap-4 ml-auto">
           <Button
             variant="default"
             disabled={!boardName}
@@ -48,7 +51,10 @@ const TopBar = () => {
               onOpen('addNewTask');
             }}
           >
-            +Add New Task
+            <span className="hidden md:block">+Add New Task</span>
+            <span className="block md:hidden">
+              <Plus />
+            </span>
           </Button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

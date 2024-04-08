@@ -146,8 +146,6 @@ const AddNewTaskModal = () => {
     onClose();
   };
 
-  console.log(fields);
-
   return (
     <Dialog open={isModalOpen} onOpenChange={handleClose}>
       <DialogContent className="bg-white text-black overflow-hidden">

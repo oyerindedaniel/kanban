@@ -17,7 +17,7 @@ const ModeToggler = () => {
   return (
     <>
       {initialRenderComplete && (
-        <div className="py-3 rounded-lg w-full bg-brand-lavender-mist dark:bg-brand-dark flex gap-6 mb-6 items-center justify-center">
+        <div className="py-3 rounded-lg w-full bg-brand-lavender-mist dark:bg-brand-dark flex gap-6 mb-3 items-center justify-center">
           <span className="text-[#828FA3]">
             <Image src={SunIcon} style={{ fill: 'currentColor' }} alt="img" />
           </span>

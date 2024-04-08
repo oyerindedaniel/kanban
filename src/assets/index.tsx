@@ -1,25 +1,25 @@
-import MoonIcon from './moon-icon.svg';
-import SunIcon from './sun-icon.svg';
-import HideIcon from './hide-icon.svg';
-import ViewIcon from './view-icon.svg';
 import KanbanLogo from './KanbanLogo.svg';
-import MoreOptionsIcon from './more-options.svg';
-import ActiveSidebarIcon from './active-sidebar.svg';
 import KanbanLogoDark from './KanbanLogoDark.svg';
+import ActiveSidebarIcon from './active-sidebar.svg';
+import HideIcon from './hide-icon.svg';
+import MoonIcon from './moon-icon.svg';
+import MoreOptionsIcon from './more-options.svg';
+import SunIcon from './sun-icon.svg';
+import ViewIcon from './view-icon.svg';
 
 export {
-  MoonIcon,
-  SunIcon,
-  HideIcon,
-  ViewIcon,
-  KanbanLogo,
-  MoreOptionsIcon,
   ActiveSidebarIcon,
-  KanbanLogoDark
+  HideIcon,
+  KanbanLogo,
+  KanbanLogoDark,
+  MoonIcon,
+  MoreOptionsIcon,
+  SunIcon,
+  ViewIcon
 };
 
 type ImageItemProps = {
-  className: string;
+  className?: string;
 };
 
 export const SideBarSvg: React.FC<ImageItemProps> = ({ className }) => {

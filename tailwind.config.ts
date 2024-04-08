@@ -17,6 +17,19 @@ const config = {
         '2xl': '1400px'
       }
     },
+    screens: {
+      xs: { min: '352px' },
+
+      sm: { min: '480px' },
+
+      md: { min: '768px' },
+
+      lg: { min: '992px' },
+
+      xl: { min: '1280px' },
+
+      '2xl': { min: '1536px' }
+    },
     extend: {
       colors: {
         brand: {
