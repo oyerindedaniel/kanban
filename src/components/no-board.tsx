@@ -8,7 +8,7 @@ const NoBoard = () => {
 
   return (
     <div className="flex flex-col items-center justify-center h-[75vh]">
-      <p className="text-brand-regent-grey font-medium">
+      <p className="text-brand-regent-grey text-center font-medium">
         This platform is empty. Create a new board to get started.
       </p>
       <Button

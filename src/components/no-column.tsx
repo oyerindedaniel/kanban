@@ -14,7 +14,7 @@ const NoColumn: FC<Props> = ({ activeBoard }) => {
 
   return (
     <div className="flex flex-col items-center justify-center h-[75vh]">
-      <p className="text-brand-regent-grey font-medium mb-8">
+      <p className="text-brand-regent-grey text-center font-medium mb-8">
         This board is empty. Create a new column to get started.
       </p>
       <Button variant="default" onClick={() => onOpen('addNewColumn', { board: activeBoard })}>
