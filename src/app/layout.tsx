@@ -1,6 +1,6 @@
 import '@/styles/globals.css';
 
-import { Providers } from '@/providers';
+import { Providers } from '../providers';
 import { ModalProvider } from '@/components/providers/modal-provider';
 import { Toaster } from '@/components/ui/toaster';
 import { Inter } from 'next/font/google';
