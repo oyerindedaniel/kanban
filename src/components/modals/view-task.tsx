@@ -41,10 +41,10 @@ import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo } from 'react';
 import { useFieldArray, useForm, type FieldArrayMethodProps } from 'react-hook-form';
 import { type z } from 'zod';
+import { type ColumnProps } from '../column';
+import { type TaskProps } from '../task';
 import { Button } from '../ui/button';
 import { Checkbox } from '../ui/checkbox';
-import { type TaskProps } from '../task';
-import { type ColumnProps } from '../column';
 
 type subTask = z.infer<typeof subTaskSchema>;
 type subTasks = z.infer<typeof subTasksSchema>;
@@ -62,8 +62,8 @@ const ViewTask = () => {
   const taskSubTasks = data?.task?.subTasks ?? [];
 
   // used to set the initial columnId
-  const activeColumn = (columns ?? []).find((column) =>
-    column.tasks.find((task: TaskProps['task']) => task.id === taskId)
+  const activeColumn = (columns ?? []).find((column: ColumnProps['column']) =>
+    column.tasks.find((task: Omit<TaskProps['task'], 'subTasks'>) => task.id === taskId)
   ) ?? { id: '' };
 
   const otherNonActiveColumn = (columns ?? []).filter(
