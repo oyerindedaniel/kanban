@@ -3,11 +3,19 @@ import { z } from 'zod';
 import { createTRPCRouter, publicProcedure } from '@/server/api/trpc';
 import { createBoardSchema } from '@/types';
 import { TRPCError } from '@trpc/server';
+import { handleServerError } from '../lib/error';
 import { generateUniqueSlug } from '../lib/utils';
 
 export const boardRouter = createTRPCRouter({
   create: publicProcedure.input(createBoardSchema).mutation(async ({ ctx, input }) => {
     const { name, columns } = input;
+
+    if (!name || !columns || (columns && columns.length === 0)) {
+      throw new TRPCError({
+        code: 'BAD_REQUEST',
+        message: 'Missing create board fields.'
+      });
+    }
 
     const existedBoard = await ctx.db.board.findFirst({
       where: {
@@ -24,22 +32,32 @@ export const boardRouter = createTRPCRouter({
 
     const slug = await generateUniqueSlug(name, ctx);
 
-    const boardWithColumns = await ctx.db.board.create({
-      data: {
-        name: name.toLowerCase(),
-        slug,
-        columns: {
-          create: columns
+    try {
+      const boardWithColumns = await ctx.db.board.create({
+        data: {
+          name: name.toLowerCase(),
+          slug,
+          columns: {
+            create: columns
+          }
+        },
+        include: {
+          columns: true
         }
-      },
-      include: {
-        columns: true
-      }
-    });
+      });
 
-    return {
-      data: boardWithColumns
-    };
+      return {
+        data: boardWithColumns
+      };
+    } catch (error) {
+      const { type, message } = handleServerError(error);
+
+      throw new TRPCError({
+        code: 'BAD_REQUEST',
+        message:
+          type === 'prisma' ? 'Duplicate board column fields detected on the same board.' : message
+      });
+    }
   }),
   update: publicProcedure.input(createBoardSchema).mutation(async ({ ctx, input }) => {
     const { name, columns } = input;
@@ -47,7 +65,7 @@ export const boardRouter = createTRPCRouter({
     if (!columns || (columns && columns.length === 0)) {
       throw new TRPCError({
         code: 'BAD_REQUEST',
-        message: 'Enter at least one column'
+        message: 'Enter at least one column.'
       });
     }
 
@@ -61,7 +79,7 @@ export const boardRouter = createTRPCRouter({
     if (!existingBoard) {
       throw new TRPCError({
         code: 'BAD_REQUEST',
-        message: 'Board does not exist'
+        message: 'Board does not exist.'
       });
     }
 
@@ -174,7 +192,7 @@ export const boardRouter = createTRPCRouter({
         data: column
       };
     }),
-  findAll: publicProcedure.query(async ({ ctx, input }) => {
+  findAll: publicProcedure.query(async ({ ctx }) => {
     const boards = await ctx.db.board.findMany({
       select: {
         id: true,

@@ -3,27 +3,39 @@ import { z } from 'zod';
 import { createTRPCRouter, publicProcedure } from '@/server/api/trpc';
 import { createColumnsSchema, subTasksSchema } from '@/types';
 import { TRPCError } from '@trpc/server';
+import { handleServerError } from '../lib/error';
 
 export const columnRouter = createTRPCRouter({
   create: publicProcedure.input(createColumnsSchema).mutation(async ({ ctx, input }) => {
     const { columns, boardId } = input;
-    const createdColumns = await Promise.all(
-      columns.map((column) => {
-        return ctx.db.column.create({
-          data: {
-            name: column.name,
-            boardId
-          },
-          include: {
-            tasks: { include: { subTasks: true } }
-          }
-        });
-      })
-    );
 
-    return {
-      data: createdColumns
-    };
+    try {
+      const createdColumns = await Promise.all(
+        columns.map((column) => {
+          return ctx.db.column.create({
+            data: {
+              name: column.name,
+              boardId
+            },
+            include: {
+              tasks: { include: { subTasks: true } }
+            }
+          });
+        })
+      );
+
+      return {
+        data: createdColumns
+      };
+    } catch (error) {
+      const { type, message } = handleServerError(error);
+
+      throw new TRPCError({
+        code: 'BAD_REQUEST',
+        message:
+          type === 'prisma' ? 'Duplicate board column fields detected on the same board.' : message
+      });
+    }
   }),
   update: publicProcedure.input(subTasksSchema).mutation(async ({ ctx, input }) => {
     const { columnId, previousColumnId, taskId, subTasks } = input;

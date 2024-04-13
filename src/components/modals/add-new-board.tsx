@@ -27,7 +27,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { ReloadIcon } from '@radix-ui/react-icons';
 import { useRouter } from 'next/navigation';
 import { useCallback } from 'react';
-import { useFieldArray, useForm, type FieldArrayMethodProps } from 'react-hook-form';
+import { useFieldArray, useForm } from 'react-hook-form';
 import { RiCloseLine } from 'react-icons/ri';
 import ErrorAlert from '../ui/error-response';
 
@@ -72,7 +72,7 @@ const AddNewBoard = () => {
   };
 
   const addNewColumn = useCallback(
-    (value: CreateColumn, options?: FieldArrayMethodProps) => {
+    (value: CreateColumn) => {
       append(value);
       // clearErrors();
     },
@@ -98,7 +98,7 @@ const AddNewBoard = () => {
   });
 
   const mutateUpdateBoard = api.board.update.useMutation({
-    onSuccess: (data) => {
+    onSuccess: () => {
       form.reset();
       onClose();
       router.refresh();
@@ -107,6 +107,8 @@ const AddNewBoard = () => {
       console.error(error);
     }
   });
+
+  console.log(mutateAddBoard?.error);
 
   const onSubmit = (data: CreateBoard) => {
     if (asEdit) {
@@ -172,6 +174,7 @@ const AddNewBoard = () => {
                     />
                     <Button
                       type="button"
+                      data-testid={`button.${Idx}`}
                       className="font-bold text-xl h-10 text-brand-regent-grey"
                       size="sm"
                       onClick={() => removeColumn(Idx)}

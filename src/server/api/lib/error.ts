@@ -3,10 +3,9 @@ import { TRPCError } from '@trpc/server';
 import { getHTTPStatusCodeFromError } from '@trpc/server/http';
 import { ZodError } from 'zod';
 
-import { env } from '@/env';
-
-export const handleServerError = (error: TRPCError | ZodError) => {
-  if (error instanceof PrismaClientKnownRequestError && env.NODE_ENV === 'development') {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const handleServerError = (error: any) => {
+  if (error instanceof PrismaClientKnownRequestError) {
     // Handle Prisma unique constraint violation error
     if (error.code === 'P2002' && error.meta?.modelName) {
       const targetField = Array.isArray(error.meta.target) ? error.meta.target[0] : undefined;

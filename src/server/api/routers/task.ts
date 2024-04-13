@@ -2,44 +2,54 @@ import { createTRPCRouter, publicProcedure } from '@/server/api/trpc';
 import { createTaskSchema } from '@/types';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
+import { handleServerError } from '../lib/error';
 
 export const taskRouter = createTRPCRouter({
   create: publicProcedure.input(createTaskSchema).mutation(async ({ ctx, input }) => {
     const { name, description, columnId, subTasks, boardId } = input;
 
-    if (!subTasks || (subTasks && subTasks.length === 0)) {
+    try {
+      if (!subTasks || (subTasks && subTasks.length === 0)) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Enter at least one subtask'
+        });
+      }
+
+      const task = await ctx.db.task.create({
+        data: {
+          name,
+          description,
+          board: {
+            connect: {
+              id: boardId
+            }
+          },
+          column: {
+            connect: {
+              id: columnId
+            }
+          },
+          subTasks: {
+            create: subTasks
+          }
+        },
+        include: {
+          subTasks: true
+        }
+      });
+
+      return {
+        data: task
+      };
+    } catch (error) {
+      const { type, message } = handleServerError(error);
+
       throw new TRPCError({
         code: 'BAD_REQUEST',
-        message: 'Enter at least one subtask'
+        message: type === 'prisma' ? 'Duplicate task fields detected on the same column.' : message
       });
     }
-
-    const task = await ctx.db.task.create({
-      data: {
-        name,
-        description,
-        board: {
-          connect: {
-            id: boardId
-          }
-        },
-        column: {
-          connect: {
-            id: columnId
-          }
-        },
-        subTasks: {
-          create: subTasks
-        }
-      },
-      include: {
-        subTasks: true
-      }
-    });
-
-    return {
-      data: task
-    };
   }),
   update: publicProcedure.input(createTaskSchema).mutation(async ({ ctx, input }) => {
     const { columnId, name, description, subTasks } = input;

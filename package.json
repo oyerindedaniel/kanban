@@ -17,6 +17,8 @@
     "check-lint": "eslint \"**/*.{ts,tsx}\" --ignore-pattern node_modules/",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "test-all": "yarn check-format && yarn check-lint && yarn check-types && yarn build",
+    "test:e2e": "npx playwright test",
+    "test:e2e:ui": "npx playwright test --ui",
     "prepare": "husky install"
   },
   "dependencies": {
@@ -45,10 +47,12 @@
     "@trpc/next": "^10.43.6",
     "@trpc/react-query": "^10.43.6",
     "@trpc/server": "^10.43.6",
+    "axios": "^1.6.8",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "dotenv": "^16.3.1",
     "lucide-react": "^0.364.0",
+    "msw": "^2.2.13",
     "next": "^14.1.4",
     "next-themes": "^0.3.0",
     "react": "18.2.0",
@@ -67,7 +71,9 @@
     "zustand": "^4.5.2"
   },
   "devDependencies": {
+    "@faker-js/faker": "^8.4.1",
     "@next/eslint-plugin-next": "^14.0.3",
+    "@playwright/test": "^1.43.0",
     "@types/eslint": "^8.44.7",
     "@types/node": "^18.17.0",
     "@types/react": "^18.2.37",
@@ -96,8 +102,10 @@
   "lint-staged": {
     "*.{ts,tsx}": "eslint --cache"
   },
-  "resolutions": {
-    "strip-ansi": "6.0.1"
-  },
-  "packageManager": "yarn@1.22.19"
+  "packageManager": "yarn@1.22.19",
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
+  }
 }
