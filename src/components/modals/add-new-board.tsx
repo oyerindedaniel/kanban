@@ -108,8 +108,6 @@ const AddNewBoard = () => {
     }
   });
 
-  console.log(mutateAddBoard?.error);
-
   const onSubmit = (data: CreateBoard) => {
     if (asEdit) {
       return mutateUpdateBoard.mutate(data);

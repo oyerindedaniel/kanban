@@ -38,7 +38,6 @@ const TopBar = () => {
         </div>
       )}
 
-      {/* <span className="h-24 md:ml-[116px]"></span> */}
       <div className="flex justify-between items-center w-full">
         <span className="font-bold text-2xl capitalize hidden absolute left-[300px] md:block">
           {boardName}
@@ -56,25 +55,27 @@ const TopBar = () => {
               <Plus />
             </span>
           </Button>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Image className="cursor-pointer" src={MoreOptionsIcon} alt="More options" />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-48 mr-6">
-              <DropdownMenuItem
-                className="cursor-pointer"
-                onClick={() => onOpen('addNewBoard', { board: board!, asEdit: true })}
-              >
-                <span>Edit Board</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                className="cursor-pointer"
-                onClick={() => onOpen('deleteBoard', { board: board! })}
-              >
-                <span className="text-brand-valentine-red">Delete Board</span>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          {!!board && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Image className="cursor-pointer" src={MoreOptionsIcon} alt="More options" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-48 mr-6">
+                <DropdownMenuItem
+                  className="cursor-pointer"
+                  onClick={() => onOpen('addNewBoard', { board: board, asEdit: true })}
+                >
+                  <span>Edit Board</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  className="cursor-pointer"
+                  onClick={() => onOpen('deleteBoard', { board: board })}
+                >
+                  <span className="text-brand-valentine-red">Delete Board</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
         </div>
       </div>
     </nav>

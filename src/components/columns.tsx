@@ -57,6 +57,8 @@ const Columns: FC<Props> = ({ columns, activeBoard }) => {
     );
   }, [dispatch, columns, activeBoard]);
 
+  console.log(activeBoard);
+
   const mutateUpdateColumn = api.column.update.useMutation({
     onSuccess: () => {
       router.refresh();

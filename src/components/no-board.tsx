@@ -2,9 +2,30 @@
 
 import { Button } from '@/components/ui/button';
 import { useModal } from '@/hooks/use-modal-store';
+import { useAppDispatch } from '@/store/hooks';
+import { setGlobalState } from '@/store/slice/global';
+import { useEffect } from 'react';
 
 const NoBoard = () => {
   const { onOpen } = useModal();
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(
+      setGlobalState({
+        dataKey: 'board' as const,
+        data: null
+      })
+    );
+
+    dispatch(
+      setGlobalState({
+        dataKey: 'columns' as const,
+        data: null
+      })
+    );
+  }, [dispatch]);
 
   return (
     <div className="flex flex-col items-center justify-center h-[75vh]">
