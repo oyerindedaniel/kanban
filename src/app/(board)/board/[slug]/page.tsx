@@ -21,7 +21,7 @@ export default async function BoardPage({ params: { slug } }: BoardPageProps) {
   return (
     <div>
       {columns && columns?.length > 0 ? (
-        <Columns columns={columns} activeBoard={board} />
+        <Columns key={crypto.randomUUID()} columns={columns} activeBoard={board} />
       ) : (
         <NoColumn activeBoard={board} />
       )}

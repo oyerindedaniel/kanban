@@ -1,6 +1,7 @@
 'use client';
 
 import { useModal } from '@/hooks/use-modal-store';
+import { cn } from '@/lib/utils';
 import { useAppDispatch } from '@/store/hooks';
 import { setGlobalState } from '@/store/slice/global';
 import { api } from '@/trpc/react';
@@ -31,7 +32,10 @@ const ADD_COLUMN_WIDTH = 288;
 const COLUMN_WIDTH = 320;
 
 const Columns: FC<Props> = ({ columns, activeBoard }) => {
-  const [draggedToColumnName, setDraggedToColumnName] = useState<string>('');
+  const [draggedToColumnName, setDraggedToColumnName] = useState('');
+
+  const [optimisticColumns, setOptimisticColumns] = useState<Props['columns']>(columns);
+  const [hoveredColumnId, setHoveredColumnId] = useState<string | null>(null);
 
   const router = useRouter();
 
@@ -57,21 +61,22 @@ const Columns: FC<Props> = ({ columns, activeBoard }) => {
     );
   }, [dispatch, columns, activeBoard]);
 
-  console.log(activeBoard);
+  const mutateUpdateColumn = api.column.update.useMutation();
 
-  const mutateUpdateColumn = api.column.update.useMutation({
-    onSuccess: () => {
-      router.refresh();
-      toastSonner(`Task status changed`, { description: draggedToColumnName });
-    },
-    onError: (error) => {
-      console.error(error);
-      return toast({
-        variant: 'destructive',
-        description: 'An error occurred'
-      });
-    }
-  });
+  // {
+  //   onSuccess: () => {
+  //     router.refresh();
+  //     toastSonner(`Task status changed`, { description: draggedToColumnName });
+  //   },
+  //   onError: (error) => {
+  //     console.error(error);
+  //     return toast({
+  //       variant: 'destructive',
+  //       description: 'An error occurred'
+  //     });
+  //   }
+
+  // }
 
   const handleOnDrop = ({
     event,
@@ -81,26 +86,70 @@ const Columns: FC<Props> = ({ columns, activeBoard }) => {
     columnId: string;
   }) => {
     const { previousColumnId, taskId } = JSON.parse(event.dataTransfer.getData('text'));
+    if (columnId === previousColumnId) return;
 
-    if (columnId !== previousColumnId) {
-      //@ts-ignore
-      mutateUpdateColumn.mutate({ columnId, previousColumnId, taskId, subTasks: [] });
-    }
+    // This is a temporary, somewhat sloppy solution.
+    // When using splice, there's an error: Cannot assign to read-only property '0' of object '[object Array]'.
+
+    const columns = [...optimisticColumns];
+
+    const previousColumnIdx = columns.findIndex((column) => column.id === previousColumnId);
+    const newColumn = columns.find((column) => column.id === columnId);
+    const previousColumn = columns[previousColumnIdx];
+    const movedTask = previousColumn?.tasks.find((task) => task.id === taskId);
+
+    if (!movedTask) return;
+
+    const updatedColumns = columns.map((column) => {
+      if (column.id === previousColumnId) {
+        return { ...column, tasks: column.tasks.filter((task) => task.id !== taskId) };
+      }
+
+      if (column.id === columnId) {
+        return { ...column, tasks: [movedTask, ...column.tasks] };
+      }
+
+      return column;
+    });
+
+    setOptimisticColumns(updatedColumns);
+
+    toastSonner.promise(
+      mutateUpdateColumn.mutateAsync({ columnId, previousColumnId, taskId, subTasks: [] }),
+      {
+        loading: `Updating task (${movedTask.name}) ...`,
+        success: () => {
+          router.refresh();
+          return `Task status changed to ${newColumn?.name}`;
+        },
+        error: `An error occurred`
+      }
+    );
   };
 
-  const handleOnDragOver = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
+  const handleOnDragOver = ({
+    event,
+    columnId
+  }: {
+    event: React.DragEvent<HTMLDivElement>;
+    columnId: string;
+  }) => {
+    event.preventDefault();
+
+    // if (!columnId) return setHoveredColumnId(null);
+
+    setHoveredColumnId(columnId);
   };
 
   const isUpdating = mutateUpdateColumn.isLoading;
 
   return (
     <>
-      {isUpdating && (
+      {/* {isUpdating && (
         <div className="fixed right-6 font-medium bottom-10 border dark:border-brand-bright-grey border-input text-black text-sm rounded-xl dark:text-white bg-white dark:bg-brand-ebony-clay px-3 py-2 shadow-lg">
           Updating task ...
         </div>
-      )}
+      )} */}
       <div
         style={{
           gap: `${GAP}px`,
@@ -109,15 +158,23 @@ const Columns: FC<Props> = ({ columns, activeBoard }) => {
         }}
         className="grid"
       >
-        {columns.map((column) => (
+        {optimisticColumns.map((column) => (
           <div
             onDrop={(event) => {
-              handleOnDrop({ event, columnId: column.id });
               setDraggedToColumnName(column.name);
+              handleOnDrop({ event, columnId: column.id });
             }}
-            onDragOver={handleOnDragOver}
-            style={{ maxWidth: `${COLUMN_WIDTH}px` }}
+            onDragOver={(event) => handleOnDragOver({ event, columnId: column.id })}
+            style={{
+              maxWidth: `${COLUMN_WIDTH}px`
+            }}
             key={column.id}
+            className={cn(
+              '',
+              hoveredColumnId === column.id
+                ? 'border-2 border-dashed dark:border-white border-brand-dark p-3 rounded-lg'
+                : 'none'
+            )}
           >
             <Column column={column} />
             <div className="flex flex-col gap-4">
