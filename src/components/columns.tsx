@@ -32,8 +32,6 @@ const ADD_COLUMN_WIDTH = 288;
 const COLUMN_WIDTH = 320;
 
 const Columns: FC<Props> = ({ columns, activeBoard }) => {
-  const [draggedToColumnName, setDraggedToColumnName] = useState('');
-
   const [optimisticColumns, setOptimisticColumns] = useState<Props['columns']>(columns);
   const [hoveredColumnId, setHoveredColumnId] = useState<string | null>(null);
 
@@ -161,7 +159,6 @@ const Columns: FC<Props> = ({ columns, activeBoard }) => {
         {optimisticColumns.map((column) => (
           <div
             onDrop={(event) => {
-              setDraggedToColumnName(column.name);
               handleOnDrop({ event, columnId: column.id });
             }}
             onDragOver={(event) => handleOnDragOver({ event, columnId: column.id })}
