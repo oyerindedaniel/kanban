@@ -32,6 +32,8 @@ const ADD_COLUMN_WIDTH = 288;
 const COLUMN_WIDTH = 320;
 
 const Columns: FC<Props> = ({ columns, activeBoard }) => {
+  // This is a temporary, somewhat sloppy solution.
+  // useOptimistic bug.
   const [optimisticColumns, setOptimisticColumns] = useState<Props['columns']>(columns);
   const [hoveredColumnId, setHoveredColumnId] = useState<string | null>(null);
 
@@ -120,7 +122,10 @@ const Columns: FC<Props> = ({ columns, activeBoard }) => {
           router.refresh();
           return `Task status changed to ${newColumn?.name}`;
         },
-        error: `An error occurred`
+        error: () => {
+          router.refresh();
+          return `An error occurred`;
+        }
       }
     );
   };
