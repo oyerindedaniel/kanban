@@ -11,6 +11,7 @@ import superjson from 'superjson';
 import { handleServerError } from './lib/error';
 
 import { db } from '@/server/db';
+import { type ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies';
 
 /**
  * 1. CONTEXT
@@ -24,7 +25,11 @@ import { db } from '@/server/db';
  *
  * @see https://trpc.io/docs/server/context
  */
-export const createTRPCContext = async (opts: { headers: Headers }) => {
+export const createTRPCContext = async (opts: {
+  headers: Headers;
+  cookies: () => ReadonlyRequestCookies;
+  resHeaders?: Headers;
+}) => {
   return {
     db,
     ...opts

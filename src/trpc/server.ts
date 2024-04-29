@@ -20,7 +20,8 @@ const createContext = cache(() => {
     headers: new Headers({
       cookie: cookies().toString(),
       'x-trpc-source': 'rsc'
-    })
+    }),
+    cookies
   });
 });
 

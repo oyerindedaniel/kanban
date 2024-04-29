@@ -3,8 +3,11 @@ import { TRPCError } from '@trpc/server';
 import { getHTTPStatusCodeFromError } from '@trpc/server/http';
 import { ZodError } from 'zod';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const handleServerError = (error: any) => {
+type ErrorType = 'prisma' | 'trpc' | 'zod' | 'unknown';
+export const handleServerError = (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  error: any
+): { type: ErrorType; statusCode: number; message: string } => {
   if (error instanceof PrismaClientKnownRequestError) {
     // Handle Prisma unique constraint violation error
     if (error.code === 'P2002' && error.meta?.modelName) {
@@ -32,7 +35,7 @@ export const handleServerError = (error: any) => {
       message: error.message
     };
   }
-  // For other errors, provide a generic error response
+  // For other errors
   return {
     type: 'unknown',
     statusCode: 500,

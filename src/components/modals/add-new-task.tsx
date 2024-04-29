@@ -37,9 +37,9 @@ import { useRouter } from 'next/navigation';
 import { useCallback } from 'react';
 import { useFieldArray, useForm, type FieldArrayMethodProps } from 'react-hook-form';
 import { RiCloseLine } from 'react-icons/ri';
+import { ColumnProps } from '../column';
 import ErrorAlert from '../ui/error-response';
 import { useToast } from '../ui/use-toast';
-import { ColumnProps } from '../column';
 
 const AddNewTaskModal = () => {
   const router = useRouter();
@@ -152,7 +152,7 @@ const AddNewTaskModal = () => {
       <DialogContent className="bg-white text-black overflow-hidden">
         <DialogHeader>
           <DialogTitle className="text-lg text-black dark:text-white">
-            {asEdit ? 'Edit' : 'Add'} New Task
+            {asEdit ? 'Edit' : 'Add New'} Task
           </DialogTitle>
         </DialogHeader>
         {mutateAddTask.isError && (
