@@ -1,4 +1,5 @@
 import { api } from '@/trpc/server';
+import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import NoBoard from '../../components/no-board';
 

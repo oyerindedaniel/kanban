@@ -1,39 +1,12 @@
 import { createTRPCRouter, publicProcedure } from '@/server/api/trpc';
 import { createTaskSchema } from '@/types';
 import { TRPCError } from '@trpc/server';
-import cookie from 'cookie';
 import { z } from 'zod';
 import { handleServerError } from '../lib/error';
 
 export const taskRouter = createTRPCRouter({
   create: publicProcedure.input(createTaskSchema).mutation(async ({ ctx, input }) => {
     const { name, description, columnId, subTasks, boardId } = input;
-    if (ctx.resHeaders) {
-      console.log('Ddd');
-      ctx.resHeaders.set(
-        'set-cookie',
-        cookie.serialize('access_refresh_token', 'daniel-mitchell_davies-daniel', {
-          httpOnly: true,
-          secure: Boolean(Number(process.env.COOKIE_SECURE ?? 0)),
-          sameSite: 'lax'
-        })
-      );
-    }
-
-    console.log('token--------', ctx.cookies().get('access_refresh_token')?.value);
-
-    // console.log('ctx.cooi', ctx.cookies);
-    // if (ctx.cookies) {
-    //   console.log('ctx.cooiinnnnnnnnnnnnnnnnnn', ctx.cookies);
-    //   console.log('inheregetting', ctx.cookies().get('name'));
-    //   ctx.cookies().set({
-    //     name: 'boyyy',
-    //     value: 'CHARIS IOOOOOO',
-    //     httpOnly: true,
-    //     path: '/'
-    //   });
-    // }
-
     try {
       if (!subTasks || (subTasks && subTasks.length === 0)) {
         throw new TRPCError({
@@ -131,7 +104,7 @@ export const taskRouter = createTRPCRouter({
         },
         subTasks: {
           updateMany: subTasksToUpdate,
-          deleteMany: subTasksToDelete,
+          deleteMany: { id: { in: subTasksToDelete.map((task) => task.id) } },
           create: subTasks.filter((subTask) => !subTask.id)
         }
       }

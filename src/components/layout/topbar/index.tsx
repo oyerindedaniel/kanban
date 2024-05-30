@@ -28,16 +28,10 @@ const TopBar = () => {
 
   return (
     <nav className="bg-white dark:bg-brand-ebony-clay relative text-black dark:text-white flex h-24 items-center px-4">
-      {initialRenderComplete && (
-        <div>
-          {theme === 'light' ? (
-            <Image className="ml-6 mr-6" src={KanbanLogo} alt="logo" />
-          ) : (
-            <Image className="ml-6 mr-6" src={KanbanLogoDark} alt="logo" />
-          )}
-        </div>
-      )}
-
+      <div>
+        <Image className="ml-6 mr-6 block dark:hidden" src={KanbanLogo} alt="logo" />
+        <Image className="ml-6 mr-6 none dark:block" src={KanbanLogoDark} alt="logo" />
+      </div>
       <div className="flex justify-between items-center w-full">
         <span className="font-bold text-2xl capitalize hidden absolute left-[300px] md:block">
           {boardName}

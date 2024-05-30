@@ -2,7 +2,7 @@ import { env } from '@/env';
 import { appRouter } from '@/server/api/root';
 import { createTRPCContext } from '@/server/api/trpc';
 import { fetchRequestHandler } from '@trpc/server/adapters/fetch';
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import { type NextRequest } from 'next/server';
 
 /**
@@ -10,21 +10,8 @@ import { type NextRequest } from 'next/server';
  * handling a HTTP request (e.g. when you make requests from Client Components).
  */
 const createContext = async (req: NextRequest, resHeaders: Headers) => {
-  console.log('cookies---------------', cookies().get('access_refresh_token')?.value);
-  console.log('header', req.headers.get('cookie'));
-  // console.log('header---', req.headers.get('cookie'));
-  console.log('header---', req.headers);
-  // resHeaders.set(
-  //   'set-cookie',
-  //   cookie.serialize('secret', 'davies', {
-  //     httpOnly: true,
-  //     secure: Boolean(Number(process.env.COOKIE_SECURE ?? 0)),
-  //     sameSite: 'lax'
-  //   })
-  // );
   return createTRPCContext({
     headers: req.headers,
-    cookies,
     resHeaders
   });
 };
