@@ -201,6 +201,9 @@ importers:
       eslint-plugin-tailwindcss:
         specifier: ^3.13.0
         version: 3.17.4(tailwindcss@3.4.4)
+      husky:
+        specifier: ^9.0.11
+        version: 9.0.11
       lint-staged:
         specifier: ^15.2.0
         version: 15.2.7
@@ -2622,6 +2625,11 @@ packages:
   human-signals@5.0.0:
     resolution: {integrity: sha512-AXcZb6vzzrFAUE61HnN4mpLqd/cSIwNQjtNWR0euPm6y0iqx3G4gOXaIDdtdDwZmhwe82LA6+zinmW4UBWVePQ==}
     engines: {node: '>=16.17.0'}
+
+  husky@9.0.11:
+    resolution: {integrity: sha512-AB6lFlbwwyIqMdHYhwPe+kjOC3Oc5P3nThEoW/AaO2BX3vJDjWPFxYLxokUZOo6RNX20He3AaT8sESs9NJcmEw==}
+    engines: {node: '>=18'}
+    hasBin: true
 
   i18next@23.11.5:
     resolution: {integrity: sha512-41pvpVbW9rhZPk5xjCX2TPJi2861LEig/YRhUkY+1FQ2IQPS0bKUDYnEqY8XPPbB48h1uIwLnP9iiEfuSl20CA==}
@@ -6752,6 +6760,8 @@ snapshots:
   headers-polyfill@4.0.3: {}
 
   human-signals@5.0.0: {}
+
+  husky@9.0.11: {}
 
   i18next@23.11.5:
     dependencies:
