@@ -19,7 +19,7 @@
     "test-all": "yarn check-format && yarn check-lint && yarn check-types && yarn build",
     "test:e2e": "npx playwright test",
     "test:e2e:ui": "npx playwright test --ui",
-    "prepare": "husky"
+    "prepare": "husky install"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.17",
