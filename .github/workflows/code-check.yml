@@ -18,23 +18,23 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install Yarn
-        run: npm install -g yarn
+      - name: Install pnpm
+        run: npm install -g pnpm
 
-      - name: Cache Yarn packages
+      - name: Cache pnpm packages
         uses: actions/cache@v2
         with:
-          path: ~/.yarn
-          key: yarn-packages-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+          path: ~/.pnpm-store
+          key: pnpm-packages-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            yarn-packages-${{ runner.os }}-
+            pnpm-packages-${{ runner.os }}-
 
       - name: Install dependencies
-        run: yarn install
+        run: pnpm install
 
       - run: cp .env.example .env.local
 
-      - run: SKIP_ENV_VALIDATION=1 yarn lint
+      - run: SKIP_ENV_VALIDATION=1 pnpm lint
 
   format:
     runs-on: ubuntu-latest
@@ -49,23 +49,23 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install Yarn
-        run: npm install -g yarn
+      - name: Install pnpm
+        run: npm install -g pnpm
 
-      - name: Cache Yarn packages
+      - name: Cache pnpm packages
         uses: actions/cache@v2
         with:
-          path: ~/.yarn
-          key: yarn-packages-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+          path: ~/.pnpm-store
+          key: pnpm-packages-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            yarn-packages-${{ runner.os }}-
+            pnpm-packages-${{ runner.os }}-
 
       - name: Install dependencies
-        run: yarn install
+        run: pnpm install
 
       - run: cp .env.example .env.local
 
-      - run: yarn check-format
+      - run: pnpm check-format
 
   tsc:
     runs-on: ubuntu-latest
@@ -80,20 +80,20 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install Yarn
-        run: npm install -g yarn
+      - name: Install pnpm
+        run: npm install -g pnpm
 
-      - name: Cache Yarn packages
+      - name: Cache pnpm packages
         uses: actions/cache@v2
         with:
-          path: ~/.yarn
-          key: yarn-packages-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+          path: ~/.pnpm-store
+          key: pnpm-packages-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            yarn-packages-${{ runner.os }}-
+            pnpm-packages-${{ runner.os }}-
 
       - name: Install dependencies
-        run: yarn install
+        run: pnpm install
 
       - run: cp .env.example .env.local
 
-      - run: yarn check-types
+      - run: pnpm check-types
