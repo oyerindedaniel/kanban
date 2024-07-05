@@ -7,12 +7,10 @@
  * need to use are documented accordingly near the end.
  */
 import { initTRPC } from '@trpc/server';
-import cookie from 'cookie';
 import superjson from 'superjson';
 import { handleServerError } from './lib/error';
 
 import { db } from '@/server/db';
-import { type ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies';
 
 /**
  * 1. CONTEXT
@@ -26,10 +24,11 @@ import { type ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension
  *
  * @see https://trpc.io/docs/server/context
  */
-export const createTRPCContext = async (opts: { headers: Headers; resHeaders?: Headers }) => {
+export const createTRPCContext = async () => {
+  // opts: { headers: Headers; resHeaders?: Headers }
   return {
-    db,
-    ...opts
+    db
+    // ...opts
   };
 };
 

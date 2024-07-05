@@ -5,36 +5,33 @@ import { cn } from '@/lib/utils';
 import { useAppDispatch } from '@/store/hooks';
 import { setGlobalState } from '@/store/slice/global';
 import { api } from '@/trpc/react';
-import {
-  type Board,
-  type Column as ColumnType,
-  type SubTask,
-  type Task as TaskType
-} from '@prisma/client';
+import { type ColumnAllIncludes } from '@/types';
+import { type Board } from '@prisma/client';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState, type FC } from 'react';
+import { useCallback, useEffect, useState, useTransition, type FC } from 'react';
 import { toast as toastSonner } from 'sonner';
 import Column from './column';
+import { revalidateBoardBySlug } from './modals/actions';
 import Task from './task';
 import { useToast } from './ui/use-toast';
+import { useOptimisticColumns } from './use-optimistic-column';
 
-export interface Props {
-  columns: Array<
-    ColumnType & {
-      tasks: Array<TaskType & { subTasks: Array<SubTask> }>;
-    }
-  >;
+export type Props = {
+  columns: Array<ColumnAllIncludes>;
   activeBoard: Board;
-}
+};
 
 const GAP = 32;
 const ADD_COLUMN_WIDTH = 288;
 const COLUMN_WIDTH = 320;
 
 const Columns: FC<Props> = ({ columns, activeBoard }) => {
-  // This is a temporary, somewhat sloppy solution.
-  // useOptimistic bug.
-  const [optimisticColumns, setOptimisticColumns] = useState<Props['columns']>(columns);
+  const [_, startTransition] = useTransition();
+  // console.log(columns);
+  const { optimisticColumns, optimisticUpdate } = useOptimisticColumns(columns);
+
+  console.log('-----columns-----', columns);
+
   const [hoveredColumnId, setHoveredColumnId] = useState<string | null>(null);
 
   const router = useRouter();
@@ -45,7 +42,7 @@ const Columns: FC<Props> = ({ columns, activeBoard }) => {
 
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
+  const dispatchState = useCallback(() => {
     dispatch(
       setGlobalState({
         dataKey: 'board' as const,
@@ -53,81 +50,66 @@ const Columns: FC<Props> = ({ columns, activeBoard }) => {
       })
     );
 
-    dispatch(
-      setGlobalState({
-        dataKey: 'columns' as const,
-        data: columns
-      })
-    );
-  }, [dispatch, columns, activeBoard]);
+    // dispatch(
+    //   setGlobalState({
+    //     dataKey: 'columns' as const,
+    //     data: optimisticColumns
+    //   })
+    // );
+  }, [dispatch, activeBoard, optimisticColumns]);
+
+  useEffect(() => {
+    dispatchState();
+  }, [dispatchState]);
 
   const mutateUpdateColumn = api.column.update.useMutation();
 
-  // {
-  //   onSuccess: () => {
-  //     router.refresh();
-  //     toastSonner(`Task status changed`, { description: draggedToColumnName });
-  //   },
-  //   onError: (error) => {
-  //     console.error(error);
-  //     return toast({
-  //       variant: 'destructive',
-  //       description: 'An error occurred'
-  //     });
-  //   }
-
-  // }
-
   const handleOnDrop = ({
     event,
-    columnId
+    columnId,
+    columnName
   }: {
     event: React.DragEvent<HTMLDivElement>;
     columnId: string;
+    columnName: string;
   }) => {
-    const { previousColumnId, taskId } = JSON.parse(event.dataTransfer.getData('text'));
-    if (columnId === previousColumnId) return;
+    event.preventDefault();
+    event.stopPropagation();
 
-    // This is a temporary, somewhat sloppy solution.
-    // When using splice, there's an error: Cannot assign to read-only property '0' of object '[object Array]'.
+    const { previousColumnId, taskId, taskName } = JSON.parse(event.dataTransfer.getData('text'));
+    if (columnId === previousColumnId) return;
 
     const columns = [...optimisticColumns];
 
-    const previousColumnIdx = columns.findIndex((column) => column.id === previousColumnId);
-    const newColumn = columns.find((column) => column.id === columnId);
-    const previousColumn = columns[previousColumnIdx];
-    const movedTask = previousColumn?.tasks.find((task) => task.id === taskId);
+    console.log('pc---------', columns);
 
-    if (!movedTask) return;
+    dispatchState();
 
-    const updatedColumns = columns.map((column) => {
-      if (column.id === previousColumnId) {
-        return { ...column, tasks: column.tasks.filter((task) => task.id !== taskId) };
-      }
-
-      if (column.id === columnId) {
-        return { ...column, tasks: [movedTask, ...column.tasks] };
-      }
-
-      return column;
+    optimisticUpdate({
+      intent: 'moveTask',
+      previousColumnId,
+      taskId,
+      columnId
     });
 
-    setOptimisticColumns(updatedColumns);
+    setHoveredColumnId(null);
 
     toastSonner.promise(
       mutateUpdateColumn.mutateAsync({ columnId, previousColumnId, taskId, subTasks: [] }),
       {
-        loading: `Updating task (${movedTask.name}) ...`,
+        loading: `Updating task (${taskName}) ...`,
         success: () => {
-          router.refresh();
-          return `Task status changed to ${newColumn?.name}`;
+          revalidateBoardBySlug();
+          return `Task status changed to ${columnName}`;
         },
         error: () => {
-          router.refresh();
+          revalidateBoardBySlug();
           return `An error occurred`;
         }
       }
     );
+
+    console.log('daniel');
   };
 
   const handleOnDragOver = ({
@@ -138,11 +120,14 @@ const Columns: FC<Props> = ({ columns, activeBoard }) => {
     columnId: string;
   }) => {
     event.preventDefault();
+    event.stopPropagation();
 
-    // if (!columnId) return setHoveredColumnId(null);
-
+    if (!columnId || hoveredColumnId === columnId) return;
+    console.log('ondragover');
     setHoveredColumnId(columnId);
   };
+
+  // console.log(optimisticColumns);
 
   const isUpdating = mutateUpdateColumn.isLoading;
 
@@ -164,7 +149,9 @@ const Columns: FC<Props> = ({ columns, activeBoard }) => {
         {optimisticColumns.map((column) => (
           <div
             onDrop={(event) => {
-              handleOnDrop({ event, columnId: column.id });
+              startTransition(() =>
+                handleOnDrop({ event, columnId: column.id, columnName: column.name })
+              );
             }}
             onDragOver={(event) => handleOnDragOver({ event, columnId: column.id })}
             style={{

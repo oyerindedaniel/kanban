@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react';
 
+import { getColumnsByBoardSlug } from '@/app/_data';
+import { useAppSelector } from '@/store/hooks';
 import AddNewBoard from '../modals/add-new-board';
 import AddNewColumnModal from '../modals/add-new-column';
 import AddNewTaskModal from '../modals/add-new-task';
@@ -19,6 +21,10 @@ export const ModalProvider = () => {
   if (!isMounted) {
     return null;
   }
+
+  // const { board } = useAppSelector((state) => state.GlobalService);
+
+  // const columns = getColumnsByBoardSlug(board?.slug!);
 
   return (
     <>

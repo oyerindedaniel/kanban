@@ -5,7 +5,6 @@ import slugify from 'slugify';
 export async function generateUniqueSlug(
   name: string,
   ctx: {
-    headers: Headers;
     db: PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>;
   }
 ): Promise<string> {

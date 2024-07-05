@@ -1,8 +1,8 @@
-import { api } from '@/trpc/server';
+import { getUserBoards } from '@/app/_data';
 import Sidebar from './sidebar';
 
 export default async function SideBarPage() {
-  const data = await api.board.findAll.query();
+  const boards = await getUserBoards();
 
-  return <Sidebar boards={data.data} />;
+  return <Sidebar boards={boards} />;
 }

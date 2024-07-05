@@ -23,6 +23,7 @@ import { useFieldArray, useForm, type FieldArrayMethodProps } from 'react-hook-f
 import { RiCloseLine } from 'react-icons/ri';
 import ErrorAlert from '../ui/error-response';
 import { useToast } from '../ui/use-toast';
+import { revalidateBoardBySlug } from './actions';
 
 const AddNewColumnModal = () => {
   const router = useRouter();
@@ -36,9 +37,9 @@ const AddNewColumnModal = () => {
 
   const mutateAddColumn = api.column.create.useMutation({
     onSuccess: () => {
-      form.reset();
+      form.reset({ boardId });
       onClose();
-      router.refresh();
+      revalidateBoardBySlug();
     },
     onError: (error) => {
       console.error(error);

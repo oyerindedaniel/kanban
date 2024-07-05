@@ -1,4 +1,9 @@
 import { type store } from '@/store';
+import {
+  type Column as IColumn,
+  type SubTask as ISubTask,
+  type Task as ITask
+} from '@prisma/client';
 import { z } from 'zod';
 
 export type RootState = ReturnType<typeof store.getState>;
@@ -85,6 +90,10 @@ type CreateBoard = z.infer<typeof createBoardSchema>;
 type CreateColumns = z.infer<typeof createColumnsSchema>;
 type CreateSubTask = z.infer<typeof createSubTaskSchema>;
 type CreateTask = z.infer<typeof createTaskSchema>;
+
+export type ColumnAllIncludes = IColumn & {
+  tasks: Array<ITask & { subTasks: Array<ISubTask> }>;
+};
 
 export type {
   Board,

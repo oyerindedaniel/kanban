@@ -22,12 +22,12 @@ export function TRPCReactProvider(props: { children: React.ReactNode; cookies: s
             (op.direction === 'down' && op.result instanceof Error)
         }),
         httpBatchLink({
-          url: getUrl(),
-          headers() {
-            return {
-              'x-trpc-source': 'react----------------'
-            };
-          }
+          url: getUrl()
+          // headers() {
+          //   return {
+          //     'x-trpc-source': 'react----------------'
+          //   };
+          // }
         })
       ]
     })

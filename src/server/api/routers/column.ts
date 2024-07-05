@@ -107,7 +107,7 @@ export const columnRouter = createTRPCRouter({
           tasks: {
             include: { subTasks: true },
             orderBy: {
-              updatedAt: 'desc'
+              updatedAt: 'asc'
             }
           }
         }

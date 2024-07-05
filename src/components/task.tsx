@@ -15,6 +15,7 @@ const Task: FC<TaskProps> = ({ task }) => {
   const { onOpen } = useModal();
 
   const taskId = task.id;
+  const taskName = task.name;
 
   const columnId = task.columnId;
 
@@ -25,7 +26,10 @@ const Task: FC<TaskProps> = ({ task }) => {
   ).length;
 
   const handleOnDrag = (e: React.DragEvent<HTMLDivElement>) => {
-    e.dataTransfer.setData('text', JSON.stringify({ previousColumnId: columnId, taskId }));
+    e.dataTransfer.setData(
+      'text',
+      JSON.stringify({ previousColumnId: columnId, taskId, taskName })
+    );
   };
 
   return (

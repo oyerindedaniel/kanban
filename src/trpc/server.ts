@@ -4,7 +4,6 @@ import { TRPCClientError, createTRPCProxyClient, loggerLink } from '@trpc/client
 import { callProcedure } from '@trpc/server';
 import { observable } from '@trpc/server/observable';
 import { type TRPCErrorResponse } from '@trpc/server/rpc';
-import { cookies, headers } from 'next/headers';
 import { cache } from 'react';
 
 import { appRouter, type AppRouter } from '@/server/api/root';
@@ -17,11 +16,9 @@ import { transformer } from './shared';
  */
 
 const createContext = cache(() => {
-  console.log('cookies---------------serverside', cookies());
-  const heads = new Headers(headers());
-  return createTRPCContext({
-    headers: heads
-  });
+  // console.log('cookies---------------serverside', cookies());
+  // const heads = new Headers(headers());
+  return createTRPCContext();
 });
 
 export const api = createTRPCProxyClient<AppRouter>({

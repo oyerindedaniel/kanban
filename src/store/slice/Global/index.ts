@@ -1,13 +1,10 @@
-import { type Board, type Column, type SubTask, type Task } from '@prisma/client';
+import { ColumnAllIncludes } from '@/types';
+import { type Board } from '@prisma/client';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 type globalService = {
   board: Board | null;
-  columns: Array<
-    Column & {
-      tasks: Array<Task & { subTasks: Array<SubTask> }>;
-    }
-  > | null;
+  columns: Array<ColumnAllIncludes> | null;
 };
 
 const initialState: globalService = {

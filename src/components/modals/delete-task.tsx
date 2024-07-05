@@ -11,6 +11,7 @@ import { api } from '@/trpc/react';
 import { ReloadIcon } from '@radix-ui/react-icons';
 import { useRouter } from 'next/navigation';
 import { Button } from '../ui/button';
+import { revalidateBoardBySlug } from './actions';
 
 export default function DeleteTask() {
   const router = useRouter();
@@ -24,7 +25,7 @@ export default function DeleteTask() {
   const mutateDeleteTask = api.task.delete.useMutation({
     onSuccess: () => {
       onClose();
-      router.refresh();
+      revalidateBoardBySlug();
     },
     onError: (error) => {
       console.error(error);

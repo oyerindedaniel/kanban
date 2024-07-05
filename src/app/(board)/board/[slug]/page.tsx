@@ -1,6 +1,6 @@
+import { getColumnsByBoardSlug } from '@/app/_data';
 import Columns from '@/components/columns';
 import NoColumn from '@/components/no-column';
-import { api } from '@/trpc/server';
 import { redirect } from 'next/navigation';
 
 interface BoardPageProps {
@@ -8,11 +8,9 @@ interface BoardPageProps {
 }
 
 export default async function BoardPage({ params: { slug } }: BoardPageProps) {
-  const data = await api.column.findByBoardSlug.query({ slug });
+  const columns = await getColumnsByBoardSlug(slug);
 
-  const columns = data?.data;
-
-  const board = data?.data[0]?.board;
+  const board = columns[0]?.board;
 
   if (!board) {
     return redirect('/');
@@ -21,7 +19,7 @@ export default async function BoardPage({ params: { slug } }: BoardPageProps) {
   return (
     <div>
       {columns && columns?.length > 0 ? (
-        <Columns key={crypto.randomUUID()} columns={columns} activeBoard={board} />
+        <Columns columns={columns} activeBoard={board} />
       ) : (
         <NoColumn activeBoard={board} />
       )}

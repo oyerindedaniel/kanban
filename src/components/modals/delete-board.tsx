@@ -11,6 +11,7 @@ import { api } from '@/trpc/react';
 import { ReloadIcon } from '@radix-ui/react-icons';
 import { useRouter } from 'next/navigation';
 import { Button } from '../ui/button';
+import { revalidateBoard } from './actions';
 
 export default function DeleteBoard() {
   const router = useRouter();
@@ -26,8 +27,7 @@ export default function DeleteBoard() {
   const mutateDeleteBoard = api.board.delete.useMutation({
     onSuccess: () => {
       onClose();
-      router.push('/');
-      router.refresh();
+      revalidateBoard('/');
     },
     onError: (error) => {
       console.error(error);

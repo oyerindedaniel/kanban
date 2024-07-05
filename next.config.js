@@ -29,7 +29,7 @@ const config = {
     return config;
   },
   output: 'standalone',
-  reactStrictMode: true
+  reactStrictMode: false
 };
 
 export default config;

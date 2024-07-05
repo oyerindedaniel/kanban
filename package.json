@@ -8,7 +8,7 @@
     "db:push": "prisma db push",
     "db:studio": "prisma studio",
     "db:clear": "prisma migrate reset",
-    "dev": "next dev",
+    "dev": "next dev -p 3003",
     "postinstall": "prisma generate",
     "lint": "next lint",
     "start": "next start",
@@ -57,8 +57,8 @@
     "msw": "^2.2.13",
     "next": "^14.1.4",
     "next-themes": "^0.3.0",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
+    "react": "rc",
+    "react-dom": "rc",
     "react-hook-form": "^7.49.2",
     "react-icons": "^4.12.0",
     "react-redux": "^9.0.4",
@@ -74,7 +74,6 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",
-    "@next/eslint-plugin-next": "^14.0.3",
     "@playwright/test": "^1.43.0",
     "@types/eslint": "^8.44.7",
     "@types/node": "^18.17.0",
@@ -104,7 +103,7 @@
   "lint-staged": {
     "*.{ts,tsx}": "eslint --cache"
   },
-  "packageManager": "yarn@1.22.19",
+  "packageManager": "pnpm@9.4.0",
   "msw": {
     "workerDirectory": [
       "public"

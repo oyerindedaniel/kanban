@@ -40,6 +40,7 @@ import { RiCloseLine } from 'react-icons/ri';
 import { ColumnProps } from '../column';
 import ErrorAlert from '../ui/error-response';
 import { useToast } from '../ui/use-toast';
+import { revalidateBoardBySlug } from './actions';
 
 const AddNewTaskModal = () => {
   const router = useRouter();
@@ -105,7 +106,7 @@ const AddNewTaskModal = () => {
     onSuccess: () => {
       form.reset();
       onClose();
-      router.refresh();
+      revalidateBoardBySlug();
     },
     onError: (error) => {
       console.error(error);
@@ -116,7 +117,7 @@ const AddNewTaskModal = () => {
     onSuccess: () => {
       form.reset();
       onClose();
-      router.refresh();
+      revalidateBoardBySlug();
     },
     onError: (error) => {
       console.error(error);

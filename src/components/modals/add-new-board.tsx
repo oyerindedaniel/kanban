@@ -30,6 +30,7 @@ import { useCallback } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { RiCloseLine } from 'react-icons/ri';
 import ErrorAlert from '../ui/error-response';
+import { revalidateBoard, revalidateBoardBySlug } from './actions';
 
 const AddNewBoard = () => {
   const router = useRouter();
@@ -89,8 +90,7 @@ const AddNewBoard = () => {
     onSuccess: (data) => {
       form.reset();
       onClose();
-      router.push(`/board/${data.data.slug}`);
-      router.refresh();
+      revalidateBoard(`/board/${data.data.slug}`);
     },
     onError: (error) => {
       console.error(error);
@@ -101,7 +101,8 @@ const AddNewBoard = () => {
     onSuccess: () => {
       form.reset();
       onClose();
-      router.refresh();
+      revalidateBoard();
+      revalidateBoardBySlug();
     },
     onError: (error) => {
       console.error(error);

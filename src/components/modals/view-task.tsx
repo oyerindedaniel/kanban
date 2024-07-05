@@ -45,6 +45,7 @@ import { type ColumnProps } from '../column';
 import { type TaskProps } from '../task';
 import { Button } from '../ui/button';
 import { Checkbox } from '../ui/checkbox';
+import { revalidateBoardBySlug } from './actions';
 
 type subTask = z.infer<typeof subTaskSchema>;
 type subTasks = z.infer<typeof subTasksSchema>;
@@ -126,7 +127,7 @@ const ViewTask = () => {
 
   const mutateUpdateSubTask = api.subTask.update.useMutation({
     onSuccess: () => {
-      router.refresh();
+      revalidateBoardBySlug('/');
     },
     onError: (error) => {
       console.error(error);
@@ -136,7 +137,7 @@ const ViewTask = () => {
   const mutateUpdateColumn = api.column.update.useMutation({
     onSuccess: () => {
       onClose();
-      router.refresh();
+      revalidateBoardBySlug('/');
     },
     onError: (error) => {
       console.error(error);
