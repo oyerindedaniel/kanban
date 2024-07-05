@@ -19,7 +19,7 @@
     "test-all": "yarn check-format && yarn check-lint && yarn check-types && yarn build",
     "test:e2e": "npx playwright test",
     "test:e2e:ui": "npx playwright test --ui",
-    "prepare": "husky install"
+    "prepare": "husky"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.17",
@@ -88,7 +88,6 @@
     "eslint-plugin-prettier": "^5.1.0",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-tailwindcss": "^3.13.0",
-    "husky": "^8.0.0",
     "lint-staged": "^15.2.0",
     "postcss": "^8.4.31",
     "prettier": "^3.1.1",
