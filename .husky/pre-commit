@@ -1,4 +1,4 @@
-# npx lint-staged
+pnpm dlx lint-staged
 
 # If everything passes... Now we can commit
 echo '✅ Congrats! Your code looks great. Committing it now. ✅'
