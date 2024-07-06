@@ -25,13 +25,13 @@ jobs:
         run: pnpm install
 
       - name: Install Playwright Browsers
-        run: pnpm dlx playwright install --with-deps
+        run: npx playwright install --with-deps
 
       - name: Run Playwright tests
         env:
           BASE_URL: ${{ secrets.BASE_URL }}
           CI: true
-        run: pnpm dlx playwright test
+        run: npx playwright test
 
       - uses: actions/upload-artifact@v4
         if: always()
