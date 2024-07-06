@@ -28,6 +28,9 @@ jobs:
         run: pnpm dlx playwright install --with-deps
 
       - name: Run Playwright tests
+        env:
+          BASE_URL: ${{ secrets.BASE_URL }}
+          CI: true
         run: pnpm dlx playwright test
 
       - uses: actions/upload-artifact@v4

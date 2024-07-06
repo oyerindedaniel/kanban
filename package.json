@@ -8,6 +8,7 @@
     "db:push": "prisma db push",
     "db:studio": "prisma studio",
     "db:clear": "prisma migrate reset",
+    "db:generate": "prisma generate",
     "dev": "next dev -p 3003",
     "postinstall": "prisma generate",
     "lint": "next lint",
@@ -16,9 +17,9 @@
     "check-format": "prettier --check \"**/*.{ts,tsx,md}\"",
     "check-lint": "eslint \"**/*.{ts,tsx}\" --ignore-pattern node_modules/",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "test-all": "yarn check-format && yarn check-lint && yarn check-types && yarn build",
-    "test:e2e": "npx playwright test",
-    "test:e2e:ui": "npx playwright test --ui",
+    "test-all": "pnpm check-format && pnpm check-lint && pnpm check-types && pnpm build",
+    "test:e2e": "pnpm dlx playwright test",
+    "test:e2e:ui": "pnpm dlx playwright test --ui",
     "prepare": "husky"
   },
   "dependencies": {
@@ -57,8 +58,8 @@
     "msw": "^2.2.13",
     "next": "^14.1.4",
     "next-themes": "^0.3.0",
-    "react": "rc",
-    "react-dom": "rc",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "react-hook-form": "^7.49.2",
     "react-icons": "^4.12.0",
     "react-redux": "^9.0.4",
@@ -100,10 +101,10 @@
   "ct3aMetadata": {
     "initVersion": "7.24.2"
   },
-  "lint-staged": {
-    "*.{ts,tsx}": "eslint --cache",
-    "**/*.{js,jsx,ts,tsx,json,css,scss,md}": "prettier --write"
-  },
+  // "lint-staged": {
+  //   "*.{ts,tsx}": "eslint --cache",
+  //   "**/*.{js,jsx,ts,tsx,json,css,scss,md}": "prettier --write"
+  // },
   "packageManager": "pnpm@9.4.0",
   "msw": {
     "workerDirectory": [

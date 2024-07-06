@@ -28,8 +28,8 @@ const config = {
     }
     return config;
   },
-  output: 'standalone',
-  reactStrictMode: false
+  output: 'standalone'
+  // reactStrictMode: true
 };
 
 export default config;

@@ -17,9 +17,9 @@ You can look through the codebase to see how code is structured and written. ESl
 
 On every commit the following scripts are run
 
-- yarn check-format (Check Prettier standards)
-- yarn check-lint (Check ESLint standards)
-- yarn check-types (Check tsconfig standards)
+- pnpm check-format (Check Prettier standards)
+- pnpm check-lint (Check ESLint standards)
+- pnpm check-types (Check tsconfig standards)
 
 ## Setting up Project 👨🏾‍💻
 
@@ -29,10 +29,10 @@ git clone https://github.com/oyerindedaniel/kanban.git
 gh repo clone oyerindedaniel/kanban
 
 cd kanban
-yarn
+pnpm
 
 npx prisma migrate dev (migrate db schema)
-yarn dev
+pnpm install
 
 ```
 
