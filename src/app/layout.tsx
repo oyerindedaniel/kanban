@@ -3,10 +3,9 @@ import '@/styles/globals.css';
 import { ModalProvider } from '@/components/providers/modal-provider';
 import { Toaster as ToasterSonner } from '@/components/ui/sonner';
 import { Toaster } from '@/components/ui/toaster';
-import { onUnhandledRequest } from '@/mocks/msw.utils';
+import { Providers } from '@/providers';
 import { Inter } from 'next/font/google';
 import { cookies } from 'next/headers';
-import { Providers } from '../providers';
 
 import { TRPCReactProvider } from '@/trpc/react';
 

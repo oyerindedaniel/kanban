@@ -102,7 +102,6 @@
     "initVersion": "7.24.2"
   },
   "lint-staged": {
-    "*.{ts,tsx}": "eslint --cache",
     "**/*.{js,jsx,ts,tsx,json,css,scss,md}": "prettier --write"
   },
   "packageManager": "pnpm@9.4.0",

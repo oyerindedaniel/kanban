@@ -21,14 +21,6 @@ jobs:
       - name: Install pnpm
         run: npm install -g pnpm
 
-      - name: Cache pnpm packages
-        uses: actions/cache@v2
-        with:
-          path: ~/.pnpm-store
-          key: pnpm-packages-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            pnpm-packages-${{ runner.os }}-
-
       - name: Install dependencies
         run: pnpm install
 
@@ -53,14 +45,6 @@ jobs:
       - name: Install pnpm
         run: npm install -g pnpm
 
-      - name: Cache pnpm packages
-        uses: actions/cache@v2
-        with:
-          path: ~/.pnpm-store
-          key: pnpm-packages-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            pnpm-packages-${{ runner.os }}-
-
       - name: Install dependencies
         run: pnpm install
 
@@ -84,14 +68,6 @@ jobs:
 
       - name: Install pnpm
         run: npm install -g pnpm
-
-      - name: Cache pnpm packages
-        uses: actions/cache@v2
-        with:
-          path: ~/.pnpm-store
-          key: pnpm-packages-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            pnpm-packages-${{ runner.os }}-
 
       - name: Install dependencies
         run: pnpm install
