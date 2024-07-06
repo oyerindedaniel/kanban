@@ -32,7 +32,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - run: cp .env.example .env.local
+      - name: Copy environment variables
+        run: cp .env.example .env.local
 
       - run: SKIP_ENV_VALIDATION=1 pnpm lint
 
@@ -63,7 +64,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - run: cp .env.example .env.local
+      - name: Copy environment variables
+        run: cp .env.example .env.local
 
       - run: pnpm check-format
 
@@ -94,6 +96,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - run: cp .env.example .env.local
+      - name: Copy environment variables
+        run: cp .env.example .env.local
 
-      - run: pnpm check-types
+      - name: Check types
+        run: pnpm check-types
