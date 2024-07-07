@@ -1,5 +1,5 @@
-import KanbanLogo from './KanbanLogo.svg';
-import KanbanLogoDark from './KanbanLogoDark.svg';
+import KanbanLogo from './kanban-logo.svg';
+import KanbanLogoDark from './kanban-logo-dark.svg';
 import ActiveSidebarIcon from './active-sidebar.svg';
 import HideIcon from './hide-icon.svg';
 import MoreOptionsIcon from './more-options.svg';

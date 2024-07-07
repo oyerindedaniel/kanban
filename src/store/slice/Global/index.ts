@@ -1,3 +1,5 @@
+'use client';
+
 import { ColumnAllIncludes } from '@/types';
 import { type Board } from '@prisma/client';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';

@@ -67,33 +67,33 @@ jobs:
 
       - run: pnpm check-format
 
-  # tsc:
-  #   runs-on: ubuntu-latest
-  #   name: Typecheck
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #       with:
-  #         fetch-depth: 0
+  tsc:
+    runs-on: ubuntu-latest
+    name: Typecheck
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
-  #     - name: Setup Node.js
-  #       uses: actions/setup-node@v2
-  #       with:
-  #         node-version: '20'
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
 
-  #     - name: Install pnpm
-  #       run: npm install -g pnpm
+      - name: Install pnpm
+        run: npm install -g pnpm
 
-  #     - name: Cache pnpm packages
-  #       uses: actions/cache@v2
-  #       with:
-  #         path: ~/.pnpm-store
-  #         key: pnpm-packages-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
-  #         restore-keys: |
-  #           pnpm-packages-${{ runner.os }}-
+      - name: Cache pnpm packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.pnpm-store
+          key: pnpm-packages-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            pnpm-packages-${{ runner.os }}-
 
-  #     - name: Install dependencies
-  #       run: pnpm install
+      - name: Install dependencies
+        run: pnpm install
 
-  #     - run: cp .env.example .env.local
+      - run: cp .env.example .env.local
 
-  #     - run: pnpm check-types
+      - run: pnpm check-types
