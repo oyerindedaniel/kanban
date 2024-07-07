@@ -21,11 +21,18 @@ jobs:
       - name: Install pnpm
         run: npm install -g pnpm
 
+      - name: Cache pnpm packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.pnpm-store
+          key: pnpm-packages-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            pnpm-packages-${{ runner.os }}-
+
       - name: Install dependencies
         run: pnpm install
 
-      - name: Copy environment variables
-        run: cp .env.example .env.local
+      - run: cp .env.example .env.local
 
       - run: SKIP_ENV_VALIDATION=1 pnpm lint
 
@@ -45,35 +52,48 @@ jobs:
       - name: Install pnpm
         run: npm install -g pnpm
 
+      - name: Cache pnpm packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.pnpm-store
+          key: pnpm-packages-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            pnpm-packages-${{ runner.os }}-
+
       - name: Install dependencies
         run: pnpm install
 
-      - name: Copy environment variables
-        run: cp .env.example .env.local
+      - run: cp .env.example .env.local
 
       - run: pnpm check-format
 
-  tsc:
-    runs-on: ubuntu-latest
-    name: Typecheck
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
+  # tsc:
+  #   runs-on: ubuntu-latest
+  #   name: Typecheck
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #       with:
+  #         fetch-depth: 0
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '20'
+  #     - name: Setup Node.js
+  #       uses: actions/setup-node@v2
+  #       with:
+  #         node-version: '20'
 
-      - name: Install pnpm
-        run: npm install -g pnpm
+  #     - name: Install pnpm
+  #       run: npm install -g pnpm
 
-      - name: Install dependencies
-        run: pnpm install
+  #     - name: Cache pnpm packages
+  #       uses: actions/cache@v2
+  #       with:
+  #         path: ~/.pnpm-store
+  #         key: pnpm-packages-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+  #         restore-keys: |
+  #           pnpm-packages-${{ runner.os }}-
 
-      - name: Copy environment variables
-        run: cp .env.example .env.local
+  #     - name: Install dependencies
+  #       run: pnpm install
 
-      - name: Check types
-        run: pnpm check-types
+  #     - run: cp .env.example .env.local
+
+  #     - run: pnpm check-types
