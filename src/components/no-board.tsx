@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui/button';
 import { useModal } from '@/hooks/use-modal-store';
 import { useAppDispatch } from '@/store/hooks';
-import { setGlobalState } from '@/store/slice/globalSlice';
+import { clearBoard, clearColumns } from '@/store/slice/globalSlice';
 import { useEffect } from 'react';
 
 const NoBoard = () => {
@@ -12,19 +12,8 @@ const NoBoard = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(
-      setGlobalState({
-        dataKey: 'board' as const,
-        data: null
-      })
-    );
-
-    dispatch(
-      setGlobalState({
-        dataKey: 'columns' as const,
-        data: null
-      })
-    );
+    dispatch(clearBoard());
+    dispatch(clearColumns());
   }, [dispatch]);
 
   return (

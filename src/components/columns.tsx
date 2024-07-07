@@ -3,7 +3,7 @@
 import { useModal } from '@/hooks/use-modal-store';
 import { cn } from '@/lib/utils';
 import { useAppDispatch } from '@/store/hooks';
-import { setGlobalState } from '@/store/slice/globalSlice';
+import { setBoard } from '@/store/slice/globalSlice';
 import { api } from '@/trpc/react';
 import { type ColumnAllIncludes } from '@/types';
 import { type Board } from '@prisma/client';
@@ -27,7 +27,6 @@ const COLUMN_WIDTH = 320;
 
 const Columns: FC<Props> = ({ columns, activeBoard }) => {
   const [_, startTransition] = useTransition();
-  // console.log(columns);
   const { optimisticColumns, optimisticUpdate } = useOptimisticColumns(columns);
 
   console.log('-----columns-----', columns);
@@ -43,19 +42,8 @@ const Columns: FC<Props> = ({ columns, activeBoard }) => {
   const dispatch = useAppDispatch();
 
   const dispatchState = useCallback(() => {
-    dispatch(
-      setGlobalState({
-        dataKey: 'board' as const,
-        data: activeBoard
-      })
-    );
-
-    // dispatch(
-    //   setGlobalState({
-    //     dataKey: 'columns' as const,
-    //     data: optimisticColumns
-    //   })
-    // );
+    dispatch(setBoard(activeBoard));
+    // dispatch(setColumns(optimisticColumns));
   }, [dispatch, activeBoard, optimisticColumns]);
 
   useEffect(() => {
@@ -145,6 +133,7 @@ const Columns: FC<Props> = ({ columns, activeBoard }) => {
       >
         {optimisticColumns.map((column) => (
           <div
+            key={column.id}
             onDrop={(event) => {
               startTransition(() =>
                 handleOnDrop({ event, columnId: column.id, columnName: column.name })
@@ -154,7 +143,6 @@ const Columns: FC<Props> = ({ columns, activeBoard }) => {
             style={{
               maxWidth: `${COLUMN_WIDTH}px`
             }}
-            key={column.id}
             className={cn(
               '',
               hoveredColumnId === column.id

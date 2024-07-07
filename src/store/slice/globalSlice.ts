@@ -1,39 +1,36 @@
-'use client';
-
 import { ColumnAllIncludes } from '@/types';
-import { type Board } from '@prisma/client';
-import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import { Board } from '@prisma/client';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-const initialState: GlobalService = {
-  board: null,
-  columns: null
-};
-
-type GlobalService = {
+type StateType = {
   board: Board | null;
-  columns: Array<ColumnAllIncludes> | null;
+  columns: ColumnAllIncludes[];
 };
 
-type GlobalStatePayload<T extends keyof GlobalService> = {
-  dataKey: T;
-  data: GlobalService[T];
+const initialState: StateType = {
+  board: null,
+  columns: []
 };
 
 const globalStateSlice = createSlice({
   name: 'globalState',
   initialState,
   reducers: {
-    setGlobalState: <T extends keyof GlobalService>(
-      state: GlobalService,
-      action: PayloadAction<GlobalStatePayload<T>>
-    ) => {
-      const { dataKey, data } = action.payload;
-      // eslint-disable-next-line no-param-reassign
-      state[dataKey] = data;
+    setBoard: (state, action: PayloadAction<Board>) => {
+      state.board = action.payload;
+    },
+    setColumns: (state, action: PayloadAction<ColumnAllIncludes[]>) => {
+      state.columns = action.payload;
+    },
+    clearBoard: (state) => {
+      state.board = null;
+    },
+    clearColumns: (state) => {
+      state.columns = [];
     }
   }
 });
 
-export const { setGlobalState } = globalStateSlice.actions;
+export const { setBoard, setColumns, clearBoard, clearColumns } = globalStateSlice.actions;
 
 export default globalStateSlice.reducer;

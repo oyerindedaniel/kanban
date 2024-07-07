@@ -53,10 +53,10 @@ const Sidebar = ({ boards }: { boards: Array<Pick<Board, 'name' | 'slug' | 'id'>
                 {boards.map((board, idx) => {
                   return (
                     <Link
-                      href={board.name.trim().split(' ').join('-')}
+                      href={board.slug}
                       key={board.id}
                       className="hover:fill-brand-iris"
-                      onClick={() => router.push(`/board/${board?.slug}`)}
+                      onClick={() => router.push(`/board/${board.slug}`)}
                     >
                       <div
                         className={cn(
