@@ -1,7 +1,5 @@
-/* eslint-disable no-param-reassign */
-
-import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import { localStorageName } from '@/config';
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 let localStorageState;
 if (typeof window !== 'undefined') {
@@ -19,7 +17,6 @@ interface UIState {
 
 const initialState: UIState = localStorageState
   ? {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       UI: { ...JSON.parse(localStorageState) }
     }
   : {
@@ -33,7 +30,7 @@ const UIServiceSlice = createSlice({
   initialState,
   reducers: {
     updateUI: (state, action: PayloadAction<Partial<UIPayload>>) => {
-      if (state?.UI) {
+      if (state.UI) {
         state.UI = { ...state.UI, ...action.payload };
         localStorage.setItem(localStorageName, JSON.stringify(state.UI));
       }

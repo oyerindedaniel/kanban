@@ -4,27 +4,27 @@ import { ColumnAllIncludes } from '@/types';
 import { type Board } from '@prisma/client';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
-type globalService = {
+type GlobalService = {
   board: Board | null;
   columns: Array<ColumnAllIncludes> | null;
 };
 
-const initialState: globalService = {
+const initialState: GlobalService = {
   board: null,
   columns: null
 };
 
-type GlobalStatePayload<T extends keyof globalService> = {
+type GlobalStatePayload<T extends keyof GlobalService> = {
   dataKey: T;
-  data: globalService[T];
+  data: GlobalService[T];
 };
 
 const globalStateSlice = createSlice({
   name: 'globalState',
   initialState,
   reducers: {
-    setGlobalState: <T extends keyof globalService>(
-      state: globalService,
+    setGlobalState: <T extends keyof GlobalService>(
+      state: GlobalService,
       action: PayloadAction<GlobalStatePayload<T>>
     ) => {
       const { dataKey, data } = action.payload;
