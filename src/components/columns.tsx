@@ -3,7 +3,7 @@
 import { useModal } from '@/hooks/use-modal-store';
 import { cn } from '@/lib/utils';
 import { useAppDispatch } from '@/store/hooks';
-import { setGlobalState } from '@/store/slice/global';
+import { setGlobalState } from '@/store/slice/globalSlice';
 import { api } from '@/trpc/react';
 import { type ColumnAllIncludes } from '@/types';
 import { type Board } from '@prisma/client';
@@ -108,8 +108,6 @@ const Columns: FC<Props> = ({ columns, activeBoard }) => {
         }
       }
     );
-
-    console.log('daniel');
   };
 
   const handleOnDragOver = ({
@@ -123,7 +121,6 @@ const Columns: FC<Props> = ({ columns, activeBoard }) => {
     event.stopPropagation();
 
     if (!columnId || hoveredColumnId === columnId) return;
-    console.log('ondragover');
     setHoveredColumnId(columnId);
   };
 

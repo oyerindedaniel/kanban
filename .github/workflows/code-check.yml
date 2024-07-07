@@ -21,9 +21,6 @@ jobs:
       - name: Install pnpm
         run: npm install -g pnpm
 
-      - name: Clear pnpm cache
-        run: rm -rf ~/.pnpm-store
-
       - name: Cache pnpm packages
         uses: actions/cache@v2
         with:
@@ -55,9 +52,6 @@ jobs:
       - name: Install pnpm
         run: npm install -g pnpm
 
-      - name: Clear pnpm cache
-        run: rm -rf ~/.pnpm-store
-
       - name: Cache pnpm packages
         uses: actions/cache@v2
         with:
@@ -88,9 +82,6 @@ jobs:
 
       - name: Install pnpm
         run: npm install -g pnpm
-
-      - name: Clear pnpm cache
-        run: rm -rf ~/.pnpm-store
 
       - name: Cache pnpm packages
         uses: actions/cache@v2

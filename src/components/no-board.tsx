@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui/button';
 import { useModal } from '@/hooks/use-modal-store';
 import { useAppDispatch } from '@/store/hooks';
-import { setGlobalState } from '@/store/slice/global';
+import { setGlobalState } from '@/store/slice/globalSlice';
 import { useEffect } from 'react';
 
 const NoBoard = () => {

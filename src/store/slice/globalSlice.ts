@@ -4,14 +4,14 @@ import { ColumnAllIncludes } from '@/types';
 import { type Board } from '@prisma/client';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
-type GlobalService = {
-  board: Board | null;
-  columns: Array<ColumnAllIncludes> | null;
-};
-
 const initialState: GlobalService = {
   board: null,
   columns: null
+};
+
+type GlobalService = {
+  board: Board | null;
+  columns: Array<ColumnAllIncludes> | null;
 };
 
 type GlobalStatePayload<T extends keyof GlobalService> = {

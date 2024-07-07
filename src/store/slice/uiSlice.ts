@@ -21,6 +21,7 @@ const initialState: UIState = localStorageState
     }
   : {
       UI: {
+        theme: 'light',
         isSideBarOpen: true
       }
     };

@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { useModal } from '@/hooks/use-modal-store';
 import { cn } from '@/lib/utils';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { updateUI } from '@/store/slice/ui';
+import { updateUI } from '@/store/slice/uiSlice';
 import { type Board } from '@prisma/client';
 import Image from 'next/image';
 import Link from 'next/link';

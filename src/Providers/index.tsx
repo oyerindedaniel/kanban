@@ -1,8 +1,7 @@
 'use client';
 
-// import { ReduxProviders } from '@/store/provider';
+import { ReduxProviders } from '@/store/provider';
 import { ThemeProvider } from './theme-provider';
-import { MockProvider } from './mock-provider';
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (

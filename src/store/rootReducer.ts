@@ -1,6 +1,6 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import GlobalServiceReducer from './slice/global';
-import UIServiceReducer from './slice/ui';
+import GlobalServiceReducer from './slice/globalSlice';
+import UIServiceReducer from './slice/uiSlice';
 
 const rootReducer = combineReducers({
   UIService: UIServiceReducer,
