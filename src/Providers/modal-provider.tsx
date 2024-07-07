@@ -2,14 +2,12 @@
 
 import { useEffect, useState } from 'react';
 
-import { getColumnsByBoardSlug } from '@/app/_data';
-import { useAppSelector } from '@/store/hooks';
-import AddNewBoard from '../modals/add-new-board';
-import AddNewColumnModal from '../modals/add-new-column';
-import AddNewTaskModal from '../modals/add-new-task';
-import DeleteBoard from '../modals/delete-board';
-import DeleteTask from '../modals/delete-task';
-import ViewTask from '../modals/view-task';
+import AddNewBoard from '../components/modals/add-new-board';
+import AddNewColumnModal from '../components/modals/add-new-column';
+import AddNewTaskModal from '../components/modals/add-new-task';
+import DeleteBoard from '../components/modals/delete-board';
+import DeleteTask from '../components/modals/delete-task';
+import ViewTask from '../components/modals/view-task';
 
 export const ModalProvider = () => {
   const [isMounted, setIsMounted] = useState(false);
