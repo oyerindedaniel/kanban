@@ -27,7 +27,11 @@
     /* Path Aliases */
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@/providers": ["src/providers"],
+      "@/store/*": ["src/store/*"],
+      "@/config": ["src/config"],
+      "@/types": ["src/types"]
     }
   },
   "include": [
