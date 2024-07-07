@@ -2,10 +2,10 @@ import '@/styles/globals.css';
 
 import { Toaster as ToasterSonner } from '@/components/ui/sonner';
 import { Toaster } from '@/components/ui/toaster';
-import { Providers } from '@/providers';
 import { ModalProvider } from '@/providers/modal-provider';
 import { Inter } from 'next/font/google';
 import { cookies } from 'next/headers';
+import { Providers } from './providers';
 
 import { TRPCReactProvider } from '@/trpc/react';
 
