@@ -9,7 +9,7 @@
     "db:studio": "prisma studio",
     "db:clear": "prisma migrate reset",
     "db:generate": "prisma generate",
-    "dev": "next dev -p 3000",
+    "dev": "next dev -p 4000",
     "postinstall": "prisma generate",
     "lint": "next lint",
     "start": "next start",

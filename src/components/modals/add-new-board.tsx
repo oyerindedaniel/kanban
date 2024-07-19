@@ -25,7 +25,6 @@ import { api } from '@/trpc/react';
 import { createBoardSchema, type CreateBoard, type CreateColumn } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ReloadIcon } from '@radix-ui/react-icons';
-import { useRouter } from 'next/navigation';
 import { useCallback } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { RiCloseLine } from 'react-icons/ri';
@@ -33,8 +32,6 @@ import ErrorAlert from '../ui/error-response';
 import { revalidateBoard, revalidateBoardBySlug } from './actions';
 
 const AddNewBoard = () => {
-  const router = useRouter();
-
   const { columns } = useAppSelector((state) => state.GlobalService);
 
   const { isOpen, onClose, type, data } = useModal();
