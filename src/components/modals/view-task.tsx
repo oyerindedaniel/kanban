@@ -127,7 +127,7 @@ const ViewTask = () => {
 
   const mutateUpdateSubTask = api.subTask.update.useMutation({
     onSuccess: () => {
-      revalidateBoardBySlug('/');
+      revalidateBoardBySlug();
     },
     onError: (error) => {
       console.error(error);
@@ -137,7 +137,7 @@ const ViewTask = () => {
   const mutateUpdateColumn = api.column.update.useMutation({
     onSuccess: () => {
       onClose();
-      revalidateBoardBySlug('/');
+      revalidateBoardBySlug();
     },
     onError: (error) => {
       console.error(error);

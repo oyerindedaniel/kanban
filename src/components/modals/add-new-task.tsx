@@ -37,7 +37,7 @@ import { useRouter } from 'next/navigation';
 import { useCallback } from 'react';
 import { useFieldArray, useForm, type FieldArrayMethodProps } from 'react-hook-form';
 import { RiCloseLine } from 'react-icons/ri';
-import { ColumnProps } from '../column';
+import { type ColumnProps } from '../column';
 import ErrorAlert from '../ui/error-response';
 import { useToast } from '../ui/use-toast';
 import { revalidateBoardBySlug } from './actions';

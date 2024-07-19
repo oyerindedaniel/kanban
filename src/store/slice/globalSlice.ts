@@ -1,5 +1,5 @@
-import { ColumnAllIncludes } from '@/types';
-import { Board } from '@prisma/client';
+import { type ColumnAllIncludes } from '@/types';
+import { type Board } from '@prisma/client';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 type StateType = {

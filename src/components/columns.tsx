@@ -1,17 +1,16 @@
 'use client';
 
+import { mutateColumnUpdate } from '@/app/_actions';
 import { useModal } from '@/hooks/use-modal-store';
 import { cn } from '@/lib/utils';
 import { useAppDispatch } from '@/store/hooks';
-import { setBoard } from '@/store/slice/globalSlice';
+import { setBoard, setColumns } from '@/store/slice/globalSlice';
 import { api } from '@/trpc/react';
 import { type ColumnAllIncludes } from '@/types';
 import { type Board } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState, useTransition, type FC } from 'react';
-import { toast as toastSonner } from 'sonner';
 import Column from './column';
-import { revalidateBoardBySlug } from './modals/actions';
 import Task from './task';
 import { useToast } from './ui/use-toast';
 import { useOptimisticColumns } from './use-optimistic-column';
@@ -27,9 +26,8 @@ const COLUMN_WIDTH = 320;
 
 const Columns: FC<Props> = ({ columns, activeBoard }) => {
   const [_, startTransition] = useTransition();
-  const { optimisticColumns, optimisticUpdate } = useOptimisticColumns(columns);
 
-  console.log('-----columns-----', columns);
+  const { optimisticColumns, optimisticUpdate } = useOptimisticColumns(columns);
 
   const [hoveredColumnId, setHoveredColumnId] = useState<string | null>(null);
 
@@ -43,16 +41,16 @@ const Columns: FC<Props> = ({ columns, activeBoard }) => {
 
   const dispatchState = useCallback(() => {
     dispatch(setBoard(activeBoard));
-    // dispatch(setColumns(optimisticColumns));
+    dispatch(setColumns(optimisticColumns));
   }, [dispatch, activeBoard, optimisticColumns]);
 
   useEffect(() => {
     dispatchState();
-  }, [dispatchState]);
+  }, []);
 
   const mutateUpdateColumn = api.column.update.useMutation();
 
-  const handleOnDrop = ({
+  const handleOnDrop = async ({
     event,
     columnId,
     columnName
@@ -67,12 +65,6 @@ const Columns: FC<Props> = ({ columns, activeBoard }) => {
     const { previousColumnId, taskId, taskName } = JSON.parse(event.dataTransfer.getData('text'));
     if (columnId === previousColumnId) return;
 
-    const columns = [...optimisticColumns];
-
-    console.log('pc---------', columns);
-
-    dispatchState();
-
     optimisticUpdate({
       intent: 'moveTask',
       previousColumnId,
@@ -82,20 +74,25 @@ const Columns: FC<Props> = ({ columns, activeBoard }) => {
 
     setHoveredColumnId(null);
 
-    toastSonner.promise(
-      mutateUpdateColumn.mutateAsync({ columnId, previousColumnId, taskId, subTasks: [] }),
-      {
-        loading: `Updating task (${taskName}) ...`,
-        success: () => {
-          revalidateBoardBySlug();
-          return `Task status changed to ${columnName}`;
-        },
-        error: () => {
-          revalidateBoardBySlug();
-          return `An error occurred`;
-        }
-      }
-    );
+    await mutateColumnUpdate(columnId, previousColumnId, taskId);
+
+    // dispatchState();
+
+    // toastSonner.promise(
+    //   mutateUpdateColumn.mutateAsync({ columnId, previousColumnId, taskId, subTasks: [] }),
+    //   {
+    //     loading: `Updating task (${taskName}) ...`,
+    //     success: (data) => {
+    //       revalidateBoardBySlug();
+    //       // setMemoColumns((prev) => [...prev, data.data]);
+    //       return `Task status changed to ${columnName}`;
+    //     },
+    //     error: () => {
+    //       revalidateBoardBySlug();
+    //       return `An error occurred`;
+    //     }
+    //   }
+    // );
   };
 
   const handleOnDragOver = ({
@@ -111,8 +108,6 @@ const Columns: FC<Props> = ({ columns, activeBoard }) => {
     if (!columnId || hoveredColumnId === columnId) return;
     setHoveredColumnId(columnId);
   };
-
-  // console.log(optimisticColumns);
 
   const isUpdating = mutateUpdateColumn.isLoading;
 
